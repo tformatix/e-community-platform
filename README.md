@@ -12,3 +12,10 @@ A library of the local network operator Netz OÖ GmbH already takes care of read
 ## Local Energy Monitoring
 In the second semester, we started to implement an app to monitor the local energy data provided by the smart meter. The charts were visualized using xx.
 
+## Work in progress...
+
+### Consent Managment Platform for sharing and monetization of Energy Data with a private blockchain
+
+* connect all smart meters in a private blockchain (Hyperledger Sawtooth)
+* share energy data between members and other organizations
+* store contract (consent) inside the blockchain
