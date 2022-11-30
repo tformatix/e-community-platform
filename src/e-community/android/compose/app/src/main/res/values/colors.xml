@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mainBlue">#02A9F4</color>
+
+    <color name="blue">#FF1976d2</color>
+    <color name="blue_variant">#FF0d47a1</color>
+    <color name="gray">#FF616161</color>
+    <color name="gray_light">#eeeeee</color>
+    <color name="gray_variant">#FF424242</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="color_default">#FF1976d2</color>
+    <color name="color_default_variant">#FF0d47a1</color>
+    <color name="color_realtime_highlight">#AA8B0000</color>
+    <color name="color_realtime_upward">#AA8B0000</color>
+    <color name="color_realtime_downward">#AA197319</color>
+    <color name="color_realtime_text">#8A000000</color>
+    <color name="color_realtime_text_light">#FFFFFF</color>
+
+    <color name="primaryLightColor">#76d275</color>
+    <color name="primaryDarkColor">#00701a</color>
+    <color name="secondaryColor">#FF9800</color>
+    <color name="secondaryLightColor">#FF9800</color>
+    <color name="secondaryDarkColor">#EF6C00</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
+
+    <color name="tile_value_normal">#FF000000</color>
+    <color name="tile_value_good">#4caf50</color>
+    <color name="tile_value_ok">#ffa000</color>
+    <color name="tile_value_bad">#d32f2f</color>
+
+    <color name="tutorial_color_green">#4CAF50</color>
+    <color name="tutorial_color_green_variant">#2E7D32</color>
+    <color name="tutorial_color_orange">#FF9800</color>
+    <color name="tutorial_color_orange_variant">#EF6C00</color>
+
+
+    <color name="local_device_configured">#4CAF50</color>
+    <color name="local_device_not_configured">#d32f2f</color>
+</resources>

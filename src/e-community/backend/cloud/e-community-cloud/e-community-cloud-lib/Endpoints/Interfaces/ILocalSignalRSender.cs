@@ -1,0 +1,42 @@
+﻿using e_community_cloud_lib.Endpoints.Dtos;
+using e_community_cloud_lib.LocalDtos;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace e_community_cloud_lib.Endpoints.Interfaces
+{
+    /// <summary>
+    /// provided SignalR methods of Local
+    /// </summary>
+    public interface ILocalSignalRSender
+    {
+        /// <summary>
+        /// cloud requests real time data from local
+        /// </summary>
+        Task RequestRTData();
+
+        /// <summary>
+        /// cloud extends real time data connection from local (otherwise local backend stops real time traffic)
+        /// </summary>
+        Task ExtendRTData();
+
+        /// <summary>
+        /// cloud stops real time data stream from local
+        /// </summary>
+        Task StopRTData();
+
+        /// <summary>
+        /// cloud sends buffered real time data to smart meter
+        /// </summary>
+        Task ReceiveRTData(BufferedMeterDataRTDto _meterData);
+
+        /// <summary>
+        /// smart meter specific data should be updated locally
+        /// </summary>
+        /// <param name="_localSmartMeterDto">smart meter specific data</param>
+        /// <returns></returns>
+        Task UpdateSmartMeter(LocalSmartMeterDto _localSmartMeterDto);
+    }
+}

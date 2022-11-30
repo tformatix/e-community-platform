@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = SmartMeterAPI
+build_property.ProjectDir = C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPI\

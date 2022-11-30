@@ -1,0 +1,17 @@
+package at.fhooe.ecommunity.ui.component
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+
+/**
+ * loading indicator which uses the whole width
+ * @see Composable
+ */
+@Composable
+fun LoadingIndicator() {
+    LinearProgressIndicator(
+        modifier = Modifier.fillMaxWidth()
+    )
+}

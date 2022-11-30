@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmartMeter</string>
+    <string name="fragment_history_text_from">von:</string>
+    <string name="fragment_history_text_to">bis:</string>
+    <string name="fragment_history_default_date">1.1.1990</string>
+    <string name="fragment_history_default_time">16:20</string>
+    <string name="fragment_history_button_refresh">Aktualisieren</string>
+    <string name="shared_prefs_settings_missing_ip">IP fehlt! Prüfe die Einstellungen.</string>
+    <string name="title_fragment_history">Historie</string>
+    <string name="title_fragment_realtime">Echtzeit</string>
+    <string name="title_fragment_settings">Einstellungen</string>
+    <string name="fragment_settings_history_sampling">Historie Abtastung</string>
+    <string name="fragment_settings_aes_key">AES-Schlüssel</string>
+    <string name="fragment_settings_invalid_ip">ungültige IP</string>
+    <string name="fragment_settings_aes_empty">AES ist leer</string>
+    <string name="fragment_settings_saved">Einstellungen gespeichert</string>
+    <string name="fragment_settings_aes_key_invalid">ungültiger AES Schlüssel</string>
+    <string name="volley_backend_error">Server Fehler</string>
+    <string name="volley_backend_resend">Erneut senden?</string>
+    <string name="fragment_history_chart_description">Stromverbrauch zwischen %1$s und %2$s pro %3$s</string>
+
+    <string name="fragment_realtime_button_tara">Tara</string>
+    <string name="fragment_realtime_button_reset_tara">Reset</string>
+    <string name="fragment_realtime_chart_label">Leistung</string>
+    <string name="fragment_realtime_chart_description">Leistung pro Sekunde</string>
+    <string name="fragment_realtime_chart_loading">Laden...</string>
+    <string name="fragment_realtime_snackbar_signalr_error">Fehler - keine Verbindung\nIP und AES Key überprüfen</string>
+    <string name="fragment_realtime_snackbar_reload">Neu laden</string>
+    <string name="fragment_history_chart_waiting">Warte auf Aktualisierung...</string>
+    <string name="fragment_history_invalid_times">Ungültige Daten/Zeiten</string>
+</resources>

@@ -1,0 +1,14 @@
+[Unit]
+Description=e-community-local backend for communication between Azure and Smart Meter
+
+[Service]
+Type=simple
+ExecStart=/home/pi/dotnet-arm32/dotnet /home/pi/backend/e-community-local.dll --urls http://*:5001
+WorkingDirectory=/home/pi/backend
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=e-community-local
+User=pi
+
+[Install]
+WantedBy=multi-user.target

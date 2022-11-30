@@ -1,0 +1,41 @@
+﻿using e_community_cloud_lib.BusinessLogic.Interfaces;
+using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
+using e_community_cloud_lib.Database;
+using e_community_cloud_lib.Database.Local;
+using e_community_cloud_lib.Models;
+using e_community_cloud_lib.Util.Extensions;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace e_community_cloud_lib.BusinessLogic.Implementations
+{
+    public class SmartMeterService : ISmartMeterService
+    {
+        private readonly ECommunityCloudContext mDb;
+        private readonly ILocalSignalRSenderService mLocalSignalRSenderService;
+
+        public SmartMeterService(ECommunityCloudContext _db, ILocalSignalRSenderService _localSignalRSenderService)
+        {
+            mDb = _db;
+            mLocalSignalRSenderService = _localSignalRSenderService;
+        }
+
+        public List<SmartMeter> GetMinimalSmartMeters(Guid _memberId) {
+            var smartMeters = mDb.SmartMeter.Where(x => x.MemberId == _memberId).ToList();
+            return smartMeters;
+        }
+
+        public async Task Update(UpdateSmartMeterModel _updateSmartMeterModel)
+        {
+            var smartMeter = await mDb.SmartMeter.FirstOrDefaultAsync(x => x.Id == _updateSmartMeterModel.Id);
+            smartMeter = _updateSmartMeterModel.CopyPropertiesTo(smartMeter);
+            smartMeter.LocalStorageId = Guid.NewGuid();
+            await mDb.SaveChangesAsync();
+            mLocalSignalRSenderService.UpdateSmartMeter(_updateSmartMeterModel);
+        }
+    }
+}

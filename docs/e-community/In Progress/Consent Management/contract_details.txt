@@ -1,0 +1,30 @@
+# details of a contract between proposer (wants the data) and consenter (provider of data)
+
+start_date_time
+end_date_time
+
+
+# source energy data
+	local SQLite database (needs to be secured more, maybe read/write only for smart_meter user)
+	Azure would be too much ? when storing second data values
+
+# time span of the contract
+	start_date_time <= NOW
+		consenter can display in app his earyliest date_time when he wants to provide the data (will be automatically set)
+
+	end_date_time >= NOW
+		proposer can also access the realtime data from the consenter
+
+# contract details
+	price per unit (per hour, day, week)
+		consenter/proposer can negotiate about the value
+	payment_currency
+		euro, cryptocurrencies (ETH)
+	start_date_time
+		starting date_time of the energy data
+	end_date_time
+		ending date_time of the energy data
+	export_data_allowed
+		proposer allowed to export data out of the app (csv, txt, ...)
+		fraud actions will be taken in the terms & conditions
+		cannot be checked if data got exported????

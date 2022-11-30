@@ -1,0 +1,12 @@
+diff a/Implementation/SourceCode/cloud/e-community-cloud/e-community-cloud/Properties/serviceDependencies.json b/Implementation/SourceCode/cloud/e-community-cloud/e-community-cloud/Properties/serviceDependencies.json	(rejected hunks)
+@@ -0,0 +1,9 @@
++{
++  "dependencies": {
++    "signalr1": {
++      "type": "signalr",
++      "connectionId": "Azure:SignalR:ConnectionString",
++      "dynamicId": null
++    }
++  }
++}
+\ No newline at end of file

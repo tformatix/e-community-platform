@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/fragment_login_button_forgotPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textSize="20dp"
+        android:text="@string/password_forgotten"
+        android:textAlignment="center"
+        android:textColor="@color/mainBlue"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_button_login"
+        tools:layout_editor_absoluteX="-16dp" />
+
+    <Button
+        android:id="@+id/fragment_login_button_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:backgroundTint="@color/mainBlue"
+        android:text="LOG IN"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_textfield_password" />
+
+    <EditText
+        android:id="@+id/fragment_login_textfield_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:ems="13"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_textfield_UsernameEmail" />
+
+    <EditText
+        android:id="@+id/fragment_login_textfield_UsernameEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:ems="13"
+        android:hint="@string/username_email"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_imageview_logo" />
+
+    <ImageView
+        android:id="@+id/fragment_login_imageview_logo"
+        android:layout_width="110dp"
+        android:layout_height="114dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_smart_meter_logo" />
+
+    <TextView
+        android:id="@+id/fragment_login_textview_info_below_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintStart_toStartOf="@+id/fragment_login_textfield_UsernameEmail"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_textfield_UsernameEmail" />
+
+    <TextView
+        android:id="@+id/fragment_login_textview_info_below_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintStart_toStartOf="@+id/fragment_login_textfield_password"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_login_textfield_password" />
+
+    <ProgressBar
+        android:id="@+id/fragment_registerconfirmed_progressbar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

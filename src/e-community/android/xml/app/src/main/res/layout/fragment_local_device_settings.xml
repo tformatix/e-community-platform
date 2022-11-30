@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.local.LocalDeviceSettingsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_local_device_settings_aes_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/aes_key" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/fragment_local_device_settings_is_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/local_device_settings_is_main"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/is_main_smart_meter"/>
+        </LinearLayout>
+
+        <View style="@style/Divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/fragment_local_device_settings_measure_consumption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/local_device_settings_measure_consumption"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/measures_consumption"/>
+        </LinearLayout>
+
+        <View style="@style/Divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/fragment_local_device_settings_measure_feed_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/local_device_settings_measure_feed_in"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/measures_feed_id"/>
+        </LinearLayout>
+
+        <View style="@style/Divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/fragment_local_device_settings_is_direct_feed_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/local_device_settings_is_direct_feed_in"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/direct_feed_in"/>
+        </LinearLayout>
+
+        <View style="@style/Divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/fragment_local_device_settings_is_overflow_feed_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/local_device_settings_is_overflow_feed_in"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/overflow_feed_in"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

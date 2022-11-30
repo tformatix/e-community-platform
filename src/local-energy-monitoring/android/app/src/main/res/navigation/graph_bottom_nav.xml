@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graph_bottom_nav"
+    app:startDestination="@id/navigation_realtime">
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="at.fhooe.smartmeter.ui.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/navigation_realtime"
+        android:name="at.fhooe.smartmeter.ui.RealtimeFragment"
+        android:label="fragment_realtime"
+        tools:layout="@layout/fragment_realtime" />
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="at.fhooe.smartmeter.ui.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>

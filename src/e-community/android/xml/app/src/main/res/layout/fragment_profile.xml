@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.e_community.ECommunityFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/fragment_profile_icv_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/fragment_profile_picture"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_profile"
+            app:civ_border_color="@color/blue"
+            app:civ_border_width="4dp"
+            app:civ_shadow="true"
+            app:civ_shadow_color="@color/black"
+            app:civ_shadow_radius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_profile_picture"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/fragment_profile_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="24dp" />
+
+            <Button
+                android:id="@+id/fragment_profile_add_smart_meter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="add SmartMeter" />
+            
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_profile_recyclerview_settings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </LinearLayout>
+
+
+        <!--<Button
+            android:id="@+id/fragment_profile_add_smart_meter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="add SmartMeter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

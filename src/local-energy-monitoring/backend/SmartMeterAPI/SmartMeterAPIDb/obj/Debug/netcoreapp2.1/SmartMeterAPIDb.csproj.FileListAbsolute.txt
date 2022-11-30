@@ -1,0 +1,14 @@
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\bin\Debug\netcoreapp2.1\SmartMeterAPIDb.deps.json
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\bin\Debug\netcoreapp2.1\SmartMeterAPIDb.runtimeconfig.json
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\bin\Debug\netcoreapp2.1\SmartMeterAPIDb.runtimeconfig.dev.json
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\bin\Debug\netcoreapp2.1\SmartMeterAPIDb.dll
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\bin\Debug\netcoreapp2.1\SmartMeterAPIDb.pdb
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\obj\Debug\netcoreapp2.1\SmartMeterAPIDb.csproj.AssemblyReference.cache
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\obj\Debug\netcoreapp2.1\SmartMeterAPIDb.GeneratedMSBuildEditorConfig.editorconfig
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\obj\Debug\netcoreapp2.1\SmartMeterAPIDb.AssemblyInfoInputs.cache
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\obj\Debug\netcoreapp2.1\SmartMeterAPIDb.AssemblyInfo.cs
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\obj\Debug\netcoreapp2.1\SmartMeterAPIDb.csproj.CoreCompileInputs.cache
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\obj\Debug\netcoreapp2.1\EFCorePluralizer.cs
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\obj\Debug\netcoreapp2.1\SmartMeterAPIDb.dll
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\obj\Debug\netcoreapp2.1\SmartMeterAPIDb.pdb
+C:\00_Work\Projects\FH\2_SS\Smart_Metering\repo\Implementation\backend\SmartMeterAPI\SmartMeterAPIDb\obj\Debug\netcoreapp2.1\SmartMeterAPIDb.genruntimeconfig.cache

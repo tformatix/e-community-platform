@@ -1,0 +1,158 @@
+<resources>
+    <string name="app_name">eCommunity</string>
+    <string name="title_home">Home</string>
+    <string name="title_e_community">E-Community</string>
+    <string name="title_news">News</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_login">E-Mail</string>
+    <string name="title_password">password</string>
+    <string name="title_repeat_password">Repeat password</string>
+    <string name="button_login">Login</string>
+    <string name="not_registered">Register now</string>
+    <string name="title_username">Username</string>
+    <string name="button_register">Register</string>
+    <string name="password_is_empty">Password is empty</string>
+    <string name="email_is_empty">Email is empty</string>
+    <string name="email_not_valid">Email is not valid</string>
+    <string name="url_auth_login" translatable="false">https://e-community.azurewebsites.net/Auth/Login</string>
+    <string name="url_auth_password_forgotten" translatable="false">https://e-community.azurewebsites.net/Auth/ForgotPassword</string>
+    <string name="json_email" translatable="false">email</string>
+    <string name="json_password" translatable="false">password</string>
+    <string name="json_householdId" translatable="false">householdId</string>
+    <string name="json_access_token" translatable="false">accessToken</string>
+    <string name="password_forgotten">Password forgotten?</string>
+    <string name="send_email">send email</string>
+    <string name="email_sent">Email sent</string>
+    <string name="email_not_registered">Email not registered</string>
+    <string name="json_refresh_token" translatable="false">refreshToken</string>
+    <string name="notification_item_timestamp_default" translatable="false">08:05</string>
+    <string name="start_tutorial">start tutorial</string>
+    <string name="tutorial_notification_good_day">I will guide your through this process!</string>
+    <string name="notification_headline">Hello you!</string>
+    <string name="notification_headline_text">Welcome you to our SmartMeter App.</string>
+
+    <!-- SHARED PREFERENCES -->
+    <string name="shared_prefs_tutorial_mode" translatable="false">SHARED_PREFS_TUTORIAL_MODE</string>
+    <string name="shared_prefs_tutorial_home_finished" translatable="false">SHARED_PREFS_TUTORIAL_HOME</string>
+    <string name="shared_prefs_tutorial_e_com_finished" translatable="false">SHARED_PREFS_TUTORIAL_E_COM</string>
+    <string name="shared_prefs_tutorial_dash_finished" translatable="false">SHARED_PREFS_TUTORIAL_DASH</string>
+    <string name="shared_prefs_tutorial_user_finished" translatable="false">SHARED_PREFS_TUTORIAL_USER</string>
+    <string name="shared_prefs_tutorial_loaded" translatable="false">SHARED_PREFS_TUTORIAL_LOADED</string>
+    <string name="shared_prefs_tutorial_preview__notifications_loaded" translatable="false">SHARED_PREFS_TUTORIAL_PREVIEW_NOTIFICATIONS_LOADED</string>
+    <string name="shared_prefs_member_id" translatable="false">SHARED_PREFS_MEMBER_ID</string>
+    <string name="shared_prefs_access_token" translatable="false">SHARED_PREFS_ACCESS_TOKEN</string>
+    <string name="shared_prefs_refresh_token" translatable="false">SHARED_PREFS_REFRESH_TOKEN</string>
+    <string name="shared_prefs_username" translatable="false">SHARED_PREFS_USERNAME</string>
+    <string name="shared_prefs_email" translatable="false">SHARED_PREFS_EMAIL</string>
+
+    <!-- TUTORIAL -->
+    <string name="tutorial_notification_headline_good_day">Today is a good day to save some energy!</string>
+    <string name="tutorial_top_menu_preview" translatable="false">Preview</string>
+    <string name="tutorial_top_menu_info" translatable="false">Info</string>
+    <string name="tutorial_top_menu_skip" translatable="false">Skip</string>
+    <string name="tutorial_notification_function">&lt;b>First of all&lt;/b>, i will show you everything you can do with the SmartMeter app</string>
+    <string name="tutorial_notification_news">Now you are in the &lt;b>News&lt;/b> Screen. \n\n Here you can see the most important  information about your energy consumption.</string>
+    <string name="tutorial_notification_menu">At the top you have some actions in this tutorial: &lt;br&gt;&lt;br&gt;&lt;b>info(i)&lt;/b>: you will get some further information about the page &lt;br&gt;&lt;br&gt;&lt;b>skip&lt;/b>: you can skip this page &lt;br&gt;&lt;br&gt;&lt;b>preview(eye)&lt;/b>: you can load the page with dummy data</string>
+    <string name="tutorial_info_news">In the &lt;b>News&lt;/b> Screen you can only see a summary of your energy data. &lt;br&gt;&lt;br&gt; For further information go to the &lt;b>Home&lt;/b> page.</string>
+    <string name="tutorial_go_home">visit home!</string>
+
+    <!-- TUTORIAL PREVIEW NOTIFICATIONS -->
+    <string name="tutorial_preview_notification_headline">Your energy consumption is very low at the moment!</string>
+    <string name="tutorial_preview_notification_low_feed_in">&lt;b>Low energy feed&lt;/b> in is expected tomorrow. &lt;br&gt;Reduced your consumption to save some energy.</string>
+    <string name="tutorial_preview_notification_high_feed_in">The &lt;b>energy feed in&lt;/b> from your &lt;b>eCommunity&lt;/b> is higher as your current &lt;b>consumption!&lt;/b>&lt;br&gt;Now it is a perfect moment to use devices which require a lot of energy.</string>
+    <string name="tutorial_preview_notification_daily_usaged">&lt;b>Congratulations!&lt;/b>&lt;br&gt;Your average daily consumption has been &lt;b>reduced by 5.2%&lt;/b> since the last 6 months.</string>
+    <string name="tutorial_preview_notification_e_comm_happy">Your consumption is much lower than your energy feed in at the moment!&lt;br&gt;Your eCommunity will be happy about that.</string>
+
+    <!-- WELCOME PAGE -->
+    <string name="welcome_earth">Make our planet happy again and reduce your CO2 footprint!</string>
+    <string name="welcome_learn_more">Learn more and explore eCommunity</string>
+    <string name="welcome_save_money">Save money and spend it on the right things</string>
+    <string name="welcome_social">Be part of an eCommunity and find other energy enthusiasts</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="nsd_service_type" translatable="false">e_community_local</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="username_slash_email">Username / Email</string>
+    <string name="Password">Password</string>
+    <string name="search_local">search raspberry</string>
+    <string name="connect_local">connect</string>
+    <string name="available_networks">available Wifi-networks:</string>
+    <string name="local_device_configurated">device is configured</string>
+    <string name="local_device_not_configured">device not configured</string>
+    <string name="local_device_settings">Device settings</string>
+    <string name="local_device_name">Device name</string>
+    <string name="local_device_ip">IP-Address</string>
+    <string name="local_device_network">Network</string>
+    <string name="local_device_description">Description</string>
+    <string name="local_device_connection">connection</string>
+    <string name="fragment_local_discovery">Connect Smart Meter</string>
+    <string name="fragment_local_add_network">Add network</string>
+    <string name="fragment_local_connect_wifi">Enter password</string>
+    <string name="fragment_local_summary">Smart Meter Summary</string>
+    <string name="use_wired_connection">use wired connection</string>
+    <string name="local_device_measurements">Measurements</string>
+    <string name="local_device_main">main smart meter?</string>
+    <string name="check_internet">connecting to internet ...</string>
+    <string name="check_wired_connection">check wired connection ...</string>
+    <string name="connected_to_internet">Internet connected</string>
+    <string name="local_connect_to_cloud">Connect to Cloud!</string>
+    <string name="not_empty">Not allowed to be empty</string>
+    <string name="local_device_settings_is_main">Is Main Smart Meter</string>
+    <string name="local_device_settings_measure_consumption">Measures consumption</string>
+    <string name="local_device_settings_measure_feed_in">Measures Feed In</string>
+    <string name="local_device_settings_is_direct_feed_in">Direct Feed In</string>
+    <string name="local_device_settings_is_overflow_feed_in">Overflow Feed In</string>
+    <string name="fragment_local_device_settings">Device Settings</string>
+    <string name="create_update_smart_meter">Create/Update Smart Meter...</string>
+    <string name="init_cloud_connection">initialize cloud connection...</string>
+    <string name="OK" translatable="false">OK</string>
+    <string name="check_connection">Check Connection</string>
+    <string name="cancel">cancel</string>
+
+    <!-- TILES -->
+    <string name="tile_id_household_consumption" translatable="false">TILE_HOUSEHOLD_CONSUMPTION</string>
+    <string name="tile_id_household_feed_in" translatable="false">TILE_HOUSEHOLD_FEED_IN</string>
+    <string name="tile_region_household">Household</string>
+    <string name="tile_action_consumption">consumption</string>
+    <string name="tile_action_feed_in">feed in</string>
+    <string name="tile_id_community_consumption" translatable="false">TILE_COMM_CONSUMPTION</string>
+    <string name="tile_id_community_feed_in" translatable="false">TILE_COMM_FEED_IN</string>
+    <string name="tile_region_community">Community</string>
+    <string name="realtime">Realtime</string>
+    <string name="history">History</string>
+
+    <string name="active_data_mode_home" translatable="false">ACTIVE_DATA_MODE_HOME</string>
+
+    <!-- Fragment Login / Register -->
+    <string name="username_email">Username / Email</string>
+    <string name="password">Password</string>
+    <string name="invalidEmail">Email not valid</string>
+    <string name="emptyField">Please fill out all fields</string>
+    <string name="invalidAttempt">Invalid Attempt to Register. Please try again</string>
+    <string name="confirmedEmail">Email confirmed</string>
+    <string name="pleaseConfirmeEmail">Please confirm your Email and reenter your password before continuing</string>
+    <string name="emailInfo">You should receive an Email shortly</string>
+    <string name="passwordInvalid"> Invalid Password. Your Password requires:</string>
+    <string name="passwordInfo">At least one uppercase letter \n
+        At least one lowercase letter \n
+        At least one numeric character \n
+        At least one special character </string>
+    <string name="error">An Error has occured. Please try again. </string>
+    <string name="unequalPasswords">Passwords are not equal.</string>
+    <string name="connection_failed">Connection failed...</string>
+    <string name="retry">retry</string>
+    <string name="smart_meter" translatable="false">Smart Meter</string>
+    <string name="missing_smart_meter_member">Smart Meters missing from your household:</string>
+    <string name="missing_smart_meter_e_comm">Overall Smart Meters missing from your eCommunity:</string>
+    <string name="timestamp_meter_data">Timestamp of values:</string>
+    <string name="wired_connect_info">Please plug in a ethernet (LAN) cable into the raspberry pi and connect it with your router. In order to start the pairing process...</string>
+    <string name="pairing_info">Pairing information</string>
+    <string name="aes_key">AES Key</string>
+    <string name="is_main_smart_meter">Smart Meter which is mainly responsible for consumption/feed in</string>
+    <string name="measures_consumption">Measures energy consumption</string>
+    <string name="measures_feed_id">Measures energy feed in (energy production)</string>
+    <string name="direct_feed_in">Smart Meter directly sends the produced energy back to the power grid</string>
+    <string name="overflow_feed_in">Smart Meter send only the produced energy back which is not need in the buildung at the moment</string>
+    <string name="check_wifi_settings">Check Wifi settings</string>
+</resources>

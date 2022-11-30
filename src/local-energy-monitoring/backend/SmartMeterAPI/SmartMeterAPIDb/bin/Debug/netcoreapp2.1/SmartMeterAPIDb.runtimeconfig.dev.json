@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\tformatix\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\tformatix\\.nuget\\packages"
+    ]
+  }
+}

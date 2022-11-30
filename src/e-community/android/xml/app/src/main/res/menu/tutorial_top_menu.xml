@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/tutorial_top_menu_info"
+        android:icon="@drawable/ic_tutorial_info"
+        android:title="@string/tutorial_top_menu_info"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/tutorial_top_menu_skip"
+        android:icon="@drawable/ic_tutorial_skip"
+        android:title="@string/tutorial_top_menu_skip"
+        app:showAsAction="ifRoom"/>
+</menu>

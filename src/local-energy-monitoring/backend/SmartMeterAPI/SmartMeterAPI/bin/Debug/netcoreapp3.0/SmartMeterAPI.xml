@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SmartMeterAPI</name>
+    </assembly>
+    <members>
+        <member name="M:SmartMeterAPI.Controllers.SmartMeterController.CheckConnection">
+            <summary>
+            check connection with backend
+            </summary>
+            <returns>OK with "Hello!"</returns>
+        </member>
+        <member name="M:SmartMeterAPI.Controllers.SmartMeterController.HistorySetup(System.String)">
+            <summary>
+            Information for setting up the history view
+            </summary>
+            <remarks>
+            - LatestTimestamp = earliest Timestamp in Database (FromTimestamp)
+            - MaxTimeResolution = Time-Difference between latest and earliest Dates in Minutes (TimeResolution)
+            - InitTimestamp = one month before OR LatestTimestamp (if less than a month)
+            </remarks>
+            <param name="key">AES Key without spaces</param>
+            <response code="200">ok</response> 
+            <response code="500">caught exception</response> 
+            <response code="555">faulty database</response> 
+            <returns>Setup Information</returns>
+        </member>
+        <member name="M:SmartMeterAPI.Controllers.SmartMeterController.History(SmartMeterAPI.DTOs.HistoryDto)">
+            <summary>
+            History Data
+            </summary>
+            <remarks>
+            - filtered by timestamp and time resolution
+            - difference between energy (Zählerstand) calculated
+            - min/max/avg/unit calculated
+            </remarks>
+            <param name="historyDto">AES Key without spaces, From/To Timestamp and Timeresolution in min</param>
+            <returns>history data</returns>
+            <response code="200">ok</response> 
+            <response code="400">faulty user input</response> 
+            <response code="500">caught exception</response> 
+            <response code="555">faulty database</response> 
+        </member>
+        <member name="M:SmartMeterAPI.Controllers.SmartMeterController.CalcParams(SmartMeterAPI.DTOs.MeterDataHistDto)">
+            <summary>
+            calc params (min,max,avg,unit)
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Controllers.SmartMeterController.GetActionResult(System.Int32,System.String)">
+            <summary>
+            Action Result is printed to console and returned afterwards
+            </summary>
+            <param name="status">Statuscode</param>
+            <param name="message">Return-Message</param>
+            <returns>Action Result</returns>
+        </member>
+        <member name="M:SmartMeterAPI.Extensionmethods.CopyPropertiesTo``1(System.Object,``0,System.String[])">
+            <summary>
+            dynamically parses a object - called like source.CopyPropertiesTo(new ObjectA())
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Extensionmethods.ParseMeterData(SmartMeterAPIDb.METERDATA)">
+            <summary>
+            parsing from Database-Model to DTO
+            called like source.ParseMeterData()
+            </summary>
+            <param name="source">Database-Model</param>
+            <returns>DTO</returns>
+        </member>
+        <member name="T:SmartMeterAPI.Hubs.SmartMeterHub">
+            <summary>
+            entrypoint for listeners
+            The SignalR Hubs API enables you to call methods on connected clients from the server
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Hubs.SmartMeterHub.GetConnectionCount">
+            <summary>
+            amount of connected clients
+            </summary>
+        </member>
+        <member name="T:SmartMeterAPI.Services.SmartMeterBackgroundService">
+            <summary>
+            background service (sends data with SignalR)
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterBackgroundService.#ctor(Microsoft.AspNetCore.SignalR.IHubContext{SmartMeterAPI.Hubs.SmartMeterHub},System.IServiceProvider)">
+            <summary>
+            init background service --> ExecuteAsync() runs in background
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterBackgroundService.InitUnits">
+            <summary>
+            Initialize the units
+            They remain the same because otherwise they would be displayed incorrectly in the diagram
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterBackgroundService.ExecuteAsync(System.Threading.CancellationToken)">
+            <summary>
+            executed in background
+            waits 1 min at the beginning (sync raspberry with smart meter SND_NKE)
+            sends Real Time Data every second
+            </summary>
+        </member>
+        <member name="T:SmartMeterAPI.Services.SmartMeterService">
+            <summary>
+            reads database
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterService.GetSizeHist">
+            <summary>
+            returns size of history table
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterService.GetFirstEntryHist">
+            <summary>
+            returns first entry of history table
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterService.GetLastEntryHist">
+            <summary>
+            returns last entry of history table
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterService.GetHistoryData(System.DateTime,System.DateTime,System.Int32)">
+            <summary>
+            returns history data from database
+            </summary>
+            <param name="fromTimestamp">Begin Timestamp</param>
+            <param name="toTimestamp">End Timestamp</param>
+            <param name="timeResolution">Timeresolution - aggregates data (15min; 1440 min (1 day))</param>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterService.CalcEnergyDiffHist(System.Collections.Generic.List{SmartMeterAPIDb.METERDATA_HIST})">
+            <summary>
+            energy (Zählerstand) should be substracted from the prev energy (Zählerstand) 
+            </summary>
+            <param name="dataHistory">filtered history list</param>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterService.GetLatestRealTime">
+            <summary>
+            returns latest entry of real time table
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterService.GetAESKey">
+            <summary>
+            returns AES Key
+            </summary>
+        </member>
+        <member name="M:SmartMeterAPI.Services.SmartMeterService.ReadAESKey">
+            <summary>
+            read AES Key from config.ini
+            </summary>
+        </member>
+    </members>
+</doc>
