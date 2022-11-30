@@ -22,10 +22,10 @@ In the second semester, we started to implement an app to monitor the local ener
 
 ### Heat pump control based on near real-time energy data and various other influences
 * how to control a heat pump based on various influences, f.e.
-** household energy surplus
-** energy communities
-** energy costs/yields
-** weather
-** actual/setpoint temperature
-** battery/buffer storage
+  * household energy surplus
+  * energy communities
+  * energy costs/yields
+  * weather
+  * actual/setpoint temperature
+  * battery/buffer storage
 * control heat pump over SG Ready interface
