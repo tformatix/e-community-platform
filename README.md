@@ -1,6 +1,6 @@
 # eCommunity Platform
 ![energiegemeinschaft](https://user-images.githubusercontent.com/23616275/204872236-02eb25f8-828b-42e1-a036-3c7bbf8e8928.jpg)
-The project "eCommunity Platform" makes the finding and coordination of energy communities easier. Within the platform, users can easily compare all potential communities, join them and monitor the current price and energy savings in near real time. This project was created by Tobias Fischer and Michael Zauner at FH Hagenberg.
+The project "eCommunity Platform" makes the finding and coordination of energy communities easier. Within the platform, users can easily compare all potential communities, join them and monitor the current price and energy savings in near real time. This project was created by [Tobias Fischer](https://github.com/tformatix) and [Michael Zauner](https://github.com/Maikaru-Sensei) at FH Hagenberg.
 
 Currently, citizens have to find out for themselves which energy communities they can join and how they perform. Joining an energy community is complicated by factors such as a lack of contact channels, and even after joining, it takes a lot of effort to keep track of costs, members and performance.
 
@@ -11,7 +11,7 @@ In addition, we want to encourage to use electricity when it is in surplus and s
 A library of the local network operator Netz OÖ GmbH already takes care of reading, decoding and storing the data of the AMIS Smart Meter. Unfortunately, this library cannot be published.
 
 ## Local Energy Monitoring
-In the second semester, we started to implement an app to monitor the local energy data provided by the smart meter. The charts were visualized using xx.
+In the second semester, we started to implement an app to monitor the local energy data provided by the smart meter. The charts were visualized using [MPAndroidChart from PhilJay](https://github.com/PhilJay/MPAndroidChart).
 
 ## Work in progress... (Bachelor Thesis)
 
