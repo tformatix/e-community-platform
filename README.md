@@ -14,7 +14,7 @@ A library of the local network operator Netz OÖ GmbH already takes care of read
 In the second semester, we started to implement an app to monitor the local energy data provided by the smart meter. The charts were visualized using [MPAndroidChart from PhilJay](https://github.com/PhilJay/MPAndroidChart).
 
 ## Architecture
-FOTO here
+![Screenshot from 2022-12-01 15-29-26](https://user-images.githubusercontent.com/23616275/205596847-60c5d5e0-707a-43db-9862-afc9a23b8668.png)
 Every Smart Meter device is connected to a Raspberry PI via either a infrared cable or the Smart Meter adapter from OesterreichsEnergie. On the Raspberry there are two major Linux systemd processes running:
 
 * **e-community-smart-meter-reader**: reads and decrypts the energy data from the Smart Meter and stores it inside a local SQLite database
