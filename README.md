@@ -52,13 +52,11 @@ _Michael Zauner_
 * share energy data between members and other organizations
 * store contract (consent) inside the blockchain
 
-### Heat pump control based on near real-time energy data and various other influences
+### Optimized dynamic energy sharing in energy communities
 _Tobias Fischer_
-* how to control a heat pump based on various influences, f.e.
-  * household energy surplus
-  * energy communities
-  * energy costs/yields
-  * weather
-  * actual/setpoint temperature
-  * battery/buffer storage
-* control heat pump over SG Ready interface
+* every hour the member receives an allocation of energy based on a load profile
+* if the member cannot consume this energy, this should be communicated via the app 
+  * in future: automated via a smart home system
+  * other members are automatically assigned more energy
+    * they know approximately how much energy is available
+  * visualization via charts
