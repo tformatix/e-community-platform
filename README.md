@@ -17,7 +17,7 @@ In addition, we want to encourage to use electricity when it is in surplus and s
 A client of the local network operator Netz OÖ GmbH by Dipl.-Ing. Dr. techn. Markus Flohberger already takes care of reading, decoding and storing the data of the AMIS Smart Meter. It is also based on [libmbus](http://www.rscada.se/libmbus/) (M-bus Library from Raditex Control) and the AES decryption by Andreas Tetzner. This client was adapted for the purposes of this project. Currently the project is only compatible with AMIS meter of Netz OÖ GmbH.
 
 ## Local Energy Monitoring
-In the second semester, we started to implement an app to monitor the local energy data provided by the smart meter. The charts were visualized using [MPAndroidChart from PhilJay](https://github.com/PhilJay/MPAndroidChart).
+In the second semester, we started to implement an app to monitor the local energy data provided by the smart meter. The charts were visualized using [MPAndroidChart from PhilJay](https://github.com/PhilJay/MPAndroidChart). This app is the first version of this project, further implementations are based on eCommunities.
 
 ## Architecture
 ![Screenshot from 2022-12-01 15-29-26](https://user-images.githubusercontent.com/23616275/205596847-60c5d5e0-707a-43db-9862-afc9a23b8668.png)
