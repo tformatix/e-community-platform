@@ -1,5 +1,10 @@
 # eCommunity Platform
-![energiegemeinschaft](https://user-images.githubusercontent.com/23616275/204872236-02eb25f8-828b-42e1-a036-3c7bbf8e8928.jpg)
+<figure>
+    <img src="https://user-images.githubusercontent.com/23616275/204872236-02eb25f8-828b-42e1-a036-3c7bbf8e8928.jpg"
+         alt="energiegemeinschaft">
+    <figcaption>© energiegemeinschaften.gv.at</figcaption>
+</figure>
+
 The project "eCommunity Platform" makes the finding and coordination of energy communities easier. Within the platform, users can easily compare all potential communities, join them and monitor the current price and energy savings in near real time. This project was created by [Tobias Fischer](https://github.com/tformatix) and [Michael Zauner](https://github.com/Maikaru-Sensei) at FH Hagenberg.
 
 Currently, citizens have to find out for themselves which energy communities they can join and how they perform. Joining an energy community is complicated by factors such as a lack of contact channels, and even after joining, it takes a lot of effort to keep track of costs, members and performance.
