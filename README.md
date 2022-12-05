@@ -12,14 +12,16 @@ With the app "eCommunity Platform" a platform for energy communities is offered,
 We try to simplify all the necessary steps: from setting up, to searching, to joining an energy community. Furthermore, monitoring and improvement of performance will be enabled through our platform.
 In addition, we want to encourage to use electricity when it is in surplus and support users to save electricity when the feed-in from e.g. solar energy of the energy community is low. In this way, users can not only save money, but also reduce their environmental footprint.
 
-A library of the local network operator Netz OÖ GmbH already takes care of reading, decoding and storing the data of the AMIS Smart Meter. Unfortunately, this library cannot be published.
+## M-Bus Slave
+
+A client of the local network operator Netz OÖ GmbH by Dipl.-Ing. Dr. techn. Markus Flohberger already takes care of reading, decoding and storing the data of the AMIS Smart Meter. It is also based on [libmbus](http://www.rscada.se/libmbus/) (M-bus Library from Raditex Control) and the AES decryption by Andreas Tetzner. This client was adapted for the purposes of this project. Currently the project is only compatible with AMIS meter of Netz OÖ GmbH.
 
 ## Local Energy Monitoring
 In the second semester, we started to implement an app to monitor the local energy data provided by the smart meter. The charts were visualized using [MPAndroidChart from PhilJay](https://github.com/PhilJay/MPAndroidChart).
 
 ## Architecture
 ![Screenshot from 2022-12-01 15-29-26](https://user-images.githubusercontent.com/23616275/205596847-60c5d5e0-707a-43db-9862-afc9a23b8668.png)
-Every Smart Meter device is connected to a Raspberry PI via either a infrared cable or the Smart Meter adapter from OesterreichsEnergie. On the Raspberry there are two major Linux systemd processes running:
+Every Smart Meter device is connected to a Raspberry PI via either a infrared cable or the Smart Meter adapter from OesterreichsEnergie (not yet available). On the Raspberry there are two major Linux systemd processes running:
 
 * **e-community-smart-meter-reader**: reads and decrypts the energy data from the Smart Meter and stores it inside a local SQLite database
 * **e-community-local**: provides a ASP .NET Core API for communication with the cloud services and local network devices
