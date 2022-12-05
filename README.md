@@ -13,6 +13,37 @@ A library of the local network operator Netz OÖ GmbH already takes care of read
 ## Local Energy Monitoring
 In the second semester, we started to implement an app to monitor the local energy data provided by the smart meter. The charts were visualized using [MPAndroidChart from PhilJay](https://github.com/PhilJay/MPAndroidChart).
 
+## Architecture
+FOTO here
+Every Smart Meter device is connected to a Raspberry PI via either a infrared cable or the Smart Meter adapter from OesterreichsEnergie. On the Raspberry there are two major Linux systemd processes running:
+
+* **e-community-smart-meter-reader**: reads and decrypts the energy data from the Smart Meter and stores it inside a local SQLite database
+* **e-community-local**: provides a ASP .NET Core API for communication with the cloud services and local network devices
+
+On the cloud service there is also a ASP .NET API running, it is connected to an MSSQL database. This service is responsible for login/register, pairing the Smart Meter device, initialize realtime connection from the Raspberry with the mobile devices and much more.
+
+On each Raspberry PI is a [SignalR](https://learn.microsoft.com/en-us/aspnet/signalr/) Listener running. This is a library for realtime connection between multiple devices. In the cloud is the SignalR-Hub running which is responsible for redirecting the data stream to the listening endpoints.
+
+E.g.:
+1) Alice wants to see her current energy data on the mobile phone
+2) Mobile device starts SignalR listener and connects to cloud SignalR-Hub
+3) Cloud SignalR-Hub connects to the Raspberry PI's listener
+4) Raspberry PI starts to read the value from the SQLite database and sends it to the cloud
+5) Cloud redirects data stream to the mobile application
+6) Mobile devices gets energy data and displays them in a TileView
+
+## Pairing of Smart-Meters
+When a user wants to first configure the Raspberry PI, we need to know the IP-address of the device to connect it with the mobile device. Therefore on the Raspberry is a Multicast DNS (mDNS) service running, which broadcast to the network the .local hostname of the devices. For the first configuration the Raspberry and the mobile phone needs to be in the same network.
+
+After the device was found in the mobile app, the user can configure the desired network configuration (change Wifi, update name of Smart-Meter, ...). The user also needs to add the AES-Key for encrypting the energy data. This key can found on the user's network provider page.
+
+## Key Features
+* **Near Realtime energy data from home to mobile** 🚀📱
+* **Easy first configuration via interactive pairing mode** ✅
+* **Find other energy enthusiasts and be part of your local eCommunity**🧑🏽‍🤝‍🧑🏻
+* **Help to save energy and make our planet happy again** 🌎
+
+
 ## Bachelor Thesis (in progress)
 
 ### Consent Managment Platform for sharing and monetization of Energy Data with a private blockchain
