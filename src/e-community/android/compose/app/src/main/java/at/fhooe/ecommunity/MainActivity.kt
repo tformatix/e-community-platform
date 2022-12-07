@@ -81,6 +81,7 @@ fun MainScreen() {
         Screen.News,
         Screen.Home,
         Screen.ECommunity,
+        Screen.Sharing,
         Screen.Profile
     )
 

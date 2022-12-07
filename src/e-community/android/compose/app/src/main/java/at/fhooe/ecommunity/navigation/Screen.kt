@@ -17,6 +17,7 @@ sealed class Screen(val route: String, val name: String, val icon: Int? = null, 
     object News : Screen("news", "News", R.drawable.ic_news)
     object Home : Screen("home", "Home", R.drawable.ic_home)
     object ECommunity : Screen("ecommunity", "Community", R.drawable.ic_e_community)
+    object Sharing : Screen("sharing", "Sharing", R.drawable.ic_sharing)
     object Profile : Screen("profile", "Profile", R.drawable.ic_profile)
 
     /* StartUp */
