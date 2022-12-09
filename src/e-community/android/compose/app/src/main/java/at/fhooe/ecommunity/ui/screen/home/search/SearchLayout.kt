@@ -1,4 +1,4 @@
-package at.fhooe.ecommunity.ui.screen.news.search
+package at.fhooe.ecommunity.ui.screen.home.search
 
 /**
  * defines the layout of the search screen

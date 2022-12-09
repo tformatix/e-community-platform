@@ -1,8 +1,7 @@
-package at.fhooe.ecommunity.ui.screen.news.search
+package at.fhooe.ecommunity.ui.screen.home.search
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.unit.Constraints
 import at.fhooe.ecommunity.Constants
 import at.fhooe.ecommunity.ECommunityApplication
 import at.fhooe.ecommunity.TAG
@@ -11,6 +10,7 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ECommunityDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MemberDto
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.base.LoadingStateViewModel
+import at.fhooe.ecommunity.ui.screen.home.search.SearchQuery
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

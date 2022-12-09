@@ -28,6 +28,7 @@ import at.fhooe.ecommunity.ui.component.LifecycleListener
 import at.fhooe.ecommunity.extension.gesturesDisabled
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.model.RemoteException
+import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 import at.fhooe.ecommunity.util.Formatter
 import com.microsoft.signalr.HubConnectionState
@@ -155,7 +156,7 @@ fun HomeScreen(_viewModel: HomeViewModel, _navController: NavHostController) {
 
     // build screen (TopBar and GridLayout)
     Scaffold(
-        topBar = { TopBarHome() }
+        topBar = { TopBarHome(_navController) }
     ) {
         TileGridView(isLoading, tiles, meterDataRTDto)
     }
@@ -414,7 +415,7 @@ fun stopSignalR(_viewModel: HomeViewModel) {
  * @see Composable
  */
 @Composable
-fun TopBarHome() {
+fun TopBarHome(_navController: NavHostController) {
     val isRealtimeActive = remember { mutableStateOf(true) }
 
     TopAppBar(
@@ -423,6 +424,11 @@ fun TopBarHome() {
                    else { LocalContext.current.getString(R.string.dashboard_history)})
                 },
         actions = {
+
+            IconButton(onClick = { _navController.navigate(Screen.NewsSearch.route) }) {
+                Icon(painterResource(R.drawable.ic_search), "Search")
+            }
+
             // switch between realtime & history
             IconButton(onClick = { isRealtimeActive.value = !isRealtimeActive.value }) {
                 Icon( if (isRealtimeActive.value)

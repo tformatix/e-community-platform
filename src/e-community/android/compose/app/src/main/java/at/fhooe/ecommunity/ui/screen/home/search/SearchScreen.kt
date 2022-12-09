@@ -16,14 +16,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -34,6 +31,9 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ECommunityDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MemberDto
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
+import at.fhooe.ecommunity.ui.screen.home.search.SearchLayout
+import at.fhooe.ecommunity.ui.screen.home.search.SearchQuery
+import at.fhooe.ecommunity.ui.screen.home.search.SearchViewModel
 
 /**
  * Screen for Search (users and eCommunities)
@@ -52,15 +52,19 @@ fun SearchScreen(_viewModel: SearchViewModel, _navController: NavHostController)
     val eCommSearchResults = _viewModel.mECommSearchResults.collectAsState()
 
     val searchQuery = remember {
-        mutableStateOf(SearchQuery("",
+        mutableStateOf(
+            SearchQuery("",
             userSearch = true,
             eCommSearch = true
-    ))}
+    )
+        )}
     val searchLayout = remember {
-        mutableStateOf(SearchLayout(
+        mutableStateOf(
+            SearchLayout(
             expandedUserView = false,
             expandedECommView = false
-        ))
+        )
+        )
     }
 
     var isLoading = false

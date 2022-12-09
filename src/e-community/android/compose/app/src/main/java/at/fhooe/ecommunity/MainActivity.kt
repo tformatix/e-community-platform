@@ -25,16 +25,13 @@ import androidx.navigation.compose.rememberNavController
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.screen.e_community.ECommunityScreen
 import at.fhooe.ecommunity.ui.screen.home.HomeScreen
-import at.fhooe.ecommunity.ui.screen.news.NewsScreen
 import at.fhooe.ecommunity.ui.screen.profile.ProfileScreen
 import at.fhooe.ecommunity.ui.screen.home.HomeViewModel
-import at.fhooe.ecommunity.ui.screen.news.NewsViewModel
 import at.fhooe.ecommunity.ui.screen.news.search.SearchScreen
-import at.fhooe.ecommunity.ui.screen.news.search.SearchViewModel
+import at.fhooe.ecommunity.ui.screen.home.search.SearchViewModel
 import at.fhooe.ecommunity.ui.screen.profile.ProfileViewModel
 import at.fhooe.ecommunity.ui.screen.profile.pairing.*
 import at.fhooe.ecommunity.ui.theme.ECommunityTheme
-import at.fhooe.ecommunity.ui.theme.Teal200
 
 /**
  * Activity for Main user experience
@@ -78,7 +75,6 @@ fun MainScreen() {
 
     // bottom navigation items
     val bottomNavItems = listOf(
-        Screen.News,
         Screen.Home,
         Screen.ECommunity,
         Screen.Sharing,
@@ -112,9 +108,6 @@ private fun MainScreenNavigationConfigurations(
 
     NavHost(navController, startDestination = startDestination) {
         /* Bottom Nav */
-        composable(Screen.News.route) {
-            NewsScreen(NewsViewModel(application), navController)
-        }
         composable(Screen.Home.route) {
             HomeScreen(HomeViewModel(application), navController)
         }

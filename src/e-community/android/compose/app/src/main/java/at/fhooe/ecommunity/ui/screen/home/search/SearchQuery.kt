@@ -1,4 +1,4 @@
-package at.fhooe.ecommunity.ui.screen.news.search
+package at.fhooe.ecommunity.ui.screen.home.search
 
 /**
  * search query with filters
