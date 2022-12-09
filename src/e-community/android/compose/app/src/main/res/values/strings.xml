@@ -112,4 +112,10 @@
     <string name="view_more_results">View more …</string>
     <string name="view_less_results">View less …</string>
     <string name="nothing_found">Nothing was found :(</string>
+
+    <!-- SEARCH FILTER SCREEN -->
+    <string name="sort_by">Sort By</string>
+    <string name="apply_filter">apply</string>
+    <string name="sort_by_distance">Distance</string>
+    <string name="sort_by_entry_date">Entry Date</string>
 </resources>

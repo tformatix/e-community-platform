@@ -91,4 +91,10 @@
     <string name="view_more_results">Mehr ansehen …</string>
     <string name="view_less_results">Weniger ansehen …</string>
     <string name="nothing_found">Es wurde nichts gefunden :(</string>
+
+    <!-- SEARCH FILTER SCREEN -->
+    <string name="sort_by">Sortieren nach</string>
+    <string name="apply_filter">Speichern</string>
+    <string name="sort_by_distance">Distanz</string>
+    <string name="sort_by_entry_date">Eintritts Datum</string>
 </resources>

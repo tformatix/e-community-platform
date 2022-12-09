@@ -60,5 +60,6 @@ sealed class Screen(val route: String, val name: String, val icon: Int? = null, 
     object PairingWifiConnect: Screen("pairing/wifi_connect", "Wifi Connect", null)
 
     /* Search */
-    object NewsSearch: Screen("news/search", "Search", null)
+    object Search: Screen("home/search", "Search", null)
+    object SearchFilter: Screen("home/search/filter", "SearchFilter", null)
 }

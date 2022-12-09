@@ -1,5 +1,6 @@
-package at.fhooe.ecommunity.ui.screen.news.search
+package at.fhooe.ecommunity.ui.screen.home.search
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -30,10 +31,8 @@ import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ECommunityDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MemberDto
 import at.fhooe.ecommunity.model.LoadingState
+import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
-import at.fhooe.ecommunity.ui.screen.home.search.SearchLayout
-import at.fhooe.ecommunity.ui.screen.home.search.SearchQuery
-import at.fhooe.ecommunity.ui.screen.home.search.SearchViewModel
 
 /**
  * Screen for Search (users and eCommunities)
@@ -41,6 +40,7 @@ import at.fhooe.ecommunity.ui.screen.home.search.SearchViewModel
  * @param _navController navController for navigation back to News
  * @see Composable
  */
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SearchScreen(_viewModel: SearchViewModel, _navController: NavHostController) {
 
@@ -382,15 +382,20 @@ fun TopBarSearch(
                         textStyle = MaterialTheme.typography.subtitle1,
                         singleLine = true,
                         trailingIcon = {
-                            // search button
-                            IconButton(onClick = {  }) {
-                                Icon(
-                                    painterResource(R.drawable.ic_search),
-                                    contentDescription = "Back"
-                                )
-                            }
+                            Icon(
+                                painterResource(R.drawable.ic_search),
+                                contentDescription = "search"
+                            )
                         }
                     )
+
+                    // filter search results
+                    IconButton(onClick = { _navController.navigate(Screen.SearchFilter.route) }) {
+                        Icon(
+                            painterResource(R.drawable.ic_filter),
+                            contentDescription = "filter"
+                        )
+                    }
                 }
             }
         )

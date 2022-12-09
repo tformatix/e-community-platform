@@ -425,7 +425,7 @@ fun TopBarHome(_navController: NavHostController) {
                 },
         actions = {
 
-            IconButton(onClick = { _navController.navigate(Screen.NewsSearch.route) }) {
+            IconButton(onClick = { _navController.navigate(Screen.Search.route) }) {
                 Icon(painterResource(R.drawable.ic_search), "Search")
             }
 

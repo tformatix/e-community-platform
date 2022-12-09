@@ -27,7 +27,8 @@ import at.fhooe.ecommunity.ui.screen.e_community.ECommunityScreen
 import at.fhooe.ecommunity.ui.screen.home.HomeScreen
 import at.fhooe.ecommunity.ui.screen.profile.ProfileScreen
 import at.fhooe.ecommunity.ui.screen.home.HomeViewModel
-import at.fhooe.ecommunity.ui.screen.news.search.SearchScreen
+import at.fhooe.ecommunity.ui.screen.home.search.SearchFilterScreen
+import at.fhooe.ecommunity.ui.screen.home.search.SearchScreen
 import at.fhooe.ecommunity.ui.screen.home.search.SearchViewModel
 import at.fhooe.ecommunity.ui.screen.profile.ProfileViewModel
 import at.fhooe.ecommunity.ui.screen.profile.pairing.*
@@ -130,9 +131,12 @@ private fun MainScreenNavigationConfigurations(
         composable(Screen.PairingWifiConnect.route) {
             PairingWifiConnect(PairingViewModel(application), navController)
         }
-        /* News - Search */
-        composable(Screen.NewsSearch.route) {
+        /* Home - Search */
+        composable(Screen.Search.route) {
             SearchScreen(SearchViewModel(application), navController)
+        }
+        composable(Screen.SearchFilter.route) {
+            SearchFilterScreen(SearchViewModel(application), navController)
         }
     }
 }
