@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>e_community_cloud</RootNamespace>
-    <Authors>Tobias Fischer, Miriam Kagerer, Michael Zauner</Authors>
+    <Authors>Tobias Fischer, Michael Zauner</Authors>
     <Company>University of Applied Sciences Upper Austria Campus Hagenberg</Company>
     <Product>e-community platform</Product>
   </PropertyGroup>

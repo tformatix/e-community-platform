@@ -24,6 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.screen.e_community.ECommunityScreen
+import at.fhooe.ecommunity.ui.screen.e_community.ECommunityViewModel
 import at.fhooe.ecommunity.ui.screen.home.HomeScreen
 import at.fhooe.ecommunity.ui.screen.profile.ProfileScreen
 import at.fhooe.ecommunity.ui.screen.home.HomeViewModel
@@ -113,7 +114,7 @@ private fun MainScreenNavigationConfigurations(
             HomeScreen(HomeViewModel(application), navController)
         }
         composable(Screen.ECommunity.route) {
-            ECommunityScreen()
+            ECommunityScreen(ECommunityViewModel(application), navController)
         }
         composable(Screen.Profile.route) {
             ProfileScreen(ProfileViewModel(application), navController)
