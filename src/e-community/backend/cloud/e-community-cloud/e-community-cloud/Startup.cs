@@ -18,6 +18,10 @@ using e_community_cloud_lib.Endpoints;
 using e_community_cloud_lib.Database;
 using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
 using e_community_cloud_lib.BusinessLogic.Implementations.SignalR;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace e_community_cloud
 {
@@ -36,6 +40,7 @@ namespace e_community_cloud
             AddDatabase(_services);
             AddIdentity(_services);
             AddAuthentication(_services);
+            AddFirebaseAdmin();
             AddServices(_services);
 
             _services.AddSignalR();
@@ -101,6 +106,7 @@ namespace e_community_cloud
             _services.AddScoped<IRTListenerSignalRSenderService, RTListenerSignalRSenderService>();
             _services.AddScoped<IMemberService, MemberService>();
             _services.AddScoped<ISearchService, SearchService>();
+            _services.AddScoped<INotificationService, NotificationService>();
         }
 
         private void AddIdentity(IServiceCollection _services)
@@ -152,6 +158,16 @@ namespace e_community_cloud
                         ValidAudience = jwtConfig.GetValue<string>("Audience")
                     };
                 });
+        }
+
+        private void AddFirebaseAdmin()
+        {
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromJson(
+                        JsonConvert.SerializeObject(Configuration.GetSection("Firebase").Get<Dictionary<string, string>>())
+                    )
+            });
         }
 
         private void AddDatabase(IServiceCollection _services)

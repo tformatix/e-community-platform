@@ -83,6 +83,11 @@ namespace e_community_cloud_lib.Database.General
         /// </summary>
         public IList<ECommunityMembership> ECommunityMemberships { get; set; }
 
+        /// <summary>
+        /// list of their firebase cloud messaging tokens
+        /// </summary>
+        public IList<MemberFCMToken> MemberFCMTokens { get; set; }
+
     }
 
 }

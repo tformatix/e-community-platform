@@ -10,6 +10,9 @@
     <string name="shared_prefs_access_token" translatable="false">SHARED_PREFS_ACCESS_TOKEN</string>
     <string name="shared_prefs_refresh_token" translatable="false">SHARED_PREFS_REFRESH_TOKEN</string>
 
+    <string name="general_notification_rationale">Without notifications you will not be informed for important news! Enable notifications?</string>
+    <string name="general_notification_denied">Notifications deactivated - functionality limited!</string>
+
     <!-- ERRORS -->
     <string name="error_unexpected">Unexpected Error</string>
     <string name="error_server_unreachable">Server unreachable</string>

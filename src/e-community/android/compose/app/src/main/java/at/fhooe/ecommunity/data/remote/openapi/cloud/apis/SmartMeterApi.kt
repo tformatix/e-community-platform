@@ -21,7 +21,6 @@
 package at.fhooe.ecommunity.data.remote.openapi.cloud.apis
 
 import java.io.IOException
-import okhttp3.OkHttpClient
 
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ErrorDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalSmartMeterDto
@@ -37,14 +36,13 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ClientError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerException
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.MultiValueMap
-import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.PartConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestMethod
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ResponseType
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.Success
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.toMultiValue
 
-class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = ApiClient.defaultClient) : ApiClient(basePath, client) {
+class SmartMeterApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     companion object {
         @JvmStatic
         val defaultBasePath: String by lazy {
@@ -53,15 +51,15 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
     fun smartMeterExtendRTDataGet() : OkDto {
@@ -83,12 +81,12 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun smartMeterExtendRTDataGetWithHttpInfo() : ApiResponse<OkDto?> {
@@ -100,10 +98,10 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * To obtain the request config of the operation smartMeterExtendRTDataGet
-     *
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation smartMeterExtendRTDataGet
+    *
+    * @return RequestConfig
+    */
     fun smartMeterExtendRTDataGetRequestConfig() : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -120,15 +118,15 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @return kotlin.collections.List<MinimalSmartMeterDto>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @return kotlin.collections.List<MinimalSmartMeterDto>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
     fun smartMeterGetMinimalSmartMetersGet() : kotlin.collections.List<MinimalSmartMeterDto> {
@@ -150,12 +148,12 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @return ApiResponse<kotlin.collections.List<MinimalSmartMeterDto>?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @return ApiResponse<kotlin.collections.List<MinimalSmartMeterDto>?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun smartMeterGetMinimalSmartMetersGetWithHttpInfo() : ApiResponse<kotlin.collections.List<MinimalSmartMeterDto>?> {
@@ -167,10 +165,10 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * To obtain the request config of the operation smartMeterGetMinimalSmartMetersGet
-     *
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation smartMeterGetMinimalSmartMetersGet
+    *
+    * @return RequestConfig
+    */
     fun smartMeterGetMinimalSmartMetersGetRequestConfig() : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -187,15 +185,15 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
     fun smartMeterRequestRTDataGet() : OkDto {
@@ -217,12 +215,12 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun smartMeterRequestRTDataGetWithHttpInfo() : ApiResponse<OkDto?> {
@@ -234,10 +232,10 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * To obtain the request config of the operation smartMeterRequestRTDataGet
-     *
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation smartMeterRequestRTDataGet
+    *
+    * @return RequestConfig
+    */
     fun smartMeterRequestRTDataGetRequestConfig() : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -254,15 +252,15 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
     fun smartMeterStopRTDataGet() : OkDto {
@@ -284,12 +282,12 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun smartMeterStopRTDataGetWithHttpInfo() : ApiResponse<OkDto?> {
@@ -301,10 +299,10 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * To obtain the request config of the operation smartMeterStopRTDataGet
-     *
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation smartMeterStopRTDataGet
+    *
+    * @return RequestConfig
+    */
     fun smartMeterStopRTDataGetRequestConfig() : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -321,19 +319,19 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @param updateSmartMeterModel  (optional)
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param updateSmartMeterModel  (optional)
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun smartMeterUpdatePut(updateSmartMeterModel: UpdateSmartMeterModel? = null) : OkDto {
+    fun smartMeterUpdatePut(updateSmartMeterModel: UpdateSmartMeterModel?) : OkDto {
         val localVarResponse = smartMeterUpdatePutWithHttpInfo(updateSmartMeterModel = updateSmartMeterModel)
 
         return when (localVarResponse.responseType) {
@@ -352,13 +350,13 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * 
-     * 
-     * @param updateSmartMeterModel  (optional)
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param updateSmartMeterModel  (optional)
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun smartMeterUpdatePutWithHttpInfo(updateSmartMeterModel: UpdateSmartMeterModel?) : ApiResponse<OkDto?> {
@@ -370,11 +368,11 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath, client: OkHttpCli
     }
 
     /**
-     * To obtain the request config of the operation smartMeterUpdatePut
-     *
-     * @param updateSmartMeterModel  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation smartMeterUpdatePut
+    *
+    * @param updateSmartMeterModel  (optional)
+    * @return RequestConfig
+    */
     fun smartMeterUpdatePutRequestConfig(updateSmartMeterModel: UpdateSmartMeterModel?) : RequestConfig<UpdateSmartMeterModel> {
         val localVariableBody = updateSmartMeterModel
         val localVariableQuery: MultiValueMap = mutableMapOf()

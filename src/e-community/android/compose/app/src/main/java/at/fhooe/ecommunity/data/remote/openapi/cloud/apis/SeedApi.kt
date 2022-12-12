@@ -21,7 +21,6 @@
 package at.fhooe.ecommunity.data.remote.openapi.cloud.apis
 
 import java.io.IOException
-import okhttp3.OkHttpClient
 
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.OkDto
 
@@ -34,14 +33,13 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ClientError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerException
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.MultiValueMap
-import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.PartConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestMethod
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ResponseType
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.Success
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.toMultiValue
 
-class SeedApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = ApiClient.defaultClient) : ApiClient(basePath, client) {
+class SeedApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     companion object {
         @JvmStatic
         val defaultBasePath: String by lazy {
@@ -50,15 +48,15 @@ class SeedApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
     fun seedAddGeneralTablesGet() : OkDto {
@@ -80,12 +78,12 @@ class SeedApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun seedAddGeneralTablesGetWithHttpInfo() : ApiResponse<OkDto?> {
@@ -97,10 +95,10 @@ class SeedApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation seedAddGeneralTablesGet
-     *
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation seedAddGeneralTablesGet
+    *
+    * @return RequestConfig
+    */
     fun seedAddGeneralTablesGetRequestConfig() : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -117,15 +115,15 @@ class SeedApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
     fun seedDeleteGeneralTablesGet() : OkDto {
@@ -147,12 +145,12 @@ class SeedApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun seedDeleteGeneralTablesGetWithHttpInfo() : ApiResponse<OkDto?> {
@@ -164,10 +162,10 @@ class SeedApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation seedDeleteGeneralTablesGet
-     *
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation seedDeleteGeneralTablesGet
+    *
+    * @return RequestConfig
+    */
     fun seedDeleteGeneralTablesGetRequestConfig() : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf()

@@ -21,7 +21,6 @@
 package at.fhooe.ecommunity.data.remote.openapi.cloud.apis
 
 import java.io.IOException
-import okhttp3.OkHttpClient
 
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.CreateSmartMeterDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.CreateSmartMeterModel
@@ -37,14 +36,13 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ClientError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerException
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.MultiValueMap
-import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.PartConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestMethod
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ResponseType
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.Success
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.toMultiValue
 
-class PairingApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = ApiClient.defaultClient) : ApiClient(basePath, client) {
+class PairingApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     companion object {
         @JvmStatic
         val defaultBasePath: String by lazy {
@@ -53,19 +51,19 @@ class PairingApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient
     }
 
     /**
-     * 
-     * 
-     * @param createSmartMeterModel  (optional)
-     * @return CreateSmartMeterDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param createSmartMeterModel  (optional)
+    * @return CreateSmartMeterDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun pairingCreateSmartMeterPost(createSmartMeterModel: CreateSmartMeterModel? = null) : CreateSmartMeterDto {
+    fun pairingCreateSmartMeterPost(createSmartMeterModel: CreateSmartMeterModel?) : CreateSmartMeterDto {
         val localVarResponse = pairingCreateSmartMeterPostWithHttpInfo(createSmartMeterModel = createSmartMeterModel)
 
         return when (localVarResponse.responseType) {
@@ -84,13 +82,13 @@ class PairingApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient
     }
 
     /**
-     * 
-     * 
-     * @param createSmartMeterModel  (optional)
-     * @return ApiResponse<CreateSmartMeterDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param createSmartMeterModel  (optional)
+    * @return ApiResponse<CreateSmartMeterDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun pairingCreateSmartMeterPostWithHttpInfo(createSmartMeterModel: CreateSmartMeterModel?) : ApiResponse<CreateSmartMeterDto?> {
@@ -102,11 +100,11 @@ class PairingApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient
     }
 
     /**
-     * To obtain the request config of the operation pairingCreateSmartMeterPost
-     *
-     * @param createSmartMeterModel  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation pairingCreateSmartMeterPost
+    *
+    * @param createSmartMeterModel  (optional)
+    * @return RequestConfig
+    */
     fun pairingCreateSmartMeterPostRequestConfig(createSmartMeterModel: CreateSmartMeterModel?) : RequestConfig<CreateSmartMeterModel> {
         val localVariableBody = createSmartMeterModel
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -124,19 +122,19 @@ class PairingApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient
     }
 
     /**
-     * 
-     * 
-     * @param smartMeterId  (optional)
-     * @return LocalDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param smartMeterId  (optional)
+    * @return LocalDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun pairingLocalDataGet(smartMeterId: java.util.UUID? = null) : LocalDto {
+    fun pairingLocalDataGet(smartMeterId: java.util.UUID?) : LocalDto {
         val localVarResponse = pairingLocalDataGetWithHttpInfo(smartMeterId = smartMeterId)
 
         return when (localVarResponse.responseType) {
@@ -155,13 +153,13 @@ class PairingApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient
     }
 
     /**
-     * 
-     * 
-     * @param smartMeterId  (optional)
-     * @return ApiResponse<LocalDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param smartMeterId  (optional)
+    * @return ApiResponse<LocalDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun pairingLocalDataGetWithHttpInfo(smartMeterId: java.util.UUID?) : ApiResponse<LocalDto?> {
@@ -173,11 +171,11 @@ class PairingApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient
     }
 
     /**
-     * To obtain the request config of the operation pairingLocalDataGet
-     *
-     * @param smartMeterId  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation pairingLocalDataGet
+    *
+    * @param smartMeterId  (optional)
+    * @return RequestConfig
+    */
     fun pairingLocalDataGetRequestConfig(smartMeterId: java.util.UUID?) : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()

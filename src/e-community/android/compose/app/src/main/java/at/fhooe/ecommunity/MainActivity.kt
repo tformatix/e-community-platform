@@ -1,9 +1,16 @@
 package at.fhooe.ecommunity
 
+import android.Manifest.permission.POST_NOTIFICATIONS
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -26,22 +34,34 @@ import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.screen.e_community.ECommunityScreen
 import at.fhooe.ecommunity.ui.screen.e_community.ECommunityViewModel
 import at.fhooe.ecommunity.ui.screen.home.HomeScreen
-import at.fhooe.ecommunity.ui.screen.profile.ProfileScreen
 import at.fhooe.ecommunity.ui.screen.home.HomeViewModel
 import at.fhooe.ecommunity.ui.screen.home.search.SearchFilterScreen
 import at.fhooe.ecommunity.ui.screen.home.search.SearchScreen
 import at.fhooe.ecommunity.ui.screen.home.search.SearchViewModel
+import at.fhooe.ecommunity.ui.screen.profile.ProfileScreen
 import at.fhooe.ecommunity.ui.screen.profile.ProfileViewModel
 import at.fhooe.ecommunity.ui.screen.profile.pairing.*
 import at.fhooe.ecommunity.ui.theme.ECommunityTheme
+import at.fhooe.ecommunity.util.EncryptedPreferences
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
+
 
 /**
  * Activity for Main user experience
  * @see ComponentActivity (compose activity)
  */
 class MainActivity : ComponentActivity() {
+
+    private lateinit var mApplication: ECommunityApplication
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mApplication = application as ECommunityApplication
+
+        askNotificationPermission()
+        updateFCMToken()
+
         setContent {
             ECommunityTheme {
                 Surface(
@@ -50,6 +70,50 @@ class MainActivity : ComponentActivity() {
                 ) {
                     MainScreen()
                 }
+            }
+        }
+    }
+
+    private fun updateFCMToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            mApplication.cloudRESTRepository.updateFCMToken(task.result)
+        })
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (!isGranted) {
+            Toast.makeText(this, getString(R.string.general_notification_denied), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    /**
+     * since Android 13: notification permission request
+     */
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(POST_NOTIFICATIONS)) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage(getString(R.string.general_notification_rationale))
+                builder.setPositiveButton(android.R.string.ok) { _, _ ->
+                    requestPermissionLauncher.launch(POST_NOTIFICATIONS)
+                }
+                builder.setNegativeButton(android.R.string.cancel) { _, _ -> }
+                builder.create().show()
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(POST_NOTIFICATIONS)
             }
         }
     }
@@ -156,13 +220,15 @@ private fun AppBottomNavigation(navController: NavHostController, bottomNavItems
         val currentDestination = navBackStackEntry?.destination
         bottomNavItems.forEach { screen ->
             BottomNavigationItem(
-                icon = { screen.icon?.let { painterResource(id = it) }?.let {
-                    Icon(
-                        painter = it,
-                        contentDescription = "Icons",
-                        tint = Color.White
-                    )
-                } },
+                icon = {
+                    screen.icon?.let { painterResource(id = it) }?.let {
+                        Icon(
+                            painter = it,
+                            contentDescription = "Icons",
+                            tint = Color.White
+                        )
+                    }
+                },
                 label = { Text(screen.name) },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                 onClick = {

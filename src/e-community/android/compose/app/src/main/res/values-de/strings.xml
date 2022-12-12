@@ -22,6 +22,9 @@
     <string name="error_400_member_id_not_resolvable">Es sind Schwierigkeiten mit Ihren Anmeldedaten aufgetreten. Versuchen Sie, sich erneut anzumelden!</string>
     <string name="error_400_smart_meter_null">Smart Meter ist leer</string>
 
+    <string name="general_notification_rationale">Ohne Benachrichtigungen werden Sie nicht für wichtige Neuigkeiten informiert! Benachrichtungen aktivieren?</string>
+    <string name="general_notification_denied">Benachrichtungen deaktiviert - Funktionienen eingeschränkt!</string>
+
     <!-- MAIN TITLES -->
     <string name="title_activity_main">eCommunity</string>
     <string name="title_activity_start_up">Start Up</string>

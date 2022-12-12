@@ -21,7 +21,6 @@
 package at.fhooe.ecommunity.data.remote.openapi.cloud.apis
 
 import java.io.IOException
-import okhttp3.OkHttpClient
 
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ECommunityDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ErrorDto
@@ -36,14 +35,13 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ClientError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerException
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.MultiValueMap
-import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.PartConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestMethod
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ResponseType
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.Success
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.toMultiValue
 
-class SearchApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = ApiClient.defaultClient) : ApiClient(basePath, client) {
+class SearchApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     companion object {
         @JvmStatic
         val defaultBasePath: String by lazy {
@@ -52,19 +50,19 @@ class SearchApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient 
     }
 
     /**
-     * 
-     * 
-     * @param query  (optional)
-     * @return kotlin.collections.List<ECommunityDto>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param query  (optional)
+    * @return kotlin.collections.List<ECommunityDto>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun searchSearchForECommsGet(query: kotlin.String? = null) : kotlin.collections.List<ECommunityDto> {
+    fun searchSearchForECommsGet(query: kotlin.String?) : kotlin.collections.List<ECommunityDto> {
         val localVarResponse = searchSearchForECommsGetWithHttpInfo(query = query)
 
         return when (localVarResponse.responseType) {
@@ -83,13 +81,13 @@ class SearchApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient 
     }
 
     /**
-     * 
-     * 
-     * @param query  (optional)
-     * @return ApiResponse<kotlin.collections.List<ECommunityDto>?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param query  (optional)
+    * @return ApiResponse<kotlin.collections.List<ECommunityDto>?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun searchSearchForECommsGetWithHttpInfo(query: kotlin.String?) : ApiResponse<kotlin.collections.List<ECommunityDto>?> {
@@ -101,11 +99,11 @@ class SearchApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient 
     }
 
     /**
-     * To obtain the request config of the operation searchSearchForECommsGet
-     *
-     * @param query  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation searchSearchForECommsGet
+    *
+    * @param query  (optional)
+    * @return RequestConfig
+    */
     fun searchSearchForECommsGetRequestConfig(query: kotlin.String?) : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
@@ -127,19 +125,19 @@ class SearchApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient 
     }
 
     /**
-     * 
-     * 
-     * @param query  (optional)
-     * @return kotlin.collections.List<MemberDto>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param query  (optional)
+    * @return kotlin.collections.List<MemberDto>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun searchSearchForUserGet(query: kotlin.String? = null) : kotlin.collections.List<MemberDto> {
+    fun searchSearchForUserGet(query: kotlin.String?) : kotlin.collections.List<MemberDto> {
         val localVarResponse = searchSearchForUserGetWithHttpInfo(query = query)
 
         return when (localVarResponse.responseType) {
@@ -158,13 +156,13 @@ class SearchApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient 
     }
 
     /**
-     * 
-     * 
-     * @param query  (optional)
-     * @return ApiResponse<kotlin.collections.List<MemberDto>?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param query  (optional)
+    * @return ApiResponse<kotlin.collections.List<MemberDto>?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun searchSearchForUserGetWithHttpInfo(query: kotlin.String?) : ApiResponse<kotlin.collections.List<MemberDto>?> {
@@ -176,11 +174,11 @@ class SearchApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient 
     }
 
     /**
-     * To obtain the request config of the operation searchSearchForUserGet
-     *
-     * @param query  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation searchSearchForUserGet
+    *
+    * @param query  (optional)
+    * @return RequestConfig
+    */
     fun searchSearchForUserGetRequestConfig(query: kotlin.String?) : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()

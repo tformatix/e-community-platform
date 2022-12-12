@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import at.fhooe.ecommunity.*
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.AuthApi
+import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.NotificationApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ApiClient
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.LoginDto
 import at.fhooe.ecommunity.model.RemoteException
@@ -92,5 +93,15 @@ class CloudRESTRepository(private val mApplication: ECommunityApplication) {
         val intent = Intent(mApplication.applicationContext, StartUpActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         mApplication.applicationContext.startActivity(intent)
+    }
+
+    fun updateFCMToken(token: String) {
+        Log.d(TAG, "updateFCMToken: $token")
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, "CoroutineExceptionHandler got $exception")
+        }
+        authorizedBackendCall(handler) {
+            NotificationApi(Constants.HTTP_BASE_URL_CLOUD).notificationRegisterFCMTokenPost(token)
+        }
     }
 }

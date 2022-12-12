@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_community_cloud_lib.Database;
 
@@ -11,9 +12,10 @@ using e_community_cloud_lib.Database;
 namespace e_community_cloud_lib.Migrations
 {
     [DbContext(typeof(ECommunityCloudContext))]
-    partial class ECommunityContextModelSnapshot : ModelSnapshot
+    [Migration("20221212120927_AddedMemberFCMToken")]
+    partial class AddedMemberFCMToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -344,9 +346,6 @@ namespace e_community_cloud_lib.Migrations
 
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("ValidUntil")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("MemberId", "Token");
 

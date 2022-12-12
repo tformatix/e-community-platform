@@ -34,6 +34,7 @@ namespace e_community_cloud_lib.Database
         public DbSet<Language> Language { get; set; }
         public DbSet<LegalForm> LegalForm { get; set; }
         public DbSet<Member> Member { get; set; }
+        public DbSet<MemberFCMToken> MemberFCMToken { get; set; }
         public DbSet<Translation> Translation { get; set; }
 
         // Local
@@ -58,6 +59,7 @@ namespace e_community_cloud_lib.Database
             // composite keys
             _modelBuilder.Entity<Translation>().HasKey(o => new { o.EventCaseId, o.LanguageId });
             _modelBuilder.Entity<ECommunityMembership>().HasKey(o => new { o.ECommunityId, o.MemberId });
+            _modelBuilder.Entity<MemberFCMToken>().HasKey(o => new { o.MemberId, o.Token });
             _modelBuilder.Entity<GridPriceRateCharge>().HasKey(o => new { o.GridPriceRateId, o.ChargeId });
 
             OnDeleteBehaviour(_modelBuilder);
@@ -79,11 +81,15 @@ namespace e_community_cloud_lib.Database
 
         }
 
-        /// <summary>
-        /// ON DELETE SET NULL
-        /// </summary>
         private void OnDeleteBehaviour(ModelBuilder _modelBuilder)
         {
+            // ON DELETE CASCADE
+            _modelBuilder.Entity<MemberFCMToken>()
+                .HasOne(x => x.Member)
+                .WithMany(x => x.MemberFCMTokens)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            // ON DELETE SET NULL
             _modelBuilder.Entity<SmartMeter>()
                 .HasOne(x => x.GridPriceRate)
                 .WithMany(x => x.SmartMeters)

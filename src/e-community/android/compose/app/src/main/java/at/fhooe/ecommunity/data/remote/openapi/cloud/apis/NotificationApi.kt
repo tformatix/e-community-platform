@@ -23,7 +23,7 @@ package at.fhooe.ecommunity.data.remote.openapi.cloud.apis
 import java.io.IOException
 
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ErrorDto
-import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalMemberDto
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.OkDto
 
 import com.squareup.moshi.Json
 
@@ -40,7 +40,7 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ResponseType
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.Success
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.toMultiValue
 
-class MemberApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
+class NotificationApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     companion object {
         @JvmStatic
         val defaultBasePath: String by lazy {
@@ -51,7 +51,8 @@ class MemberApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath)
     /**
     * 
     * 
-    * @return MinimalMemberDto
+    * @param body  (optional)
+    * @return OkDto
     * @throws IllegalStateException If the request is not correctly configured
     * @throws IOException Rethrows the OkHttp execute method exception
     * @throws UnsupportedOperationException If the API returns an informational or redirection response
@@ -60,11 +61,11 @@ class MemberApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath)
     */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun memberGetMinimalMemberGet() : MinimalMemberDto {
-        val localVarResponse = memberGetMinimalMemberGetWithHttpInfo()
+    fun notificationRegisterFCMTokenPost(body: kotlin.String?) : OkDto {
+        val localVarResponse = notificationRegisterFCMTokenPostWithHttpInfo(body = body)
 
         return when (localVarResponse.responseType) {
-            ResponseType.Success -> (localVarResponse as Success<*>).data as MinimalMemberDto
+            ResponseType.Success -> (localVarResponse as Success<*>).data as OkDto
             ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
             ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
             ResponseType.ClientError -> {
@@ -81,34 +82,37 @@ class MemberApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath)
     /**
     * 
     * 
-    * @return ApiResponse<MinimalMemberDto?>
+    * @param body  (optional)
+    * @return ApiResponse<OkDto?>
     * @throws IllegalStateException If the request is not correctly configured
     * @throws IOException Rethrows the OkHttp execute method exception
     */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
-    fun memberGetMinimalMemberGetWithHttpInfo() : ApiResponse<MinimalMemberDto?> {
-        val localVariableConfig = memberGetMinimalMemberGetRequestConfig()
+    fun notificationRegisterFCMTokenPostWithHttpInfo(body: kotlin.String?) : ApiResponse<OkDto?> {
+        val localVariableConfig = notificationRegisterFCMTokenPostRequestConfig(body = body)
 
-        return request<Unit, MinimalMemberDto>(
+        return request<kotlin.String, OkDto>(
             localVariableConfig
         )
     }
 
     /**
-    * To obtain the request config of the operation memberGetMinimalMemberGet
+    * To obtain the request config of the operation notificationRegisterFCMTokenPost
     *
+    * @param body  (optional)
     * @return RequestConfig
     */
-    fun memberGetMinimalMemberGetRequestConfig() : RequestConfig<Unit> {
-        val localVariableBody = null
+    fun notificationRegisterFCMTokenPostRequestConfig(body: kotlin.String?) : RequestConfig<kotlin.String> {
+        val localVariableBody = body
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Content-Type"] = "application/json"
         localVariableHeaders["Accept"] = "application/json"
 
         return RequestConfig(
-            method = RequestMethod.GET,
-            path = "/Member/GetMinimalMember",
+            method = RequestMethod.POST,
+            path = "/Notification/RegisterFCMToken",
             query = localVariableQuery,
             headers = localVariableHeaders,
             body = localVariableBody

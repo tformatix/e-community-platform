@@ -21,7 +21,6 @@
 package at.fhooe.ecommunity.data.remote.openapi.cloud.apis
 
 import java.io.IOException
-import okhttp3.OkHttpClient
 
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ChangePasswordModel
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ConfirmEmailModel
@@ -43,14 +42,13 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ClientError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerException
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ServerError
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.MultiValueMap
-import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.PartConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestConfig
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.RequestMethod
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ResponseType
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.Success
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.toMultiValue
 
-class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = ApiClient.defaultClient) : ApiClient(basePath, client) {
+class AuthApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     companion object {
         @JvmStatic
         val defaultBasePath: String by lazy {
@@ -59,19 +57,19 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param changePasswordModel  (optional)
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param changePasswordModel  (optional)
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun authChangePasswordPost(changePasswordModel: ChangePasswordModel? = null) : OkDto {
+    fun authChangePasswordPost(changePasswordModel: ChangePasswordModel?) : OkDto {
         val localVarResponse = authChangePasswordPostWithHttpInfo(changePasswordModel = changePasswordModel)
 
         return when (localVarResponse.responseType) {
@@ -90,13 +88,13 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param changePasswordModel  (optional)
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param changePasswordModel  (optional)
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun authChangePasswordPostWithHttpInfo(changePasswordModel: ChangePasswordModel?) : ApiResponse<OkDto?> {
@@ -108,11 +106,11 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation authChangePasswordPost
-     *
-     * @param changePasswordModel  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation authChangePasswordPost
+    *
+    * @param changePasswordModel  (optional)
+    * @return RequestConfig
+    */
     fun authChangePasswordPostRequestConfig(changePasswordModel: ChangePasswordModel?) : RequestConfig<ChangePasswordModel> {
         val localVariableBody = changePasswordModel
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -130,19 +128,19 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param confirmEmailModel  (optional)
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param confirmEmailModel  (optional)
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun authConfirmEmailPost(confirmEmailModel: ConfirmEmailModel? = null) : OkDto {
+    fun authConfirmEmailPost(confirmEmailModel: ConfirmEmailModel?) : OkDto {
         val localVarResponse = authConfirmEmailPostWithHttpInfo(confirmEmailModel = confirmEmailModel)
 
         return when (localVarResponse.responseType) {
@@ -161,13 +159,13 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param confirmEmailModel  (optional)
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param confirmEmailModel  (optional)
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun authConfirmEmailPostWithHttpInfo(confirmEmailModel: ConfirmEmailModel?) : ApiResponse<OkDto?> {
@@ -179,11 +177,11 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation authConfirmEmailPost
-     *
-     * @param confirmEmailModel  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation authConfirmEmailPost
+    *
+    * @param confirmEmailModel  (optional)
+    * @return RequestConfig
+    */
     fun authConfirmEmailPostRequestConfig(confirmEmailModel: ConfirmEmailModel?) : RequestConfig<ConfirmEmailModel> {
         val localVariableBody = confirmEmailModel
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -201,19 +199,19 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param forgotPasswordModel  (optional)
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param forgotPasswordModel  (optional)
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun authForgotPasswordPost(forgotPasswordModel: ForgotPasswordModel? = null) : OkDto {
+    fun authForgotPasswordPost(forgotPasswordModel: ForgotPasswordModel?) : OkDto {
         val localVarResponse = authForgotPasswordPostWithHttpInfo(forgotPasswordModel = forgotPasswordModel)
 
         return when (localVarResponse.responseType) {
@@ -232,13 +230,13 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param forgotPasswordModel  (optional)
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param forgotPasswordModel  (optional)
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun authForgotPasswordPostWithHttpInfo(forgotPasswordModel: ForgotPasswordModel?) : ApiResponse<OkDto?> {
@@ -250,11 +248,11 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation authForgotPasswordPost
-     *
-     * @param forgotPasswordModel  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation authForgotPasswordPost
+    *
+    * @param forgotPasswordModel  (optional)
+    * @return RequestConfig
+    */
     fun authForgotPasswordPostRequestConfig(forgotPasswordModel: ForgotPasswordModel?) : RequestConfig<ForgotPasswordModel> {
         val localVariableBody = forgotPasswordModel
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -272,19 +270,19 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param loginMemberModel  (optional)
-     * @return LoginDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param loginMemberModel  (optional)
+    * @return LoginDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun authLoginPost(loginMemberModel: LoginMemberModel? = null) : LoginDto {
+    fun authLoginPost(loginMemberModel: LoginMemberModel?) : LoginDto {
         val localVarResponse = authLoginPostWithHttpInfo(loginMemberModel = loginMemberModel)
 
         return when (localVarResponse.responseType) {
@@ -303,13 +301,13 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param loginMemberModel  (optional)
-     * @return ApiResponse<LoginDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param loginMemberModel  (optional)
+    * @return ApiResponse<LoginDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun authLoginPostWithHttpInfo(loginMemberModel: LoginMemberModel?) : ApiResponse<LoginDto?> {
@@ -321,11 +319,11 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation authLoginPost
-     *
-     * @param loginMemberModel  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation authLoginPost
+    *
+    * @param loginMemberModel  (optional)
+    * @return RequestConfig
+    */
     fun authLoginPostRequestConfig(loginMemberModel: LoginMemberModel?) : RequestConfig<LoginMemberModel> {
         val localVariableBody = loginMemberModel
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -343,19 +341,19 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param body  (optional)
-     * @return LoginDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param body  (optional)
+    * @return LoginDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun authRefreshPost(body: kotlin.String? = null) : LoginDto {
+    fun authRefreshPost(body: kotlin.String?) : LoginDto {
         val localVarResponse = authRefreshPostWithHttpInfo(body = body)
 
         return when (localVarResponse.responseType) {
@@ -374,13 +372,13 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param body  (optional)
-     * @return ApiResponse<LoginDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param body  (optional)
+    * @return ApiResponse<LoginDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun authRefreshPostWithHttpInfo(body: kotlin.String?) : ApiResponse<LoginDto?> {
@@ -392,11 +390,11 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation authRefreshPost
-     *
-     * @param body  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation authRefreshPost
+    *
+    * @param body  (optional)
+    * @return RequestConfig
+    */
     fun authRefreshPostRequestConfig(body: kotlin.String?) : RequestConfig<kotlin.String> {
         val localVariableBody = body
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -414,19 +412,19 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param registerMemberModel  (optional)
-     * @return MemberDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param registerMemberModel  (optional)
+    * @return MemberDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun authRegisterPost(registerMemberModel: RegisterMemberModel? = null) : MemberDto {
+    fun authRegisterPost(registerMemberModel: RegisterMemberModel?) : MemberDto {
         val localVarResponse = authRegisterPostWithHttpInfo(registerMemberModel = registerMemberModel)
 
         return when (localVarResponse.responseType) {
@@ -445,13 +443,13 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param registerMemberModel  (optional)
-     * @return ApiResponse<MemberDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param registerMemberModel  (optional)
+    * @return ApiResponse<MemberDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun authRegisterPostWithHttpInfo(registerMemberModel: RegisterMemberModel?) : ApiResponse<MemberDto?> {
@@ -463,11 +461,11 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation authRegisterPost
-     *
-     * @param registerMemberModel  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation authRegisterPost
+    *
+    * @param registerMemberModel  (optional)
+    * @return RequestConfig
+    */
     fun authRegisterPostRequestConfig(registerMemberModel: RegisterMemberModel?) : RequestConfig<RegisterMemberModel> {
         val localVariableBody = registerMemberModel
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -485,19 +483,19 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param loginMemberModel  (optional)
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param loginMemberModel  (optional)
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun authResendConfirmationEmailPost(loginMemberModel: LoginMemberModel? = null) : OkDto {
+    fun authResendConfirmationEmailPost(loginMemberModel: LoginMemberModel?) : OkDto {
         val localVarResponse = authResendConfirmationEmailPostWithHttpInfo(loginMemberModel = loginMemberModel)
 
         return when (localVarResponse.responseType) {
@@ -516,13 +514,13 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param loginMemberModel  (optional)
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param loginMemberModel  (optional)
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun authResendConfirmationEmailPostWithHttpInfo(loginMemberModel: LoginMemberModel?) : ApiResponse<OkDto?> {
@@ -534,11 +532,11 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation authResendConfirmationEmailPost
-     *
-     * @param loginMemberModel  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation authResendConfirmationEmailPost
+    *
+    * @param loginMemberModel  (optional)
+    * @return RequestConfig
+    */
     fun authResendConfirmationEmailPostRequestConfig(loginMemberModel: LoginMemberModel?) : RequestConfig<LoginMemberModel> {
         val localVariableBody = loginMemberModel
         val localVariableQuery: MultiValueMap = mutableMapOf()
@@ -556,19 +554,19 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param resetPasswordModel  (optional)
-     * @return OkDto
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     * @throws UnsupportedOperationException If the API returns an informational or redirection response
-     * @throws ClientException If the API returns a client error response
-     * @throws ServerException If the API returns a server error response
-     */
+    * 
+    * 
+    * @param resetPasswordModel  (optional)
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun authResetPasswordPost(resetPasswordModel: ResetPasswordModel? = null) : OkDto {
+    fun authResetPasswordPost(resetPasswordModel: ResetPasswordModel?) : OkDto {
         val localVarResponse = authResetPasswordPostWithHttpInfo(resetPasswordModel = resetPasswordModel)
 
         return when (localVarResponse.responseType) {
@@ -587,13 +585,13 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * 
-     * 
-     * @param resetPasswordModel  (optional)
-     * @return ApiResponse<OkDto?>
-     * @throws IllegalStateException If the request is not correctly configured
-     * @throws IOException Rethrows the OkHttp execute method exception
-     */
+    * 
+    * 
+    * @param resetPasswordModel  (optional)
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
     fun authResetPasswordPostWithHttpInfo(resetPasswordModel: ResetPasswordModel?) : ApiResponse<OkDto?> {
@@ -605,11 +603,11 @@ class AuthApi(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = 
     }
 
     /**
-     * To obtain the request config of the operation authResetPasswordPost
-     *
-     * @param resetPasswordModel  (optional)
-     * @return RequestConfig
-     */
+    * To obtain the request config of the operation authResetPasswordPost
+    *
+    * @param resetPasswordModel  (optional)
+    * @return RequestConfig
+    */
     fun authResetPasswordPostRequestConfig(resetPasswordModel: ResetPasswordModel?) : RequestConfig<ResetPasswordModel> {
         val localVariableBody = resetPasswordModel
         val localVariableQuery: MultiValueMap = mutableMapOf()
