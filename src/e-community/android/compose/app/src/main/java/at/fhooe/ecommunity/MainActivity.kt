@@ -2,7 +2,10 @@ package at.fhooe.ecommunity
 
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.AlertDialog
-import android.content.DialogInterface
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -42,8 +46,8 @@ import at.fhooe.ecommunity.ui.screen.profile.ProfileScreen
 import at.fhooe.ecommunity.ui.screen.profile.ProfileViewModel
 import at.fhooe.ecommunity.ui.screen.profile.pairing.*
 import at.fhooe.ecommunity.ui.theme.ECommunityTheme
-import at.fhooe.ecommunity.util.EncryptedPreferences
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 
 
@@ -54,6 +58,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 class MainActivity : ComponentActivity() {
 
     private lateinit var mApplication: ECommunityApplication
+    private lateinit var mMessageReceiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +66,12 @@ class MainActivity : ComponentActivity() {
 
         askNotificationPermission()
         updateFCMToken()
+
+        mMessageReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                Toast.makeText(this@MainActivity, intent?.getStringExtra("EXTRA_MESSAGE"), Toast.LENGTH_LONG).show()
+            }
+        }
 
         setContent {
             ECommunityTheme {
@@ -74,6 +85,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * updates firebase cloud messaging token
+     */
     private fun updateFCMToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -85,18 +99,18 @@ class MainActivity : ComponentActivity() {
         })
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (!isGranted) {
-            Toast.makeText(this, getString(R.string.general_notification_denied), Toast.LENGTH_LONG).show()
-        }
-    }
-
     /**
      * since Android 13: notification permission request
      */
     private fun askNotificationPermission() {
+        val requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (!isGranted) {
+                Toast.makeText(this, getString(R.string.notification_denied), Toast.LENGTH_LONG).show()
+            }
+        }
+
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, POST_NOTIFICATIONS) ==
@@ -105,7 +119,7 @@ class MainActivity : ComponentActivity() {
                 // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(POST_NOTIFICATIONS)) {
                 val builder = AlertDialog.Builder(this)
-                builder.setMessage(getString(R.string.general_notification_rationale))
+                builder.setMessage(getString(R.string.notification_rationale))
                 builder.setPositiveButton(android.R.string.ok) { _, _ ->
                     requestPermissionLauncher.launch(POST_NOTIFICATIONS)
                 }
@@ -116,6 +130,15 @@ class MainActivity : ComponentActivity() {
                 requestPermissionLauncher.launch(POST_NOTIFICATIONS)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(
+                mMessageReceiver,
+                IntentFilter(Constants.BROADCAST_RECEIVER_NOTIFICATION)
+            )
     }
 }
 

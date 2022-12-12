@@ -12,6 +12,14 @@
         android:allowBackup="false"
         android:theme="@style/Theme.ECommunityTheme"
         android:dataExtractionRules="@xml/data_extraction_rules">
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_e_community" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/color_default" />
+
         <activity
             android:name=".StartUpActivity"
             android:exported="true"

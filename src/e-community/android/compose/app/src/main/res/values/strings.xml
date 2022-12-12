@@ -10,9 +10,6 @@
     <string name="shared_prefs_access_token" translatable="false">SHARED_PREFS_ACCESS_TOKEN</string>
     <string name="shared_prefs_refresh_token" translatable="false">SHARED_PREFS_REFRESH_TOKEN</string>
 
-    <string name="general_notification_rationale">Without notifications you will not be informed for important news! Enable notifications?</string>
-    <string name="general_notification_denied">Notifications deactivated - functionality limited!</string>
-
     <!-- ERRORS -->
     <string name="error_unexpected">Unexpected Error</string>
     <string name="error_server_unreachable">Server unreachable</string>
@@ -34,6 +31,13 @@
     <string name="error_400_no_smart_meter_found">no Smart Meter was found</string>
     <string name="error_400_member_id_not_resolvable">Difficulties with your login data have occurred. Try to log in again!</string>
     <string name="error_400_smart_meter_null">Smart Meter is empty</string>
+
+    <!-- NOTIFICATIONS-->
+    <string name="notification_rationale">Without notifications you will not be informed for important news! Enable notifications?</string>
+    <string name="notification_denied">Notifications deactivated - functionality limited!</string>
+
+    <string name="notification_distribution_title">Hourly Energy Distribution</string>
+    <string name="notification_distribution_body">%1$s %2$s for the next hour. Change?</string>
 
     <!-- MAIN TITLES -->
     <string name="title_activity_main">eCommunity</string>

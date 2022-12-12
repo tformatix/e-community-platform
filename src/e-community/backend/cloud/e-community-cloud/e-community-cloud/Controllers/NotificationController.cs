@@ -15,7 +15,7 @@ namespace e_community_cloud.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class NotificationController : ControllerBase 
+    public class NotificationController : ControllerBase
     {
         private readonly INotificationService mNotificationService;
 
@@ -28,11 +28,32 @@ namespace e_community_cloud.Controllers
         [ProducesResponseType(typeof(ErrorDto), 400)]
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> RegisterFCMTokenAsync([FromBody] string _fcmToken) {
+        public async Task<IActionResult> RegisterFCMToken([FromBody] string _fcmToken)
+        {
             var memberId = (Guid)User.GetMemberId();
             Log.Information($"Notification/RegisterFCMToken::{memberId}");
 
             await mNotificationService.RegisterFCMToken(memberId, _fcmToken);
+            return Ok(new OkDto());
+        }
+
+        [ProducesResponseType(typeof(OkDto), 200)]
+        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> TestNotification()
+        {
+            var memberId = (Guid)User.GetMemberId();
+            Log.Information($"Notification/TestNotification::{memberId}");
+
+            await mNotificationService.SendPushNotificationMember(
+                    "notification_distribution_title",
+                    null,
+                    "notification_distribution_body",
+                    new List<string>() { "12", "kWh" },
+                    "e-community",
+                    memberId
+                );
             return Ok(new OkDto());
         }
     }
