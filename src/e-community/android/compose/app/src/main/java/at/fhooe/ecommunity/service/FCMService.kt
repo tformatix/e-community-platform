@@ -25,11 +25,11 @@ class FCMService : FirebaseMessagingService() {
 
         val it = Intent(Constants.BROADCAST_RECEIVER_NOTIFICATION)
 
-        val title = getString(
+        val title = getStringWithArgArray(
             resources.getIdentifier(_remoteMessage.notification?.titleLocalizationKey, "string", packageName),
             _remoteMessage.notification?.titleLocalizationArgs
         )
-        val body = getString(
+        val body = getStringWithArgArray(
             resources.getIdentifier(_remoteMessage.notification?.bodyLocalizationKey, "string", packageName),
             _remoteMessage.notification?.bodyLocalizationArgs
         )
@@ -42,5 +42,16 @@ class FCMService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         mApplication.cloudRESTRepository.updateFCMToken(token)
+    }
+
+    private fun getStringWithArgArray(_id: Int, _args: Array<String>?): String{
+        return when(_args?.size){
+            1 -> getString(_id, _args[0])
+            2 -> getString(_id, _args[0], _args[1])
+            3 -> getString(_id, _args[0], _args[1], _args[2])
+            4 -> getString(_id, _args[0], _args[1], _args[2], _args[3])
+            5 -> getString(_id, _args[0], _args[1], _args[2], _args[3], _args[4])
+            else -> getString(_id)
+        }
     }
 }
