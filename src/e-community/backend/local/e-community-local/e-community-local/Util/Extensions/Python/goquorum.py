@@ -1,6 +1,7 @@
 import typer
 import os
 import json
+from ast import literal_eval
 
 cli = typer.Typer()
 
@@ -10,8 +11,12 @@ GOQUORUM_READ_ADDRESS = "cat $GOQUORUM_NODE/data/keystore/accountAddress"
 GOQUORUM_READ_PASSWORD = "cat $GOQUORUM_NODE/data/keystore/accountPassword"
 
 # UNLOCK ETHEREUM ACCOUNT
-GOQUORUM_ACCOUNT_UNLOCK = 'curl -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \
-                          '"method":"personal_unlockAccount","params":["%s", "%s"],"id":67}\' ' \
+GOQUORUM_ACCOUNT_UNLOCK = 'curl -s -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \
+                          '"method":"personal_unlockAccount","params":["%s", "%s"],"id":1}\' ' \
+                          'http://192.168.0.142:22001'
+
+GOQUORUM_ACCOUNT_BALANCE = 'curl -s -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \
+                          '"method":"eth_getBalance","params":["%s", "latest"],"id":1}\' ' \
                           'http://192.168.0.142:22001'
 
 
@@ -28,7 +33,7 @@ def temp():
 
 
 @cli.command()
-def unlock_account():
+def account_unlock():
     """temporaly unlocks the local ethereum account"""
     node = get_account_details()
 
@@ -39,6 +44,21 @@ def unlock_account():
         print("ERROR: check configuration")
     elif account_unlock["result"]:
         print("ACCOUNT UNLOCKED")
+
+
+@cli.command()
+def account_balance():
+    """returns the current balance of the ethereum account in ETH"""
+    node = get_account_details()
+
+    account_balance_read = os.popen(GOQUORUM_ACCOUNT_BALANCE % node.accountAddress)
+    account_balance = json.loads(account_balance_read.read())
+
+    if "error" in account_balance:
+        print("ERROR: check configuration")
+    elif account_balance["result"]:
+        eth_value = literal_eval(account_balance["result"])
+        print(f'{str(eth_value)} ETH')
 
 
 def get_account_details():
