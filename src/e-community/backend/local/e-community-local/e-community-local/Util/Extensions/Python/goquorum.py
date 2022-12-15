@@ -13,11 +13,11 @@ GOQUORUM_READ_PASSWORD = "cat $GOQUORUM_NODE/data/keystore/accountPassword"
 # UNLOCK ETHEREUM ACCOUNT
 GOQUORUM_ACCOUNT_UNLOCK = 'curl -s -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \
                           '"method":"personal_unlockAccount","params":["%s", "%s"],"id":1}\' ' \
-                          'http://192.168.0.142:22001'
+                          'http://127.0.0.1:22000'
 
 GOQUORUM_ACCOUNT_BALANCE = 'curl -s -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \
                           '"method":"eth_getBalance","params":["%s", "latest"],"id":1}\' ' \
-                          'http://192.168.0.142:22001'
+                          'http://127.0.0.1:22000'
 
 
 class GoQuorumNode:
@@ -28,8 +28,8 @@ class GoQuorumNode:
 
 
 @cli.command()
-def temp():
-    """temp command"""
+def deploy_new_contract():
+    """deploys a new consent contract to the blockchain and returns the deployed address"""
 
 
 @cli.command()
