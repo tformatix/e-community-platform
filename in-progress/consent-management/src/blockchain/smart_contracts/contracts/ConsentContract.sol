@@ -2,6 +2,7 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
+
 contract ConsentContract {
 
     // contract must have a state
@@ -38,6 +39,7 @@ contract ConsentContract {
 
     // set owner of the contract
     constructor(address _consenter) {
+    //constructor() {
         proposer = msg.sender;
         state = STATE.INACTIVE;
         consenter = _consenter;
@@ -52,6 +54,7 @@ contract ConsentContract {
         if (msg.sender == consenter) { signature.signedByConsenter = true; }
 
         if (signature.signedByProposer && signature.signedByConsenter) {
+            state = STATE.ACTIVE;
             emit ApprovedContract();
         }
     }

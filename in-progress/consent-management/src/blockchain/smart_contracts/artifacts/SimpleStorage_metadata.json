@@ -1,0 +1,72 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "int256",
+						"name": "value",
+						"type": "int256"
+					}
+				],
+				"name": "NumberChanged",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "int256",
+						"name": "_value",
+						"type": "int256"
+					}
+				],
+				"name": "newNumber",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/SimpleStorage.sol": "SimpleStorage"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/SimpleStorage.sol": {
+			"keccak256": "0xea83355d7a9d2b3ccd883c3133b5beef37ea846e72eb1b51cb7dacc1f41eb967",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://f5b02274a6704b9b5afdf45f447e87b946523078c404b5c732fbce0b47ec6b37",
+				"dweb:/ipfs/QmTupcpnUr6cpjkSZiiDjLWt2GskXLS2YbjkGytEL23FXu"
+			]
+		}
+	},
+	"version": 1
+}
