@@ -38,10 +38,15 @@ contract ConsentContract {
     ContractSign private signature;
 
     // set owner of the contract
-    constructor(address _consenter) {
-    //constructor() {
+    constructor() {
         proposer = msg.sender;
         state = STATE.INACTIVE;
+    }
+
+
+    /* set consenter for the contract (source of energy data)
+    */
+    function setConsenter(address _consenter) public onlyOwner {
         consenter = _consenter;
     }
 
