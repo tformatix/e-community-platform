@@ -1,0 +1,10 @@
+Features
+- Raspberry
+  - Demo-Lastprofil inkl. Flexibilitäten
+- Jede Stunde: Benachrichtigung über Zuspruch
+  - Annehmen oder Ablehnen
+    - Ablehnen: andere Last --> anderer Zuspruch bei anderen Mitgliedern
+- Monitoring
+  - Benachrichtung bei Unterschreitung/Überschreitung der zugesprochenen Last
+  - Übersicht wie oft ignoriert
+  - Charts mit Thresholds
