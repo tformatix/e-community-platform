@@ -2,7 +2,7 @@
 using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
 using e_community_cloud_lib.Database;
 using e_community_cloud_lib.Database.Local;
-using e_community_cloud_lib.Models;
+using e_community_cloud_lib.Models.SmartMeter;
 using e_community_cloud_lib.Util.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;

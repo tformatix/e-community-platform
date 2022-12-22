@@ -1,7 +1,8 @@
 ﻿using e_community_cloud.Dtos;
+using e_community_cloud_lib.BusinessLogic.Implementations;
 using e_community_cloud_lib.BusinessLogic.Interfaces;
 using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
-using e_community_cloud_lib.Models;
+using e_community_cloud_lib.Models.SmartMeter;
 using e_community_cloud_lib.Util;
 using e_community_cloud_lib.Util.Extensions;
 using Microsoft.AspNetCore.Authorization;

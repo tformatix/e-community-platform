@@ -1,4 +1,4 @@
-﻿using e_community_cloud_lib.Models;
+﻿using e_community_cloud_lib.Models.SmartMeter;
 using e_community_cloud_lib.NonEntities;
 using e_community_cloud_lib.Util;
 using System;

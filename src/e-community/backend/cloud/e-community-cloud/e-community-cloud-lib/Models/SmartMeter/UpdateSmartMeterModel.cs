@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_community_cloud_lib.Models
+namespace e_community_cloud_lib.Models.SmartMeter
 {
     public class UpdateSmartMeterModel
     {

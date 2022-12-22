@@ -3,7 +3,7 @@ using e_community_cloud_lib.Database;
 using e_community_cloud_lib.Endpoints;
 using e_community_cloud_lib.Endpoints.Interfaces;
 using e_community_cloud_lib.LocalDtos;
-using e_community_cloud_lib.Models;
+using e_community_cloud_lib.Models.SmartMeter;
 using e_community_cloud_lib.NonEntities;
 using e_community_cloud_lib.Util;
 using e_community_cloud_lib.Util.BusinessLogic;
@@ -17,7 +17,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
+namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
+{
     /// <summary>
     /// <seealso cref="ILocalSignalRSenderService"/>
     /// </summary>

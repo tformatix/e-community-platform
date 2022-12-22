@@ -1,5 +1,5 @@
 ﻿using e_community_cloud_lib.Database.General;
-using e_community_cloud_lib.Models;
+using e_community_cloud_lib.Models.Auth;
 using e_community_cloud_lib.NonEntities;
 using System;
 using System.Collections.Generic;

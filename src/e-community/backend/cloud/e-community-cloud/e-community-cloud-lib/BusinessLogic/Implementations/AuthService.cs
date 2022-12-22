@@ -1,7 +1,7 @@
 ﻿using e_community_cloud_lib.BusinessLogic.Interfaces;
 using e_community_cloud_lib.Database;
 using e_community_cloud_lib.Database.General;
-using e_community_cloud_lib.Models;
+using e_community_cloud_lib.Models.Auth;
 using e_community_cloud_lib.NonEntities;
 using e_community_cloud_lib.Util;
 using e_community_cloud_lib.Util.BusinessLogic;

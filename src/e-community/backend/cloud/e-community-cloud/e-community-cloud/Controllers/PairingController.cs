@@ -2,7 +2,7 @@
 using e_community_cloud_lib.BusinessLogic.Interfaces;
 using e_community_cloud_lib.Database.Local;
 using e_community_cloud_lib.LocalDtos;
-using e_community_cloud_lib.Models;
+using e_community_cloud_lib.Models.SmartMeter;
 using e_community_cloud_lib.Util.Enums;
 using e_community_cloud_lib.Util.Extensions;
 using Microsoft.AspNetCore.Authorization;
