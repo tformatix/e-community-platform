@@ -3,15 +3,27 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 
-contract ConsentContract {
+contract ConsentContractFactory {
 
-    // contract must have a state
-    enum STATE {
-        INACTIVE,
-        ACTIVE, 
-        REVOKED, 
-        CLOSED 
+    ConsentContract[] private contracts;
+
+    function createConsentContract() public {
+        ConsentContract consentContract = new ConsentContract();
+
+        contracts.push(consentContract);
+
     }
+
+    function getContractAddress() public view returns(address) {
+        return address(contracts[0]);
+    }
+
+    function set() public pure returns(int) {
+        return 1;
+    }
+}
+
+contract ConsentContract {
 
     // both parties need to sign the contract
     struct ContractSign {
@@ -25,33 +37,43 @@ contract ConsentContract {
     // notify proposer that the contract got signed by the consenter
     event ApprovedContract();
 
-    // address of the owner of the contract (proposer)
-    address private proposer;
-
-    // address of the consenter
-    address private consenter;
-
-    // state of the contract
-    STATE state;
+    // ### Contract Details ###
+    
+    address private proposer; // address of the owner of the contract (proposer)    
+    address private consenter; // address of the consenter
+    uint private startEnergyData; 
+    uint private endEnergyData;
+    uint private contractValidInDays;
+    uint private pricePerHour;
+    uint private totalPrice;
 
     // signature of both parties
     ContractSign private signature;
 
-    int private test;
-
     // set owner of the contract
-    constructor(address _consenter) {
+    constructor() {
         proposer = msg.sender;
-        state = STATE.INACTIVE;
+    }
+
+    // set the consenters address
+    function setConsenter(address _consenter) public {
         consenter = _consenter;
     }
 
-    function getValue() public pure returns(int) {
-        return 5;
-    }
-
-    function set() public {
-        test = 5;
+    function setContractDetails(
+        address _consenter, 
+        uint _startEnergyData, 
+        uint _endEnergyData,
+        uint _contractValidInDays,
+        uint _pricePerHour,
+        uint _totalPrice
+    ) public onlyOwner {
+        consenter = _consenter;
+        startEnergyData = _startEnergyData;
+        endEnergyData = _endEnergyData;
+        contractValidInDays = _contractValidInDays;
+        pricePerHour = _pricePerHour;
+        totalPrice = _totalPrice;
     }
 
     /* both parties need to sign the contract inorder to start the energy sharing
@@ -63,14 +85,12 @@ contract ConsentContract {
         if (msg.sender == consenter) { signature.signedByConsenter = true; }
 
         if (signature.signedByProposer && signature.signedByConsenter) {
-            state = STATE.ACTIVE;
             emit ApprovedContract();
         }
     }
 
     // contract can be revoked from both parties
     function revokeConsent() public bothParties {
-        state = STATE.REVOKED;
     }
 
 
