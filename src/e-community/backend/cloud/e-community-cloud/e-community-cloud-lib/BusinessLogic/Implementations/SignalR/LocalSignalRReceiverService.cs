@@ -30,7 +30,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
         }
 
         public void ReceivedRTData(LocalMeterDataRTDto _meterData, Guid _memberId) {
-            if ((_meterData.Timestamp - DateTime.Now).TotalMilliseconds < Constants.AUTO_SEND_RT_DATA_MILLISECONDS) {
+            if ((_meterData.Timestamp - DateTime.UtcNow).TotalMilliseconds < Constants.AUTO_SEND_RT_DATA_MILLISECONDS) {
                 // only handle data which has not passed more than AUTO_SEND_RT_DATA_SECONDS seconds
                 var listenerData = mRTListenerSingleton.GetRTListenerData(_memberId);
 

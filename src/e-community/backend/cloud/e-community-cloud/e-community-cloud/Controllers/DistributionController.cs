@@ -32,6 +32,21 @@ namespace e_community_cloud.Controllers
             var memberId = User.GetMemberId();
             Log.Information($"Distribution/MeterDataMonitoring::{memberId}");
 
+            // TODO
+
+            return Ok(new OkDto());
+        }
+
+        [ProducesResponseType(typeof(OkDto), 200)]
+        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> HourlyPortionAck([FromBody] PortionAckModel _portionAckModel) {
+            var memberId = User.GetMemberId();
+            Log.Information($"Distribution/MeterDataMonitoring::{memberId}");
+
+            // TODO
+
             return Ok(new OkDto());
         }
     }

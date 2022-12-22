@@ -22,6 +22,7 @@ using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using System.IO;
 using Newtonsoft.Json;
+using e_community_cloud.BackgroundServices;
 
 namespace e_community_cloud
 {
@@ -44,7 +45,8 @@ namespace e_community_cloud
             AddServices(_services);
 
             _services.AddSignalR();
-            _services.AddControllers();
+            _services.AddControllers(); 
+            _services.AddHostedService<DistributionBackgroundService>();
             _services.AddHealthChecks();
             _services.AddHttpClient();
 
