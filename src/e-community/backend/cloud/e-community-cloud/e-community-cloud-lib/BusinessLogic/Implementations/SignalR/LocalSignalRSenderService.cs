@@ -168,5 +168,9 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
             mSmartMeterHubContext.Clients.Groups(_updateSmartMeterModel.Id.GetGroupName(GroupType.SmartMeter))
                 .UpdateSmartMeter(_updateSmartMeterModel.CopyPropertiesTo(new LocalSmartMeterDto()));
         }
+
+        public void RequestHourlyForecast() {
+            mSmartMeterHubContext.Clients.All.RequestHourlyForecast();
+        }
     }
 }

@@ -9,12 +9,12 @@ namespace e_community_cloud_lib.Models.Distribution
     public class ForecastModel
     {
         /// <summary>
-        /// estimated energy A+
+        /// estimated energy A+ (consumption)
         /// </summary>
         public int ActiveEnergyPlus { get; set; }
 
         /// <summary>
-        /// estimated energy A-
+        /// estimated energy A- (feed in)
         /// </summary>
         public int ActiveEnergyMinus { get; set; }
 

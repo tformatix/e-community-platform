@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
 namespace e_community_cloud_lib.BusinessLogic.Implementations {
-    public class NotificationService : INotificationService {
+    public class FCMService : IFCMService {
         private readonly ECommunityCloudContext mDb;
         private readonly IConfiguration mConfiguration;
 
 
-        public NotificationService(ECommunityCloudContext _db, IConfiguration _configuration) {
+        public FCMService(ECommunityCloudContext _db, IConfiguration _configuration) {
             mDb = _db;
             mConfiguration = _configuration;
         }

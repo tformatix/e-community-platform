@@ -40,7 +40,7 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ResponseType
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.Success
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.toMultiValue
 
-class NotificationApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
+class FCMApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     companion object {
         @JvmStatic
         val defaultBasePath: String by lazy {
@@ -61,8 +61,8 @@ class NotificationApi(basePath: kotlin.String = defaultBasePath) : ApiClient(bas
     */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun notificationRegisterFCMTokenPost(body: kotlin.String?) : OkDto {
-        val localVarResponse = notificationRegisterFCMTokenPostWithHttpInfo(body = body)
+    fun fCMRegisterFCMTokenPost(body: kotlin.String?) : OkDto {
+        val localVarResponse = fCMRegisterFCMTokenPostWithHttpInfo(body = body)
 
         return when (localVarResponse.responseType) {
             ResponseType.Success -> (localVarResponse as Success<*>).data as OkDto
@@ -89,8 +89,8 @@ class NotificationApi(basePath: kotlin.String = defaultBasePath) : ApiClient(bas
     */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
-    fun notificationRegisterFCMTokenPostWithHttpInfo(body: kotlin.String?) : ApiResponse<OkDto?> {
-        val localVariableConfig = notificationRegisterFCMTokenPostRequestConfig(body = body)
+    fun fCMRegisterFCMTokenPostWithHttpInfo(body: kotlin.String?) : ApiResponse<OkDto?> {
+        val localVariableConfig = fCMRegisterFCMTokenPostRequestConfig(body = body)
 
         return request<kotlin.String, OkDto>(
             localVariableConfig
@@ -98,12 +98,12 @@ class NotificationApi(basePath: kotlin.String = defaultBasePath) : ApiClient(bas
     }
 
     /**
-    * To obtain the request config of the operation notificationRegisterFCMTokenPost
+    * To obtain the request config of the operation fCMRegisterFCMTokenPost
     *
     * @param body  (optional)
     * @return RequestConfig
     */
-    fun notificationRegisterFCMTokenPostRequestConfig(body: kotlin.String?) : RequestConfig<kotlin.String> {
+    fun fCMRegisterFCMTokenPostRequestConfig(body: kotlin.String?) : RequestConfig<kotlin.String> {
         val localVariableBody = body
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
@@ -112,7 +112,74 @@ class NotificationApi(basePath: kotlin.String = defaultBasePath) : ApiClient(bas
 
         return RequestConfig(
             method = RequestMethod.POST,
-            path = "/Notification/RegisterFCMToken",
+            path = "/FCM/RegisterFCMToken",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            body = localVariableBody
+        )
+    }
+
+    /**
+    * 
+    * 
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun fCMTestNotificationPost() : OkDto {
+        val localVarResponse = fCMTestNotificationPostWithHttpInfo()
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as OkDto
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+    * 
+    * 
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun fCMTestNotificationPostWithHttpInfo() : ApiResponse<OkDto?> {
+        val localVariableConfig = fCMTestNotificationPostRequestConfig()
+
+        return request<Unit, OkDto>(
+            localVariableConfig
+        )
+    }
+
+    /**
+    * To obtain the request config of the operation fCMTestNotificationPost
+    *
+    * @return RequestConfig
+    */
+    fun fCMTestNotificationPostRequestConfig() : RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.POST,
+            path = "/FCM/TestNotification",
             query = localVariableQuery,
             headers = localVariableHeaders,
             body = localVariableBody

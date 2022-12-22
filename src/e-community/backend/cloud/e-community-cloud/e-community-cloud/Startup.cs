@@ -108,7 +108,8 @@ namespace e_community_cloud
             _services.AddScoped<IRTListenerSignalRSenderService, RTListenerSignalRSenderService>();
             _services.AddScoped<IMemberService, MemberService>();
             _services.AddScoped<ISearchService, SearchService>();
-            _services.AddScoped<INotificationService, NotificationService>();
+            _services.AddScoped<IFCMService, FCMService>();
+            _services.AddScoped<IDistributionService, DistributionService>();
         }
 
         private void AddIdentity(IServiceCollection _services)

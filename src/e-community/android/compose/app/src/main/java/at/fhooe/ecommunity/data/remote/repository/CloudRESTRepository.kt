@@ -5,7 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import at.fhooe.ecommunity.*
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.AuthApi
-import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.NotificationApi
+import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.FCMApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ApiClient
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.LoginDto
 import at.fhooe.ecommunity.model.RemoteException
@@ -101,7 +101,7 @@ class CloudRESTRepository(private val mApplication: ECommunityApplication) {
             Log.e(TAG, "CoroutineExceptionHandler got $exception")
         }
         authorizedBackendCall(handler) {
-            NotificationApi(Constants.HTTP_BASE_URL_CLOUD).notificationRegisterFCMTokenPost(token)
+            FCMApi(Constants.HTTP_BASE_URL_CLOUD).fCMRegisterFCMTokenPost(token)
         }
     }
 }

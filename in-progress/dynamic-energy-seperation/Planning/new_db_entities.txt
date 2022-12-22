@@ -1,0 +1,22 @@
+Distribution
+- Id
+- Timestamp
+- EstimatedActiveEnergyMinus
+- ActualActiveEnergyMinus
+- Missing
+- SmartMeterPortions[]
+
+SmartMeterPortion
+- Id
+- SmartMeterId
+- EstimatedActiveEnergyPlus
+- ActualActiveEnergyPlus
+- Flexibility
+- Acknowledged
+- Actual
+
+OpenNotification
+- Id
+- MemberId
+- Type (portion, assigned portion, non-compliance, offline)
+- Playload<string,string>

@@ -15,13 +15,13 @@ namespace e_community_cloud.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class NotificationController : ControllerBase
+    public class FCMController : ControllerBase
     {
-        private readonly INotificationService mNotificationService;
+        private readonly IFCMService mFCMService;
 
-        public NotificationController(INotificationService _notificationService)
+        public FCMController(IFCMService _fcmService)
         {
-            mNotificationService = _notificationService;
+            mFCMService = _fcmService;
         }
 
         [ProducesResponseType(typeof(OkDto), 200)]
@@ -33,7 +33,7 @@ namespace e_community_cloud.Controllers
             var memberId = (Guid)User.GetMemberId();
             Log.Information($"Notification/RegisterFCMToken::{memberId}");
 
-            await mNotificationService.RegisterFCMToken(memberId, _fcmToken);
+            await mFCMService.RegisterFCMToken(memberId, _fcmToken);
             return Ok(new OkDto());
         }
 
@@ -46,7 +46,7 @@ namespace e_community_cloud.Controllers
             var memberId = (Guid)User.GetMemberId();
             Log.Information($"Notification/TestNotification::{memberId}");
 
-            await mNotificationService.SendPushNotificationMember(
+            await mFCMService.SendPushNotificationMember(
                     "notification_distribution_title",
                     null,
                     "notification_distribution_body",

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.BusinessLogic.Interfaces
 {
-    public interface INotificationService
+    public interface IFCMService
     {
         /// <summary>
         /// updates firebase cloud messaging registration token

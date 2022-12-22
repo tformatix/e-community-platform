@@ -38,5 +38,15 @@ namespace e_community_cloud_lib.Endpoints.Interfaces
         /// <param name="_localSmartMeterDto">smart meter specific data</param>
         /// <returns></returns>
         Task UpdateSmartMeter(LocalSmartMeterDto _localSmartMeterDto);
+
+        /// <summary>
+        /// cloud requests hourly forecast data (load profile and flexibility)
+        /// </summary>
+        Task RequestHourlyForecast();
+
+        /// <summary>
+        /// cloud requests meter data for monitoring
+        /// </summary>
+        Task RequestMeterDataMonitoring();
     }
 }

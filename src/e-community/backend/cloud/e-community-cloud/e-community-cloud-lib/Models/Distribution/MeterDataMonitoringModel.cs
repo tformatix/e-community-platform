@@ -9,12 +9,12 @@ namespace e_community_cloud_lib.Models.Distribution
     public class MeterDataMonitoringModel
     {
         /// <summary>
-        /// current energy A+
+        /// current energy A+ (consumption)
         /// </summary>
         public int ActiveEnergyPlus { get; set; }
 
         /// <summary>
-        /// current energy A-
+        /// current energy A- (feed in)
         /// </summary>
         public int ActiveEnergyMinus { get; set; }
     }
