@@ -13,7 +13,8 @@ cli = typer.Typer()
 
 # web3 object, inject middleware because of private fork of ethereum
 w3 = web3.Web3(web3.HTTPProvider(GOQUORUM_NODE_URL))
-
+w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+w3.handleRevert = True
 
 # CLI COMMANDS #
 # READ ETHEREUM ACCOUNT
@@ -23,12 +24,15 @@ GOQUORUM_READ_PRIVATE_KEY = "cat $GOQUORUM_NODE/data/keystore/accountPrivateKey"
 
 # TRUFFLE #
 # deploy new consent contract
-TRUFFLE_DEPLOY_CONTRACT = 'cd ../../smart_contracts && truffle migrate deploy_consent_contract.js | grep "contract ' \
+TRUFFLE_DEPLOY_CONTRACT = 'cd ../../smart_contracts && truffle migrate | grep "contract ' \
                           'address" | grep -o -E "0[xX][0-9a-fA-F]+"'
 
-TRUFFLE_CONTRACT_BYTECODE = 'cat ../../smart_contracts/build/contracts/ConsentContract.json | grep -oP \'(?<="bytecode": ")[^"]*\''
 
+TRUFFLE_CONTRACT_BYTECODE = 'cat ../../smart_contracts/build/contracts/ConsentContract.json | grep -oP \'(?<="bytecode": ")[^"]*\''
 TRUFFLE_READ_CONTRACT_ABI = 'cat ../../smart_contracts/build/contracts/ConsentContract.json'
+
+TRUFFLE_CONTRACT_BYTECODE_FACTORY = 'cat ../../smart_contracts/build/contracts/ConsentContractFactory.json | grep -oP \'(?<="bytecode": ")[^"]*\''
+TRUFFLE_READ_CONTRACT_ABI_FACTORY = 'cat ../../smart_contracts/build/contracts/ConsentContractFactory.json'
 
 # UNLOCK ETHEREUM ACCOUNT
 GOQUORUM_ACCOUNT_UNLOCK = 'curl -s -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \
@@ -54,42 +58,43 @@ class GoQuorumNode:
 
 
 @cli.command()
-def deploy_new_consent_contract(address_consenter: str = typer.Option(..., "--adr-con", "-ac", help="address of the consenter")):
+def create_consent_contract(address_consenter: str = typer.Option(..., "--adr-con", "-ac", help="address of the consenter")):
     """deploys a new consent contract to the blockchain and returns the deployed address"""
+
+    # account address Node: 0x7a1674007ef00a1179671acd7ac91379bffd8ba0
 
     if not w3.isConnected():
         print("Ethereum Node not running...")
         return
 
     # unlock account first
-    unlock_account(GOQUORUM_NODE)
+    if not unlock_account(GOQUORUM_NODE):
+        print("Cannot unlock ethereum account...")
+        return
 
     # deploy contract with truffle and get the deployed contract address
     deploy_contract_read = os.popen(TRUFFLE_DEPLOY_CONTRACT)
     deployed_address = deploy_contract_read.read().strip()
-    print(f"deployedAddress: {deployed_address}")
 
     # save deployed contract address, needed for updating values later
     GOQUORUM_NODE.deployedContractAddress = deployed_address
 
     # read abi string from builded contract
-    contract_abi_read = os.popen(TRUFFLE_READ_CONTRACT_ABI)
+    contract_abi_read = os.popen(TRUFFLE_READ_CONTRACT_ABI_FACTORY)
     contract_abi = json.loads(contract_abi_read.read())["abi"]
 
     # extract the builded bytecode
-    contract_bytecode_read = os.popen(TRUFFLE_CONTRACT_BYTECODE)
+    contract_bytecode_read = os.popen(TRUFFLE_CONTRACT_BYTECODE_FACTORY)
     contract_bytecode = contract_bytecode_read.read().strip()
     contract_bytecode_hex = hex(int(contract_bytecode, 16))
 
-    # build check from consenter's address
+    # build checkSum from consenter's address
     checksum_address_consenter = w3.toChecksumAddress(address_consenter)
-    w3.middleware_onion.inject(geth_poa_middleware, layer=0)
-    w3.handleRevert = True
 
-    # create contract object and setConsenter(address_consenter) functions.greet().call()
-    ConsentContract = w3.eth.contract(address=deployed_address, abi=contract_abi, bytecode=contract_bytecode_hex)
+    # create contract object and call constructor()
+    consent_contract_factory = w3.eth.contract(address=deployed_address, abi=contract_abi, bytecode=contract_bytecode_hex)
 
-    constructor_tx = ConsentContract.constructor(checksum_address_consenter).build_transaction(
+    constructor_tx = consent_contract_factory.constructor().build_transaction(
         {
             'from': GOQUORUM_NODE.accountAddress,
             'nonce': w3.eth.get_transaction_count(GOQUORUM_NODE.accountAddress),
@@ -97,27 +102,51 @@ def deploy_new_consent_contract(address_consenter: str = typer.Option(..., "--ad
         }
     )
 
-    tx_create = w3.eth.account.sign_transaction(constructor_tx, GOQUORUM_NODE.accountPrivateKey)
-    tx_hash = w3.eth.send_raw_transaction(tx_create.rawTransaction)
-    tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+    # sign and make constructor transaction
+    deployed_contract_factory_address = make_contract_tx(constructor_tx)
 
-    print(f'Tx successful with hash: { tx_receipt.contractAddress }')
+    consent_contract_factory = w3.eth.contract(address=deployed_contract_factory_address, abi=contract_abi, bytecode=contract_bytecode_hex)
 
-    ConsentContract = w3.eth.contract(address=tx_receipt.contractAddress, abi=contract_abi, bytecode=contract_bytecode_hex)
+    create_consent_contract_tx = consent_contract_factory.functions.createConsentContract().build_transaction(
+        {
+            'from': GOQUORUM_NODE.accountAddress,
+            'nonce': w3.eth.get_transaction_count(GOQUORUM_NODE.accountAddress),
+            'gasPrice': w3.eth.gas_price
+        }
+    )
 
-    print(ConsentContract.functions.getValue().call())
+    # sign and make createContract transaction
+    make_contract_tx(create_consent_contract_tx)
+
+    # get deployed consentContract address
+    deployed_contract_address = consent_contract_factory.functions.getContractAddress().call()
+
+    # read base contract abi
+    contract_abi_read = os.popen(TRUFFLE_READ_CONTRACT_ABI)
+    contract_abi = json.loads(contract_abi_read.read())["abi"]
+
+    consent_contract = w3.eth.contract(address=deployed_contract_address, abi=contract_abi, bytecode=contract_bytecode_hex)
+
+    # set consenter address
+    set_consenter_tx = consent_contract.functions.setConsenter(checksum_address_consenter).build_transaction(
+        {
+            'from': GOQUORUM_NODE.accountAddress,
+            'nonce': w3.eth.get_transaction_count(GOQUORUM_NODE.accountAddress),
+            'gasPrice': w3.eth.gas_price
+        }
+    )
+
+    # sign and make setConsenter transaction
+    make_contract_tx(set_consenter_tx)
+
+    print(f'deployed contractFactory {deployed_contract_factory_address} and deployed contract {deployed_contract_address}')
 
 
 @cli.command()
 def account_unlock():
     """temporaly unlocks the local ethereum account"""
 
-    account_unlock = unlock_account(GOQUORUM_NODE)
-
-    if "error" in account_unlock:
-        print("ERROR: check configuration")
-    elif account_unlock["result"]:
-        print("ACCOUNT UNLOCKED")
+    return unlock_account(GOQUORUM_NODE)
 
 
 @cli.command()
@@ -158,9 +187,34 @@ def unlock_account(node):
     """temporaly unlocks the local ethereum account"""
     account_unlock_read = os.popen(GOQUORUM_ACCOUNT_UNLOCK % (node.accountAddress, node.accountPassword, GOQUORUM_NODE_URL))
     account_unlock = json.loads(account_unlock_read.read())
-    return account_unlock
+
+    if "error" in account_unlock:
+        print("ERROR: check configuration")
+        return False
+    elif account_unlock["result"]:
+        print("ACCOUNT UNLOCKED")
+
+    return True
+
+
+def make_contract_tx(tx):
+    """signed and create a transaction for a smart contract => returns new contractAddress"""
+    tx_create = w3.eth.account.sign_transaction(tx, GOQUORUM_NODE.accountPrivateKey)
+    tx_hash = w3.eth.send_raw_transaction(tx_create.rawTransaction)
+    tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+    return tx_receipt.contractAddress
+
+
+def build_tx():
+    return {
+        'from': GOQUORUM_NODE.accountAddress,
+        'nonce': w3.eth.get_transaction_count(GOQUORUM_NODE.accountAddress),
+        'gasPrice': w3.eth.gas_price
+    }
 
 
 if __name__ == '__main__':
+    # get local GOQUORUM node details
     GOQUORUM_NODE = get_account_details()
+
     cli()

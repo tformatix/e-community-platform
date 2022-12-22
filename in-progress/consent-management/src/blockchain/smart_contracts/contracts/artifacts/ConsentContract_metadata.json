@@ -6,13 +6,7 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_consenter",
-						"type": "address"
-					}
-				],
+				"inputs": [],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
@@ -30,27 +24,58 @@
 			},
 			{
 				"inputs": [],
-				"name": "getValue",
-				"outputs": [
-					{
-						"internalType": "int256",
-						"name": "",
-						"type": "int256"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "revokeConsent",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "set",
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_consenter",
+						"type": "address"
+					}
+				],
+				"name": "setConsenter",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_consenter",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_startEnergyData",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_endEnergyData",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_contractValidInDays",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_pricePerHour",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_totalPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "setContractDetails",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -91,11 +116,11 @@
 	},
 	"sources": {
 		"Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContract.sol": {
-			"keccak256": "0xd0e085b7575c3ad13635653fcc4df05adffcf08abc55d51f7efe2c5fba0b2305",
+			"keccak256": "0xb14b3f5879bf18c83cd6323b1a3ffc6d590109ea682db5cf030d27e32ae4f93e",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://f3dbe9ea2c97d8442eaf5b1c26d8b5c2b21a566e73779a287a6c3c5240c8a44f",
-				"dweb:/ipfs/QmU9wWetH7QCKpwWV2QYjQZfLWBbFAU9r51pP7nX6iLamX"
+				"bzz-raw://8f2c7a4e8b2232a7a2f77768748f51d8d9720fd6de3b0e9004c46c550ed8267b",
+				"dweb:/ipfs/QmbCzW2K2TXqVj9B9ZdJpcrYxa1hUs4ScQiApNeHDi8XYJ"
 			]
 		}
 	},
