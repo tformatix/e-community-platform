@@ -13,7 +13,7 @@ cli = typer.Typer()
 
 # web3 object, inject middleware because of private fork of ethereum
 w3 = web3.Web3(web3.HTTPProvider(GOQUORUM_NODE_URL))
-w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+
 
 # CLI COMMANDS #
 # READ ETHEREUM ACCOUNT
@@ -57,6 +57,10 @@ class GoQuorumNode:
 def deploy_new_consent_contract(address_consenter: str = typer.Option(..., "--adr-con", "-ac", help="address of the consenter")):
     """deploys a new consent contract to the blockchain and returns the deployed address"""
 
+    if not w3.isConnected():
+        print("Ethereum Node not running...")
+        return
+
     # unlock account first
     unlock_account(GOQUORUM_NODE)
 
@@ -79,11 +83,13 @@ def deploy_new_consent_contract(address_consenter: str = typer.Option(..., "--ad
 
     # build check from consenter's address
     checksum_address_consenter = w3.toChecksumAddress(address_consenter)
+    w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+    w3.handleRevert = True
 
     # create contract object and setConsenter(address_consenter) functions.greet().call()
-    consent_contract = w3.eth.contract(address=deployed_address, abi=contract_abi, bytecode=contract_bytecode_hex)
+    ConsentContract = w3.eth.contract(address=deployed_address, abi=contract_abi, bytecode=contract_bytecode_hex)
 
-    set_consenter_tx = consent_contract.functions.setConsenter(checksum_address_consenter).transact().build_transaction(
+    constructor_tx = ConsentContract.constructor(checksum_address_consenter).build_transaction(
         {
             'from': GOQUORUM_NODE.accountAddress,
             'nonce': w3.eth.get_transaction_count(GOQUORUM_NODE.accountAddress),
@@ -91,17 +97,15 @@ def deploy_new_consent_contract(address_consenter: str = typer.Option(..., "--ad
         }
     )
 
-    # sign transaction with private key
-    #tx_create = w3.eth.account.sign_transaction(set_consenter_tx, GOQUORUM_NODE.accountPrivateKey)
-    #tx_hash = w3.eth.send_raw_transaction(tx_create.rawTransaction)
+    tx_create = w3.eth.account.sign_transaction(constructor_tx, GOQUORUM_NODE.accountPrivateKey)
+    tx_hash = w3.eth.send_raw_transaction(tx_create.rawTransaction)
+    tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
-    # wait till the transaction got added into a block (mining new block)
-    #tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
-    tx_receipt = w3.eth.wait_for_transaction_receipt(set_consenter_tx)
+    print(f'Tx successful with hash: { tx_receipt.contractAddress }')
 
-    print(f'Tx successful with hash: { tx_receipt.transactionHash.hex() }')
+    ConsentContract = w3.eth.contract(address=tx_receipt.contractAddress, abi=contract_abi, bytecode=contract_bytecode_hex)
 
-    # solidity event listener can now be started
+    print(ConsentContract.functions.getValue().call())
 
 
 @cli.command()

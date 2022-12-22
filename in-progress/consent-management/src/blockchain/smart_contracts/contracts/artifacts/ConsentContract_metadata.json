@@ -6,7 +6,13 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_consenter",
+						"type": "address"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
@@ -24,20 +30,27 @@
 			},
 			{
 				"inputs": [],
+				"name": "getValue",
+				"outputs": [
+					{
+						"internalType": "int256",
+						"name": "",
+						"type": "int256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "revokeConsent",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_consenter",
-						"type": "address"
-					}
-				],
-				"name": "setConsenter",
+				"inputs": [],
+				"name": "set",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -78,11 +91,11 @@
 	},
 	"sources": {
 		"Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContract.sol": {
-			"keccak256": "0x0a29bd576d091e803900b02ed7a2cd1d6d4072ac23144e28042c9415df29ac42",
+			"keccak256": "0xd0e085b7575c3ad13635653fcc4df05adffcf08abc55d51f7efe2c5fba0b2305",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://bcd82a98d8fed8475acd52c1d84025bf84569f44113352d0e514166c2eda0136",
-				"dweb:/ipfs/QmR8MYFND3WTqF6svcd8EYAwsZajytTsM4WZoXb8c34TLp"
+				"bzz-raw://f3dbe9ea2c97d8442eaf5b1c26d8b5c2b21a566e73779a287a6c3c5240c8a44f",
+				"dweb:/ipfs/QmU9wWetH7QCKpwWV2QYjQZfLWBbFAU9r51pP7nX6iLamX"
 			]
 		}
 	},

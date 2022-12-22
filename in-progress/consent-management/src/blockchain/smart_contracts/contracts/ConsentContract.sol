@@ -37,17 +37,21 @@ contract ConsentContract {
     // signature of both parties
     ContractSign private signature;
 
+    int private test;
+
     // set owner of the contract
-    constructor() {
+    constructor(address _consenter) {
         proposer = msg.sender;
         state = STATE.INACTIVE;
+        consenter = _consenter;
     }
 
+    function getValue() public pure returns(int) {
+        return 5;
+    }
 
-    /* set consenter for the contract (source of energy data)
-    */
-    function setConsenter(address _consenter) public onlyOwner {
-        consenter = _consenter;
+    function set() public {
+        test = 5;
     }
 
     /* both parties need to sign the contract inorder to start the energy sharing
