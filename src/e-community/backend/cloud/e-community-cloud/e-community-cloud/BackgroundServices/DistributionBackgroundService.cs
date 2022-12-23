@@ -25,14 +25,14 @@ namespace e_community_cloud.BackgroundServices {
 
                 using (var scope = mServiceScopeFactory.CreateScope()) {
                     var distributionService = scope.ServiceProvider.GetRequiredService<IDistributionService>();
-                    // TODO: Monitoring
+                    // TODO: Monitoring (1)
 
                     switch (minute + delayMinutes) {
                         case 0:
                             // TODO: (7) assigned portions
                             break;
                         case 60 - 2 * Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES:
-                            // request forecast
+                            // (1) request forecast
                             await distributionService.StartDistribution();
                             break;
                         case 60 - Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES:
