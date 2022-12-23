@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.BusinessLogic.Interfaces {
     public interface IDistributionService { 
+        Task StartDistribution();
+
+        Task StartMonitorSession();
+
         Task Distribute(Guid _eCommunityId);
+
     }
 }

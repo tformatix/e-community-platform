@@ -91,9 +91,8 @@ namespace e_community_cloud_lib.Database.Local
         public IList<MeterDataProfile> MeterDataProfiles { get; set; }
 
         /// <summary>
-        /// list of transactions
+        /// list of estimated energy portions for smart meter
         /// </summary>
-        public IList<ECommunityTransaction> ECommunityTransactions { get; set; }
-
+        public IList<SmartMeterPortion> SmartMeterPortions { get; set; }
     }
 }

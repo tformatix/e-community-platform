@@ -4,6 +4,7 @@ using e_community_cloud_lib.Util;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR
 {
@@ -37,5 +38,15 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR
         /// </summary>
         /// <param name="_updateSmartMeterModel">changes to smart meter</param>
         void UpdateSmartMeter(UpdateSmartMeterModel _updateSmartMeterModel);
+
+        /// <summary>
+        /// cloud requests hourly forecast data (load profile and flexibility)
+        /// </summary>
+        void RequestHourlyForecast();
+
+        /// <summary>
+        /// cloud requests meter data for monitoring
+        /// </summary>
+        void RequestMeterDataMonitoring();
     }
 }

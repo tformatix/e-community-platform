@@ -9,6 +9,7 @@ using System.Linq;
 using e_community_cloud_lib.Util.Enums;
 using System.Collections.Generic;
 using e_community_cloud_lib.Util.Extensions;
+using e_community_cloud_lib.Util;
 
 namespace e_community_cloud_lib.Database
 {
@@ -26,9 +27,10 @@ namespace e_community_cloud_lib.Database
         // Community
         public DbSet<ECommunity> ECommunity { get; set; }
         public DbSet<ECommunityMembership> ECommunityMembership { get; set; }
-        public DbSet<ECommunityTransaction> ECommunityTransaction { get; set; }
+        public DbSet<ECommunityDistribution> ECommunityDistribution { get; set; }
+        public DbSet<SmartMeterPortion> SmartMeterPortion { get; set; }
         public DbSet<ECommunityType> ECommunityType { get; set; }
-        public DbSet<MeterDataECommunity> MeterDataECommunity { get; set; }
+
 
         // General
         public DbSet<Language> Language { get; set; }
@@ -59,6 +61,7 @@ namespace e_community_cloud_lib.Database
             // composite keys
             _modelBuilder.Entity<Translation>().HasKey(o => new { o.EventCaseId, o.LanguageId });
             _modelBuilder.Entity<ECommunityMembership>().HasKey(o => new { o.ECommunityId, o.MemberId });
+            _modelBuilder.Entity<SmartMeterPortion>().HasKey(o => new { o.ECommunityDistributionId, o.SmartMeterId });
             _modelBuilder.Entity<MemberFCMToken>().HasKey(o => new { o.MemberId, o.Token });
             _modelBuilder.Entity<GridPriceRateCharge>().HasKey(o => new { o.GridPriceRateId, o.ChargeId });
 
@@ -134,11 +137,6 @@ namespace e_community_cloud_lib.Database
                 .HasOne(x => x.EventCase)
                 .WithMany(x => x.MeterDataProfiles)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-
-            _modelBuilder.Entity<ECommunityTransaction>()
-                .HasOne(x => x.SmartMeter)
-                .WithMany(x => x.ECommunityTransactions)
-                .OnDelete(DeleteBehavior.ClientSetNull);
         }
 
         /// <param name="_memberId">member id</param>
@@ -146,7 +144,7 @@ namespace e_community_cloud_lib.Database
         public Guid? GetECommunityId(Guid? _memberId)
         {
             return ECommunityMembership
-                .FirstOrDefault(x => x.MemberId == _memberId && (x.ECommunityPermission == ECommunityPermission.Admin || x.ECommunityPermission == ECommunityPermission.Member))
+                .FirstOrDefault(x => x.MemberId == _memberId && Constants.ACTIVE_MEMBER_PERMISSIONS.Contains(x.ECommunityPermission))
                 ?.ECommunityId;
         }
     }

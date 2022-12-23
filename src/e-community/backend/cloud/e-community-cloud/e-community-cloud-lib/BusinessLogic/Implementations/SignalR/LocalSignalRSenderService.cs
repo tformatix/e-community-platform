@@ -77,7 +77,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
                         var members = mDb.ECommunityMembership
                             .Include(x => x.Member)
                             .ThenInclude(x => x.SmartMeters)
-                            .Where(x => x.ECommunityId == eCommunityId && (x.ECommunityPermission == ECommunityPermission.Admin || x.ECommunityPermission == ECommunityPermission.Member))
+                            .Where(x => x.ECommunityId == eCommunityId && Constants.ACTIVE_MEMBER_PERMISSIONS.Contains(x.ECommunityPermission))
                             .Select(x => x.Member)
                             .ToList();
 
@@ -171,6 +171,10 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
 
         public void RequestHourlyForecast() {
             mSmartMeterHubContext.Clients.All.RequestHourlyForecast();
+        }
+
+        public void RequestMeterDataMonitoring() {
+            mSmartMeterHubContext.Clients.All.RequestMeterDataMonitoring();
         }
     }
 }

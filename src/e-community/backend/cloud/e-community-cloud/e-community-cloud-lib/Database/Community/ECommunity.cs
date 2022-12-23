@@ -75,8 +75,8 @@ namespace e_community_cloud_lib.Database.Community
         public IList<ECommunityMembership> ECommunityMemberships { get; set; }
 
         /// <summary>
-        /// list of metering data of the eCommunity
+        /// list of energy distributions
         /// </summary>
-        public IList<MeterDataECommunity> MeterDataECommunity { get; set; }
+        public IList<ECommunityDistribution> ECommunityDistributions { get; set; }
     }
 }
