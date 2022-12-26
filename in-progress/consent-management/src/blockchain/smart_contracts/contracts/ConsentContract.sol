@@ -2,24 +2,19 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-
+// factory for new consent contracts
+// used because factory only need to be deployed once
 contract ConsentContractFactory {
 
     ConsentContract[] private contracts;
 
-    function createConsentContract() public {
+    // creates a new consent contract and returns its address
+    function createConsentContract() public returns(address) {
         ConsentContract consentContract = new ConsentContract();
 
         contracts.push(consentContract);
 
-    }
-
-    function getContractAddress() public view returns(address) {
-        return address(contracts[0]);
-    }
-
-    function set() public pure returns(int) {
-        return 1;
+        return address(consentContract);
     }
 }
 
@@ -55,11 +50,7 @@ contract ConsentContract {
         proposer = msg.sender;
     }
 
-    // set the consenters address
-    function setConsenter(address _consenter) public {
-        consenter = _consenter;
-    }
-
+    // set details about the contract
     function setContractDetails(
         address _consenter, 
         uint _startEnergyData, 
@@ -85,6 +76,8 @@ contract ConsentContract {
         if (msg.sender == consenter) { signature.signedByConsenter = true; }
 
         if (signature.signedByProposer && signature.signedByConsenter) {
+            // TODO: calucalte contract validity time (contractValidInDays) upon both parties signed date
+            uint dat = block.timestamp + 3 minutes;
             emit ApprovedContract();
         }
     }

@@ -35,19 +35,6 @@
 						"internalType": "address",
 						"name": "_consenter",
 						"type": "address"
-					}
-				],
-				"name": "setConsenter",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_consenter",
-						"type": "address"
 					},
 					{
 						"internalType": "uint256",
@@ -116,11 +103,11 @@
 	},
 	"sources": {
 		"Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContract.sol": {
-			"keccak256": "0xb14b3f5879bf18c83cd6323b1a3ffc6d590109ea682db5cf030d27e32ae4f93e",
+			"keccak256": "0x33761931c7256ea8a1ccf816b831786cd73a8bc63a0df36a6b83f4cafc7b9aa1",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://8f2c7a4e8b2232a7a2f77768748f51d8d9720fd6de3b0e9004c46c550ed8267b",
-				"dweb:/ipfs/QmbCzW2K2TXqVj9B9ZdJpcrYxa1hUs4ScQiApNeHDi8XYJ"
+				"bzz-raw://b16023cd638448821de2269df02ebb9c964b916ecabef2e4f139196e882d22c5",
+				"dweb:/ipfs/QmW3VJADaAh2asuoVj1FzhFiRnqSZGprMfUUZQmeskCFYW"
 			]
 		}
 	},
