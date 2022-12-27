@@ -1,6 +1,6 @@
 ﻿using e_community_local_lib.BusinessLogic.Interfaces;
 using e_community_local_lib.BusinessLogic.Interfaces.SignalR;
-using e_community_local_lib.CloudDtos.Local;
+using e_community_local_lib.CloudData.Local;
 using e_community_local_lib.Endpoints.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +10,9 @@ using System;
 using System.Threading.Tasks;
 using System.Threading;
 using e_community_local_lib.Util;
-using e_community_local_lib.CloudDtos;
+using e_community_local_lib.CloudData;
+using e_community_local_lib.BusinessLogic.Implementations;
+using e_community_local_lib.BusinessLogic.Interfaces.REST;
 
 namespace e_community_local_lib.Endpoints {
     /// <summary>
@@ -25,6 +27,8 @@ namespace e_community_local_lib.Endpoints {
         private IHubConnectionService mHubConnectionService;
         private ICloudSignalRSenderService mCloudSignalRSenderService;
         private ILocalChangesService mLocalChangesService;
+        private IForecastService mForecastService;
+        private ICloudRESTService mCloudRESTService;
         private static bool mRTDataRequested = false;
         private static bool mSendBlockchainAccountBalance = false;
 
@@ -41,6 +45,8 @@ namespace e_community_local_lib.Endpoints {
                 mHubConnectionService = scope.ServiceProvider.GetRequiredService<IHubConnectionService>();
                 mCloudSignalRSenderService = scope.ServiceProvider.GetRequiredService<ICloudSignalRSenderService>();
                 mLocalChangesService = scope.ServiceProvider.GetRequiredService<ILocalChangesService>();
+                mCloudRESTService = scope.ServiceProvider.GetRequiredService<ICloudRESTService>();
+                mForecastService = scope.ServiceProvider.GetRequiredService<IForecastService>();
 
                 // TODO: @Michi slave starten
 
@@ -130,6 +136,17 @@ namespace e_community_local_lib.Endpoints {
         {
             Log.Information("CloudBackgroundService::BlockchainAccountBalance requested");
             mSendBlockchainAccountBalance = true;
+            return Task.CompletedTask;
+        }
+
+        public async Task RequestHourlyForecast() {
+            Log.Information("CloudBackgroundService::Hourly forecast requested");
+            await mCloudRESTService.SendHourlyForecast(await mForecastService.GetHourlyForecast());
+        }
+
+        public Task RequestMeterDataMonitoring() {
+            Log.Information("CloudBackgroundService::Meter Data requested for monitoring");
+            // TODO
             return Task.CompletedTask;
         }
     }

@@ -68,10 +68,10 @@ namespace e_community_local
             _services.AddSingleton<IHubConnectionService, HubConnectionService>();
             _services.AddScoped<ICloudBackgroundService, CloudBackgroundService>();
             _services.AddScoped<ICloudSignalRSenderService, CloudSignalRSenderService>();
-            _services.AddScoped<ICloudSignalRReceiverService, CloudSignalRReceiverService>();
             _services.AddScoped<ICloudRESTService, CloudRESTService>();
             _services.AddScoped<IPairingService, PairingService>();
             _services.AddScoped<ILocalChangesService, LocalChangesService>();
+            _services.AddScoped<IForecastService, ForecastService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace e_community_local_lib.CloudDtos.Local
+namespace e_community_local_lib.CloudData.Local
 {
     /// <summary>
     /// table for storing the "users"

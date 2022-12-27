@@ -1,5 +1,5 @@
-﻿using e_community_local_lib.CloudDtos;
-using e_community_local_lib.CloudDtos.Local;
+﻿using e_community_local_lib.CloudData;
+using e_community_local_lib.CloudData.Local;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -43,5 +43,15 @@ namespace e_community_local_lib.Endpoints.Interfaces
         /// cloud requests information about the local ethereum account (balances)
         /// </summary>
         Task RequestBlockchainAccountBalance();
+
+        /// <summary>
+        /// cloud requests hourly forecast data (load profile and flexibility)
+        /// </summary>
+        Task RequestHourlyForecast();
+
+        /// <summary>
+        /// cloud requests meter data for monitoring
+        /// </summary>
+        Task RequestMeterDataMonitoring();
     }
 }

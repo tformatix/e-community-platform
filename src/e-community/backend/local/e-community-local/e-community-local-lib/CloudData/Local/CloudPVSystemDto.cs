@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace e_community_local_lib.CloudDtos.Local
+namespace e_community_local_lib.CloudData.Local
 {
     /// <summary>
     /// photovoltaic system (energy from the sun) 

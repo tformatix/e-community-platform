@@ -37,6 +37,7 @@ namespace e_community_cloud.BackgroundServices {
                             break;
                         case 60 - Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES:
                             // TODO: (3) portions for changing/accepting
+                            await distributionService.Distribute();
                             break;
                     }
                 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_community_local_lib.CloudDtos
+namespace e_community_local_lib.CloudData
 {
     public class BufferedMeterDataRTDto
     {

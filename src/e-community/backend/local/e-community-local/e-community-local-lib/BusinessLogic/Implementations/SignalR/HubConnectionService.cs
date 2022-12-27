@@ -1,7 +1,7 @@
 ﻿using e_community_local_lib.BusinessLogic.Interfaces.REST;
 using e_community_local_lib.BusinessLogic.Interfaces.SignalR;
-using e_community_local_lib.CloudDtos;
-using e_community_local_lib.CloudDtos.Local;
+using e_community_local_lib.CloudData;
+using e_community_local_lib.CloudData.Local;
 using e_community_local_lib.Endpoints;
 using e_community_local_lib.Endpoints.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -69,7 +69,9 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
                         mHubConnection?.On(nameof(ICloudSignalRReceiver.UpdateSmartMeter),
                             (CloudSmartMeterDto _cloudSmartMeterDto) => cloudBackgroundService.UpdateSmartMeter(_cloudSmartMeterDto)
                         );
-                        
+                        mHubConnection?.On(nameof(ICloudSignalRReceiver.RequestHourlyForecast), () => cloudBackgroundService.RequestHourlyForecast());
+                        mHubConnection?.On(nameof(ICloudSignalRReceiver.RequestMeterDataMonitoring), () => cloudBackgroundService.RequestMeterDataMonitoring());
+
                         // blockchain connections
                         mHubConnection?.On(nameof(ICloudSignalRReceiver.RequestBlockchainAccountBalance),
                             () => cloudBackgroundService.RequestBlockchainAccountBalance());

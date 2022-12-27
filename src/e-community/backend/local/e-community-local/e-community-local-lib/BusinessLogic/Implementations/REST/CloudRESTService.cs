@@ -1,6 +1,6 @@
 ﻿using e_community_local_lib.BusinessLogic.Interfaces.REST;
-using e_community_local_lib.CloudDtos;
-using e_community_local_lib.CloudDtos.Local;
+using e_community_local_lib.CloudData;
+using e_community_local_lib.CloudData.Local;
 using e_community_local_lib.Database;
 using e_community_local_lib.Database.General;
 using Microsoft.EntityFrameworkCore;
@@ -82,6 +82,14 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST
                 }
                 return null;
             }
+        }
+
+        public async Task SendHourlyForecast(ForecastModel _forecastModel) {
+            Log.Information("CloudRESTService::Send hourly forecast");
+
+            var forecastPath = mSection.GetValue<string>("Forecast");
+            await mHttpClient.PostAsync($"{mBasePath}/{forecastPath}",
+                new StringContent(JsonConvert.SerializeObject(_forecastModel)));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using e_community_cloud.Dtos;
+using e_community_cloud_lib.BusinessLogic.Interfaces;
 using e_community_cloud_lib.Models.Distribution;
 using e_community_cloud_lib.Util.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -11,15 +12,22 @@ namespace e_community_cloud.Controllers
     [ApiController]
     [Route("[controller]/[action]")]
     public class DistributionController : ControllerBase {
+
+        private readonly IDistributionService mDistributionService;
+
+        public DistributionController(IDistributionService _distributionService) {
+            mDistributionService = _distributionService;
+        }
+
         [ProducesResponseType(typeof(OkDto), 200)]
         [ProducesResponseType(typeof(ErrorDto), 400)]
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> HourlyForecast([FromBody] ForecastModel _forecastModel) {
-            var memberId = User.GetMemberId();
-            Log.Information($"Distribution/HourlyForecast::{memberId}");
+            Log.Information($"Distribution/HourlyForecast::");
 
-            // TODO (2)
+            // (2) forecast arrived
+            await mDistributionService.ForecastArrived(_forecastModel);
 
             return Ok(new OkDto());
         }

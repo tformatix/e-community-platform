@@ -1,5 +1,5 @@
 ﻿
-using e_community_local_lib.CloudDtos.Local;
+using e_community_local_lib.CloudData.Local;
 using System;
 using System.Collections.Generic;
 using System.Linq;

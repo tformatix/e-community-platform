@@ -1,5 +1,5 @@
-﻿using e_community_local_lib.CloudDtos;
-using e_community_local_lib.CloudDtos.Local;
+﻿using e_community_local_lib.CloudData;
+using e_community_local_lib.CloudData.Local;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,5 +29,12 @@ namespace e_community_local_lib.BusinessLogic.Interfaces.REST
         /// <param name="accessToken">access token</param>
         /// <returns>all necessary data for local usage from cloud</returns>
         Task<CloudLocalDto> GetLocalDataPairing(Guid _smartMeterId, String accessToken);
+
+        /// <summary>
+        /// sends hourly forecast to cloud
+        /// </summary>
+        /// <param name="_forecastModel">load profile and flexibility</param>
+        /// <returns></returns>
+        Task SendHourlyForecast(ForecastModel _forecastModel);
     }
 }

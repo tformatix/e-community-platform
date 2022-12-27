@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace e_community_local_lib.CloudDtos.Local
+namespace e_community_local_lib.CloudData.Local
 {
     /// <summary>
     /// some charges a member has to do (e.g. electricity charge, green electricity, ...)

@@ -1,5 +1,5 @@
 ﻿using e_community_local_lib.BusinessLogic.Interfaces;
-using e_community_local_lib.CloudDtos.Local;
+using e_community_local_lib.CloudData.Local;
 using e_community_local_lib.Database;
 using e_community_local_lib.Database.General;
 using e_community_local_lib.Util.Extensions;
