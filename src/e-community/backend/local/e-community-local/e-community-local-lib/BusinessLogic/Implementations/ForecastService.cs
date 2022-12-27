@@ -20,16 +20,17 @@ namespace e_community_local_lib.BusinessLogic.Implementations {
             var smartMeter = mDb.SmartMeter.FirstOrDefaultAsync();
 
             var histCount = await mDb.MeterDataHistory.CountAsync();
-            if (histCount >= 2) {
+            if (histCount >= 5) {
+                // we need 5 values for 1 hour
                 var descOrdered = mDb.MeterDataHistory
                     .OrderByDescending(x => x.Id);
 
-                var last = descOrdered.FirstOrDefault();
-                var secondLast = descOrdered.Skip(1).FirstOrDefault();
+                var currentHour = descOrdered.FirstOrDefault();
+                var lastHour = descOrdered.Skip(4).FirstOrDefault();
 
                 return new() {
-                    ActiveEnergyMinus = last.ActiveEnergyMinus - secondLast.ActiveEnergyMinus,
-                    ActiveEnergyPlus = last.ActiveEnergyPlus - secondLast.ActiveEnergyPlus,
+                    ActiveEnergyMinus = currentHour.ActiveEnergyMinus - lastHour.ActiveEnergyMinus,
+                    ActiveEnergyPlus = currentHour.ActiveEnergyPlus - lastHour.ActiveEnergyPlus,
                     Flexibility = 0,
                     SmartMeterId = (await smartMeter).Id
                 };

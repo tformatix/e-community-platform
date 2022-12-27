@@ -29,14 +29,19 @@ namespace e_community_cloud_lib.Database.Community {
         public int? ActualActiveEnergyPlus { get; set; }
 
         // <summary>
-        /// portion (consumption)
+        /// deviation from estimated A+ (consumption)
         /// </summary>
-        public int? Portion { get; set; }
+        public int? Deviation { get; set; }
 
         /// <summary>
         /// flexibility
         /// </summary>
         public int? Flexibility { get; set; }
+
+        /// <summary>
+        /// is portion optimized
+        /// </summary>
+        public bool Optimized { get; set; }
 
         /// <summary>
         /// did user acknowledged estimated consumption
