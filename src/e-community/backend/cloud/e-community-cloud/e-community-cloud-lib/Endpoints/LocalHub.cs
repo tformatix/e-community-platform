@@ -85,5 +85,18 @@ namespace e_community_cloud_lib.Endpoints {
             }
             return Task.CompletedTask;
         }
+
+        public Task ReceiveBlockchainAccountBalance(BlockchainAccountBalanceDto _blockchainAccountBalance)
+        {
+            Log.Information($"Endpoint/Local::ReceivedBlockchainAccountBalance #{_blockchainAccountBalance}");
+            var memberId = Context.User.GetMemberId();
+
+            if (memberId != null)
+            {
+                mLocalSignalRReceiverService.ReceivedBlockchainAccountBalance((Guid) memberId, _blockchainAccountBalance);
+            }
+            
+            return Task.CompletedTask;
+        }
     }
 }

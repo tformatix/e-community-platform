@@ -27,5 +27,12 @@ namespace e_community_local_lib.Endpoints.Interfaces
         /// real time timer elapsed (end device must extend real time sessions after 5 minutes)
         /// </summary>
         Task TimerElapsed();
+
+        /// <summary>
+        /// cloud receives ethereum account balances
+        /// </summary>
+        /// <param name="_blockchainAccountBalance"></param>
+        /// <returns></returns>
+        Task ReceiveBlockchainAccountDetails(BlockchainAccountBalanceDto _blockchainAccountBalance);
     }
 }

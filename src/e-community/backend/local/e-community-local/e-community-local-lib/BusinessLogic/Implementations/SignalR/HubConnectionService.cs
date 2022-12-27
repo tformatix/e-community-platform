@@ -69,6 +69,10 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
                         mHubConnection?.On(nameof(ICloudSignalRReceiver.UpdateSmartMeter),
                             (CloudSmartMeterDto _cloudSmartMeterDto) => cloudBackgroundService.UpdateSmartMeter(_cloudSmartMeterDto)
                         );
+                        
+                        // blockchain connections
+                        mHubConnection?.On(nameof(ICloudSignalRReceiver.RequestBlockchainAccountBalance),
+                            () => cloudBackgroundService.RequestBlockchainAccountBalance());
 
                         await mHubConnection?.StartAsync();
                         if (mHubConnection?.State == HubConnectionState.Connected) {

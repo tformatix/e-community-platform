@@ -38,5 +38,10 @@ namespace e_community_local_lib.Endpoints.Interfaces
         /// <param name="_localSmartMeterDto">smart meter specific data</param>
         /// <returns></returns>
         Task UpdateSmartMeter(CloudSmartMeterDto _localSmartMeterDto);
+
+        /// <summary>
+        /// cloud requests information about the local ethereum account (balances)
+        /// </summary>
+        Task RequestBlockchainAccountBalance();
     }
 }

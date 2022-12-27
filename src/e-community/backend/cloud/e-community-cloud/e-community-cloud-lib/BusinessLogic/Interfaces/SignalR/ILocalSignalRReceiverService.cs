@@ -22,5 +22,11 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR
         /// </summary>
         /// <param name="memberId">member id</param>
         void TimerElapsed(Guid memberId);
+
+        /// <summary>
+        /// handle received ethereum account balance
+        /// </summary>
+        /// <param name="memberId">member id</param>
+        void ReceivedBlockchainAccountBalance(Guid memberId, BlockchainAccountBalanceDto _blockchainAccountBalance);
     }
 }

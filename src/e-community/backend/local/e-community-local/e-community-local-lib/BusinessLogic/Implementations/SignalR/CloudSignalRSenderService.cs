@@ -48,5 +48,23 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
         public async Task TimerElapsed() {
             await mHubConnectionService.InvokeSignalR(nameof(ICloudSignalRSender.TimerElapsed));
         }
+
+        public async Task SendBlockchainAccountBalance()
+        {
+            // TODO call python script and get account balances
+            Log.Information($"CloudSignalRSenderService::SendBlockchainAccountBalance()");
+
+            var blockchainAccountBalance = new BlockchainAccountBalanceDto
+            {
+                Received = "5 ETH",
+                Sent = "1 ETH",
+                Balance = "55 ETH"
+            };
+
+            await mHubConnectionService.InvokeSignalR(
+                nameof(ICloudSignalRSender.ReceiveBlockchainAccountDetails),
+                blockchainAccountBalance.CopyPropertiesTo(new BlockchainAccountBalanceDto())
+            );
+        }
     }
 }

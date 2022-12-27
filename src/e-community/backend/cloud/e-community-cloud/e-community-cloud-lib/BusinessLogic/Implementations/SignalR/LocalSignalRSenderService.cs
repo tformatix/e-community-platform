@@ -161,7 +161,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
                     mRTListenerSingleton.RTListeners.Remove(memberId); // remove from listeners dictionary
                 }
             }
-
         }
 
         public void UpdateSmartMeter(UpdateSmartMeterModel _updateSmartMeterModel) {
@@ -175,6 +174,33 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
 
         public void RequestMeterDataMonitoring() {
             mSmartMeterHubContext.Clients.All.RequestMeterDataMonitoring();
+        }
+
+        public void RequestBlockchainAccountBalance(Guid? _memberId)
+        {
+            if (_memberId == null) {
+                throw new ServiceException(ServiceException.Type.MEMBER_ID_NOT_RESOLVABLE);
+            }
+            var memberId = (Guid)_memberId;
+            
+            var listenerDataMember = mRTListenerSingleton.RTListeners.GetValueOrDefault(memberId);
+
+            if (listenerDataMember == null)
+            {
+                listenerDataMember = new RTListenerData() {};
+                
+                listenerDataMember.SignalRGroupName = memberId.GetGroupName(GroupType.Member);
+                listenerDataMember.SmartMeterCount = mDb.Member
+                    .Include(x => x.SmartMeters)
+                    .Where(x => x.Id == memberId)
+                    .Select(x => x.SmartMeters)
+                    .Count();
+                listenerDataMember.SmartMeterCountMember = listenerDataMember.SmartMeterCount;
+                mRTListenerSingleton.RTListeners.Add(memberId, listenerDataMember);
+            }
+            
+            Log.Information("RequestBlockchainAccountBalance()");
+            mSmartMeterHubContext.Clients.Groups(listenerDataMember.SignalRGroupName).RequestBlockchainAccountBalance();
         }
     }
 }

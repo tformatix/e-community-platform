@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
     public class RTListenerSignalRSenderService : IRTListenerSignalRSenderService {
@@ -109,6 +110,16 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
                .ReceiveRTData(_meterData);
             mLocalHubContext.Clients.Groups(_memberId.GetGroupName(GroupType.Member))
                .ReceiveRTData(_meterData);
+        }
+
+        public void SendToMemberBlockchainAccountBalance(Guid _memberId, BlockchainAccountBalanceDto _blockchainAccountBalance)
+        {
+            Log.Information($"Blockchain/SendToMemberBlockchainAccountBalance::{_blockchainAccountBalance}");
+            
+            mEndDeviceHubContext.Clients.Groups(_memberId.GetGroupName(GroupType.Member))
+                .ReceiveBlockchainAccountBalance(_blockchainAccountBalance);
+            mLocalHubContext.Clients.Groups(_memberId.GetGroupName(GroupType.Member))
+                .ReceiveBlockchainAccountBalance(_blockchainAccountBalance);
         }
     }
 }

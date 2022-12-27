@@ -15,5 +15,11 @@ namespace e_community_cloud_lib.Endpoints.Interfaces
         /// cloud sends buffered real time data from smart meters to end device
         /// </summary>
         Task ReceiveRTData(BufferedMeterDataRTDto _meterData);
+
+        /// <summary>
+        /// cloud sends ethereum account balance to end device
+        /// </summary>
+        /// <returns></returns>
+        Task ReceiveBlockchainAccountBalance(BlockchainAccountBalanceDto _blockchainAccountBalance);
     }
 }

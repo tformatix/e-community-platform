@@ -27,5 +27,11 @@ namespace e_community_local_lib.BusinessLogic.Interfaces.SignalR
         /// real time timer elapsed (end device must extend real time sessions after 5 minutes)
         /// </summary>
         Task TimerElapsed();
+
+        /// <summary>
+        /// send ethereum account balance
+        /// </summary>
+        /// <returns></returns>
+        Task SendBlockchainAccountBalance();
     }
 }

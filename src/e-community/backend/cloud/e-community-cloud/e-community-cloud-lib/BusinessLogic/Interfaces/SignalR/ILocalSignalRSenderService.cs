@@ -48,5 +48,10 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR
         /// cloud requests meter data for monitoring
         /// </summary>
         void RequestMeterDataMonitoring();
+
+        /// <summary>
+        /// cloud requests information about the local ethereum account (balances)
+        /// </summary>
+        void RequestBlockchainAccountBalance(Guid? _memberId);
     }
 }

@@ -109,5 +109,11 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
                 }
             }
         }
+
+        public void ReceivedBlockchainAccountBalance(Guid _memberId, BlockchainAccountBalanceDto _blockchainAccountBalance)
+        {
+            var blockchainAccountBalance = _blockchainAccountBalance.CopyPropertiesTo(new BlockchainAccountBalanceDto());
+            mRTListenerSignalRSenderService.SendToMemberBlockchainAccountBalance(_memberId, blockchainAccountBalance);
+        }
     }
 }

@@ -48,5 +48,16 @@ namespace e_community_cloud_lib.Endpoints.Interfaces
         /// cloud requests meter data for monitoring
         /// </summary>
         Task RequestMeterDataMonitoring();
+
+        /// <summary>
+        /// cloud requests information about the local ethereum account (balances)
+        /// </summary>
+        Task RequestBlockchainAccountBalance();
+
+        /// <summary>
+        /// cloud receives information about the local ethereum account (balances)
+        /// </summary>
+        /// <returns></returns>
+        Task ReceiveBlockchainAccountBalance(BlockchainAccountBalanceDto _blockchainAccountBalance);
     }
 }

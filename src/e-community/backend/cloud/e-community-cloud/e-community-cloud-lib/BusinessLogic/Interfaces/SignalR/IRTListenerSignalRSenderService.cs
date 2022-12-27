@@ -22,5 +22,11 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR {
         /// <param name="_meterData">meter data</param>
         /// <param name="_memberId">member id</param>
         void SendToMember(Guid _memberId, BufferedMeterDataRTDto _meterData);
+
+        /// <summary>
+        /// send ethereum account balance to member device
+        /// </summary>
+        /// <param name="_memberId"></param>
+        void SendToMemberBlockchainAccountBalance(Guid _memberId, BlockchainAccountBalanceDto _blockchainAccountBalance);
     }
 }
