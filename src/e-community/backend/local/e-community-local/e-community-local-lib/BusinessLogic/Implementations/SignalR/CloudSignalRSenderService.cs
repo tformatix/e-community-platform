@@ -10,9 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using e_community_local_lib.Util;
 
 namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
     public class CloudSignalRSenderService : ICloudSignalRSenderService {
@@ -52,14 +54,27 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
         public async Task SendBlockchainAccountBalance()
         {
             // TODO call python script and get account balances
-            Log.Information($"CloudSignalRSenderService::SendBlockchainAccountBalance()");
+            Process processAccountBalance = new Process();
+
+            processAccountBalance.StartInfo = new ProcessStartInfo(Constants.PYTHON_EXE, Constants.GET_ACCOUNT_BALANCE)
+            {
+                RedirectStandardOutput = true
+            };
+            processAccountBalance.Start();
+
+            string output = processAccountBalance.StandardOutput.ReadToEnd();
+
+            processAccountBalance.WaitForExit();
+            processAccountBalance.Close();
 
             var blockchainAccountBalance = new BlockchainAccountBalanceDto
             {
                 Received = "5 ETH",
                 Sent = "1 ETH",
-                Balance = "55 ETH"
+                Balance = output
             };
+            
+            Log.Information($"CloudSignalRSenderService::SendBlockchainAccountBalance()");
 
             await mHubConnectionService.InvokeSignalR(
                 nameof(ICloudSignalRSender.ReceiveBlockchainAccountDetails),

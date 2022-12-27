@@ -18,9 +18,9 @@ w3.handleRevert = True
 
 # CLI COMMANDS #
 # READ ETHEREUM ACCOUNT
-GOQUORUM_READ_ADDRESS = "cat $GOQUORUM_NODE/data/keystore/accountAddress"
-GOQUORUM_READ_PASSWORD = "cat $GOQUORUM_NODE/data/keystore/accountPassword"
-GOQUORUM_READ_PRIVATE_KEY = "cat $GOQUORUM_NODE/data/keystore/accountPrivateKey"
+GOQUORUM_READ_ADDRESS = "cat /home/pi/blockchain/Node/data/keystore/accountAddress"
+GOQUORUM_READ_PASSWORD = "cat /home/pi/blockchain/Node/data/keystore/accountPassword"
+GOQUORUM_READ_PRIVATE_KEY = "cat /home/pi/blockchain/Node/data/keystore/accountPrivateKey"
 
 # TRUFFLE #
 # deploy new consent contract
@@ -153,14 +153,19 @@ def account_unlock():
 def account_balance():
     """returns the current balance of the ethereum account in ETH"""
 
+    if not w3.isConnected():
+        print("Ethereum Node not running...")
+        return
+
     account_balance_read = os.popen(GOQUORUM_ACCOUNT_BALANCE % (GOQUORUM_NODE.accountAddress, GOQUORUM_NODE_URL))
     account_balance = json.loads(account_balance_read.read())
 
     if "error" in account_balance:
         print("ERROR: check configuration")
+        return
     elif account_balance["result"]:
-        eth_value = literal_eval(account_balance["result"])
-        print(f'{str(eth_value)} ETH')
+        balance = w3.fromWei(literal_eval(account_balance["result"]), 'ether')
+        print(balance)
 
 
 def get_account_details():

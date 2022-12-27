@@ -45,6 +45,8 @@ import at.fhooe.ecommunity.ui.screen.home.search.SearchViewModel
 import at.fhooe.ecommunity.ui.screen.profile.ProfileScreen
 import at.fhooe.ecommunity.ui.screen.profile.ProfileViewModel
 import at.fhooe.ecommunity.ui.screen.profile.pairing.*
+import at.fhooe.ecommunity.ui.screen.sharing.SharingScreen
+import at.fhooe.ecommunity.ui.screen.sharing.SharingViewModel
 import at.fhooe.ecommunity.ui.theme.ECommunityTheme
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
@@ -202,6 +204,9 @@ private fun MainScreenNavigationConfigurations(
         }
         composable(Screen.ECommunity.route) {
             ECommunityScreen(ECommunityViewModel(application), navController)
+        }
+        composable(Screen.Sharing.route) {
+            SharingScreen(SharingViewModel(application), navController)
         }
         composable(Screen.Profile.route) {
             ProfileScreen(ProfileViewModel(application), navController)

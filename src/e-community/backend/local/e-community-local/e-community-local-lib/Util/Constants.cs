@@ -11,6 +11,8 @@ namespace e_community_local_lib.Util
         public const string CONNECTIVITY_TEST_URL = "http://google.com/generate_204";
         
         public const string PYTHON_EXE = @"/usr/bin/python3";
+        
+        // PAIRING Constants
 
         public const string CONNECT_NETWORK_COMMAND = "python3 /home/michael/Documents/dev/FH/4_Semester/DAB/Solr/SliderR/app.py start --stop-all";
 
@@ -23,6 +25,10 @@ namespace e_community_local_lib.Util
         public const string GET_WIFI_SSID = "Util/Extensions/Python/networking.py get-wifi-ssid";
         
         public const string STATUS_ETH0_UP = "up";
+        
+        // BLOCKCHAIN Constants
+
+        public const string GET_ACCOUNT_BALANCE = "Util/Extensions/Python/goquorum.py account-balance";
 
         public const int RT_EXTEND_MILLISECONDS = 360000; // 6 minutes
     }
