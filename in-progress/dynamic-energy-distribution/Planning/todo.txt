@@ -7,3 +7,9 @@ OpenNotification
 Monitoring
 - ActiveEnergyPlus
 - ActiveEnergyMinus
+
+TODO
+- Error Checking
+- Open Notification
+- APP
+- Monitoring
