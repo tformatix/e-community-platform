@@ -18,39 +18,33 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_community_local_lib.BusinessLogic.Implementations.REST
-{
-    public class CloudRESTService : ICloudRESTService
-    {
+namespace e_community_local_lib.BusinessLogic.Implementations.REST {
+    public class CloudRESTService : ICloudRESTService {
         private readonly ECommunityLocalContext mDb;
         private readonly IConfiguration mConfiguration;
         private readonly IConfigurationSection mSection;
         private readonly string mBasePath;
         private static readonly HttpClient mHttpClient = new();
 
-        public CloudRESTService(IConfiguration _configuration, ECommunityLocalContext _db)
-        {
+        public CloudRESTService(IConfiguration _configuration, ECommunityLocalContext _db) {
             mDb = _db;
             mConfiguration = _configuration;
             mSection = mConfiguration.GetSection("CloudPaths");
             mBasePath = mSection.GetValue<string>("Base");
         }
 
-        public async Task<LoginDto> Refresh(string _refreshToken)
-        {
+        public async Task<LoginDto> Refresh(string _refreshToken) {
             Log.Information("CloudRESTService::Refresh Token");
             var refreshPath = mSection.GetValue<string>("Refresh");
             var response = await mHttpClient.PostAsync($"{mBasePath}/{refreshPath}",
                 new StringContent($"\"{_refreshToken}\"", Encoding.UTF8, "application/json"));
-            if (response.IsSuccessStatusCode)
-            {
+            if (response.IsSuccessStatusCode) {
                 var result = response.Content.ReadAsStringAsync().Result;
                 var login = JsonConvert.DeserializeObject<LoginDto>(result);
 
                 // update credentials
                 mDb.Credential.RemoveRange(mDb.Credential);
-                mDb.Credential.Add(new Credential()
-                {
+                mDb.Credential.Add(new Credential() {
                     AccessToken = login.AccessToken,
                     RefreshToken = login.RefreshToken
                 });
@@ -61,28 +55,24 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST
             return null;
         }
 
-        public async Task<LoginDto> RefreshFromDb()
-        {
+        public async Task<LoginDto> RefreshFromDb() {
             var credentials = await mDb.Credential.FirstOrDefaultAsync();
             if (credentials == null)
                 return null;
             return await Refresh(credentials.RefreshToken);
         }
 
-        public async Task<CloudLocalDto> GetLocalDataPairing(Guid _smartMeterId, string _refreshToken)
-        {
+        public async Task<CloudLocalDto> GetLocalDataPairing(Guid _smartMeterId, string _refreshToken) {
             Log.Information("CloudRESTService::Get Local Data");
             var login = await Refresh(_refreshToken);
             if (login == null) {
                 throw new ServiceException(ServiceException.Type.INVALID_REFRESH_TOKEN);
             }
             var pairingPath = mSection.GetValue<string>("Pairing");
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{mBasePath}/{pairingPath}{_smartMeterId}"))
-            {
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{mBasePath}/{pairingPath}{_smartMeterId}")) {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
                 var response = await mHttpClient.SendAsync(requestMessage);
-                if (response.IsSuccessStatusCode)
-                {
+                if (response.IsSuccessStatusCode) {
                     var result = response.Content.ReadAsStringAsync().Result;
                     return JsonConvert.DeserializeObject<CloudLocalDto>(result);
                 }
@@ -104,6 +94,34 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST
                     requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
 
                     var response = await mHttpClient.SendAsync(requestMessage);
+                }
+            }
+        }
+
+        public async Task SendMeterDataMonitoring() {
+            Log.Information("CloudRESTService::Send meter data for monitoring");
+
+            var login = await RefreshFromDb();
+            if (login == null) {
+                Log.Error("CloudRESTService::Refreshing Failed");
+            }
+            else {
+                var meterData = await mDb.MeterDataHistory
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefaultAsync();
+                if (meterData != null) {
+                    var monitoringPath = mSection.GetValue<string>("MeterDataMonitoring");
+                    var monitoringModel = new MeterDataMonitoringModel() {
+                        ActiveEnergyMinus = meterData.ActiveEnergyMinus,
+                        ActiveEnergyPlus = meterData.ActiveEnergyPlus,
+                    };
+
+                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{mBasePath}/{monitoringPath}")) {
+                        requestMessage.Content = new StringContent(JsonConvert.SerializeObject(monitoringModel), Encoding.UTF8, "application/json");
+                        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
+
+                        var response = await mHttpClient.SendAsync(requestMessage);
+                    }
                 }
             }
         }

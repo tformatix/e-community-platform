@@ -34,7 +34,11 @@ namespace e_community_local_lib.BusinessLogic.Interfaces.REST
         /// sends hourly forecast to cloud
         /// </summary>
         /// <param name="_forecastModel">load profile and flexibility</param>
-        /// <returns></returns>
         Task SendHourlyForecast(ForecastModel _forecastModel);
+
+        /// <summary>
+        /// sends meter data for monitoring
+        /// </summary>
+        Task SendMeterDataMonitoring();
     }
 }

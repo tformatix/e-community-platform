@@ -144,10 +144,13 @@ namespace e_community_local_lib.Endpoints {
             }
         }
 
-        public Task RequestMeterDataMonitoring() {
+        public async Task RequestMeterDataMonitoring() {
             Log.Information("CloudBackgroundService::Meter Data requested for monitoring");
-            // TODO
-            return Task.CompletedTask;
+
+            using (var scope = mServiceScopeFactory.CreateScope()) {
+                var cloudRESTService = scope.ServiceProvider.GetRequiredService<ICloudRESTService>();
+                await cloudRESTService.SendMeterDataMonitoring();
+            }
         }
     }
 }

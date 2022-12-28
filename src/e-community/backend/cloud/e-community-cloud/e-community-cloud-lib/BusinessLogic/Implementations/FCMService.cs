@@ -15,7 +15,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         private readonly ECommunityCloudContext mDb;
         private readonly IConfiguration mConfiguration;
 
-
         public FCMService(ECommunityCloudContext _db, IConfiguration _configuration) {
             mDb = _db;
             mConfiguration = _configuration;

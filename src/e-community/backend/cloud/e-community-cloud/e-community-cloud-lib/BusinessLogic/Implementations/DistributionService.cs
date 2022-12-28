@@ -80,6 +80,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 smartMeterPortion.EstimatedActiveEnergyMinus = _forecastModel.ActiveEnergyMinus;
                 smartMeterPortion.EstimatedActiveEnergyPlus = _forecastModel.ActiveEnergyPlus;
                 smartMeterPortion.Flexibility = _forecastModel.Flexibility;
+                smartMeterPortion.ForecastFromSmartMeter = true;
                 await mDb.SaveChangesAsync();
             }
         }
@@ -99,7 +100,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 .Sum(x => x.EstimatedActiveEnergyMinus);
 
             // TODO error checking (missing smart meter)
-            var missingSmartMeters = _eCommunityDistribution.SmartMeterPortions.Count(x => x.Flexibility == null);
+            var missingSmartMeters = _eCommunityDistribution.SmartMeterPortions.Count(x => !x.ForecastFromSmartMeter);
 
             if (sumFeedIn > 0) {
                 var sumConsumption = _eCommunityDistribution.SmartMeterPortions
