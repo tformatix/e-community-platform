@@ -94,7 +94,7 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
 
         public async Task<HubConnection> Reconnect() {
             Log.Information("HubConnectionService::Reconnect");
-            await mHubConnection?.StopAsync();
+            if(mHubConnection != null) await mHubConnection?.StopAsync();
             mHubConnection = null;
             return await GetHubConnection();
         }

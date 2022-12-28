@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_community_cloud_lib.Database;
 
@@ -11,9 +12,10 @@ using e_community_cloud_lib.Database;
 namespace e_community_cloud_lib.Migrations
 {
     [DbContext(typeof(ECommunityCloudContext))]
-    partial class ECommunityContextModelSnapshot : ModelSnapshot
+    [Migration("20221228140425_RemovedOptimizedAndAddedIsCurrent")]
+    partial class RemovedOptimizedAndAddedIsCurrent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,20 +159,17 @@ namespace e_community_cloud_lib.Migrations
                     b.Property<int?>("ActualActiveEnergyPlus")
                         .HasColumnType("int");
 
-                    b.Property<int>("Deviation")
+                    b.Property<int?>("Deviation")
                         .HasColumnType("int");
 
-                    b.Property<int>("EstimatedActiveEnergyMinus")
+                    b.Property<int?>("EstimatedActiveEnergyMinus")
                         .HasColumnType("int");
 
-                    b.Property<int>("EstimatedActiveEnergyPlus")
+                    b.Property<int?>("EstimatedActiveEnergyPlus")
                         .HasColumnType("int");
 
-                    b.Property<int>("Flexibility")
+                    b.Property<int?>("Flexibility")
                         .HasColumnType("int");
-
-                    b.Property<bool>("ForecastFromSmartMeter")
-                        .HasColumnType("bit");
 
                     b.HasKey("ECommunityDistributionId", "SmartMeterId");
 

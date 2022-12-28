@@ -8,6 +8,7 @@ namespace e_community_cloud_lib.Models.Distribution
 {
     public class PortionAckModel
     {
-        public int Deviation { get; set; }
+        public Guid SmartMeterId { get; set; }
+        public int Flexibility { get; set; }
     }
 }

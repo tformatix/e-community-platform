@@ -27,8 +27,6 @@ namespace e_community_local_lib.Endpoints {
         private IHubConnectionService mHubConnectionService;
         private ICloudSignalRSenderService mCloudSignalRSenderService;
         private ILocalChangesService mLocalChangesService;
-        private IForecastService mForecastService;
-        private ICloudRESTService mCloudRESTService;
         private static bool mRTDataRequested = false;
         private static bool mSendBlockchainAccountBalance = false;
 
@@ -38,15 +36,12 @@ namespace e_community_local_lib.Endpoints {
 
         async Task ICloudBackgroundService.ExecuteAsync(CancellationToken stoppingToken) => await ExecuteAsync(stoppingToken);
 
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
             Log.Information("CloudBackgroundService::Execute");
             using (var scope = mServiceScopeFactory.CreateScope()) {
                 mHubConnectionService = scope.ServiceProvider.GetRequiredService<IHubConnectionService>();
                 mCloudSignalRSenderService = scope.ServiceProvider.GetRequiredService<ICloudSignalRSenderService>();
                 mLocalChangesService = scope.ServiceProvider.GetRequiredService<ILocalChangesService>();
-                mCloudRESTService = scope.ServiceProvider.GetRequiredService<ICloudRESTService>();
-                mForecastService = scope.ServiceProvider.GetRequiredService<IForecastService>();
 
                 // TODO: @Michi slave starten
 
@@ -141,7 +136,12 @@ namespace e_community_local_lib.Endpoints {
 
         public async Task RequestHourlyForecast() {
             Log.Information("CloudBackgroundService::Hourly forecast requested");
-            await mCloudRESTService.SendHourlyForecast(await mForecastService.GetHourlyForecast());
+
+            using (var scope = mServiceScopeFactory.CreateScope()) {
+                var cloudRESTService = scope.ServiceProvider.GetRequiredService<ICloudRESTService>();
+                var forecastService = scope.ServiceProvider.GetRequiredService<IForecastService>();
+                await cloudRESTService.SendHourlyForecast(await forecastService.GetHourlyForecast());
+            }
         }
 
         public Task RequestMeterDataMonitoring() {

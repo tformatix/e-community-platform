@@ -36,25 +36,5 @@ namespace e_community_cloud.Controllers
             await mFCMService.RegisterFCMToken(memberId, _fcmToken);
             return Ok(new OkDto());
         }
-
-        [ProducesResponseType(typeof(OkDto), 200)]
-        [ProducesResponseType(typeof(ErrorDto), 400)]
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> TestNotification()
-        {
-            var memberId = (Guid)User.GetMemberId();
-            Log.Information($"Notification/TestNotification::{memberId}");
-
-            await mFCMService.SendPushNotificationMember(
-                    "notification_distribution_title",
-                    null,
-                    "notification_distribution_body",
-                    new List<string>() { "12", "kWh" },
-                    "e-community",
-                    memberId
-                );
-            return Ok(new OkDto());
-        }
     }
 }

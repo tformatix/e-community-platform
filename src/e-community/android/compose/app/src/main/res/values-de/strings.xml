@@ -26,8 +26,10 @@
     <string name="notification_rationale">Ohne Benachrichtigungen werden Sie nicht für wichtige Neuigkeiten informiert! Benachrichtungen aktivieren?</string>
     <string name="notification_denied">Benachrichtungen deaktiviert - Funktionienen eingeschränkt!</string>
 
-    <string name="notification_distribution_title">Stündliche Stromaufteilung</string>
-    <string name="notification_distribution_body">%1$d %2$s für die nächste Stunde. Ändern?</string>
+    <string name="notification_new_distribution_title">Stündliche Stromaufteilung</string>
+    <string name="notification_new_distribution_body">%1$d %2$s für die nächste Stunde. Ändern?</string>
+    <string name="notification_final_distribution_title">Stündliche Stromaufteilung</string>
+    <string name="notification_final_distribution_body">%1$d %2$s für die nächste Stunde.</string>
 
     <!-- MAIN TITLES -->
     <string name="title_activity_main">eCommunity</string>

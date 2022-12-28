@@ -28,7 +28,7 @@ namespace e_community_local_lib.BusinessLogic.Interfaces.REST
         /// <param name="_smartMeterId">id of smart meter</param>
         /// <param name="accessToken">access token</param>
         /// <returns>all necessary data for local usage from cloud</returns>
-        Task<CloudLocalDto> GetLocalDataPairing(Guid _smartMeterId, String accessToken);
+        Task<CloudLocalDto> GetLocalDataPairing(Guid _smartMeterId, string _refreshToken);
 
         /// <summary>
         /// sends hourly forecast to cloud

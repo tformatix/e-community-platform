@@ -18,5 +18,9 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces {
 
         Task Distribute(ECommunityDistribution _eCommunityDistribution);
 
+        Task PortionAck(PortionAckModel _portionAckModel);
+
+        Task FinalizeDistribution();
+
     }
 }

@@ -24,7 +24,7 @@ namespace e_community_cloud.Controllers
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> HourlyForecast([FromBody] ForecastModel _forecastModel) {
-            Log.Information($"Distribution/HourlyForecast::");
+            Log.Information($"Distribution/HourlyForecast");
 
             // (2) forecast arrived
             await mDistributionService.ForecastArrived(_forecastModel);
@@ -37,10 +37,10 @@ namespace e_community_cloud.Controllers
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> HourlyPortionAck([FromBody] PortionAckModel _portionAckModel) {
-            var memberId = User.GetMemberId();
-            Log.Information($"Distribution/MeterDataMonitoring::{memberId}");
+            Log.Information($"Distribution/MeterDataMonitoring");
 
-            // TODO (4)/(5)/(6)
+            // (4)/(5)/(6) member acknowledged portion (change or accept)
+            await mDistributionService.PortionAck(_portionAckModel);
 
             return Ok(new OkDto());
         }

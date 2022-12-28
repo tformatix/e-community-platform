@@ -29,14 +29,15 @@ namespace e_community_cloud.BackgroundServices {
 
                     switch (minute + delayMinutes) {
                         case 0:
-                            // TODO: (7) assigned portions
+                            // (7) inform members about their portions
+                            await distributionService.FinalizeDistribution();
                             break;
                         case 60 - 2 * Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES:
-                            // (1) request forecast
+                            // (1) request forecasts and init database
                             await distributionService.StartDistribution();
                             break;
                         case 60 - Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES:
-                            // TODO: (3) portions for changing/accepting
+                            // (3) distribute energy
                             await distributionService.Distribute();
                             break;
                     }

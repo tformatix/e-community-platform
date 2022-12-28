@@ -16,12 +16,12 @@ namespace e_community_cloud_lib.Database.Community {
         // <summary>
         /// estimated energy A- (feed in)
         /// </summary>
-        public int? EstimatedActiveEnergyMinus { get; set; }
+        public int EstimatedActiveEnergyMinus { get; set; }
 
         // <summary>
         /// estimated energy A+ (consumption)
         /// </summary>
-        public int? EstimatedActiveEnergyPlus { get; set; }
+        public int EstimatedActiveEnergyPlus { get; set; }
 
         // <summary>
         /// actual energy A+ (consumption)
@@ -31,21 +31,21 @@ namespace e_community_cloud_lib.Database.Community {
         // <summary>
         /// deviation from estimated A+ (consumption)
         /// </summary>
-        public int? Deviation { get; set; }
+        public int Deviation { get; set; }
 
         /// <summary>
         /// flexibility
         /// </summary>
-        public int? Flexibility { get; set; }
-
-        /// <summary>
-        /// is portion optimized
-        /// </summary>
-        public bool Optimized { get; set; }
+        public int Flexibility { get; set; }
 
         /// <summary>
         /// did user acknowledged estimated consumption
         /// </summary>
         public bool Acknowledged { get; set; }
+
+        /// <summary>
+        /// forecast from smart meter
+        /// </summary>
+        public bool ForecastFromSmartMeter { get; set; }
     }
 }

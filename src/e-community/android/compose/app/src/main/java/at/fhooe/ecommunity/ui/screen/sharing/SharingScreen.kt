@@ -66,6 +66,6 @@ fun SharingScreen(_viewModel: SharingViewModel, _navController: NavHostControlle
     Scaffold(
         topBar = { TopBarHome(_navController) }
     ) {
-        DashboardSharing()
+        // DashboardSharing()
     }
 }

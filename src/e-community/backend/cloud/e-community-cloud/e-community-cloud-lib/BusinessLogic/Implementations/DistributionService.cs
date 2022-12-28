@@ -5,10 +5,13 @@ using e_community_cloud_lib.Database.Community;
 using e_community_cloud_lib.Database.General;
 using e_community_cloud_lib.Database.Local;
 using e_community_cloud_lib.Models.Distribution;
+using e_community_cloud_lib.NonEntities;
 using e_community_cloud_lib.Util;
 using e_community_cloud_lib.Util.Enums;
 using e_community_cloud_lib.Util.Extensions;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Encodings;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +24,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         private readonly ECommunityCloudContext mDb;
         private readonly IFCMService mFCMService;
         private readonly ILocalSignalRSenderService mLocalSignalRSenderService;
-        private List<ECommunityDistribution> mCurrentDistributions;
 
         public DistributionService(ECommunityCloudContext _db, IFCMService _fcmService, ILocalSignalRSenderService _localSignalRSenderService) {
             mDb = _db;
@@ -34,26 +36,27 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             timestamp.AddSeconds(-timestamp.Second);
             timestamp.AddMilliseconds(-timestamp.Millisecond);
 
-            var eCommunityMembers = await mDb.ECommunityMembership
+            var eCommunityMemberships = await mDb.ECommunityMembership
                 .Include(x => x.ECommunity)
                 .Include(x => x.Member)
                 .ThenInclude(x => x.SmartMeters)
                 .Where(x => x.ECommunity.DistributionMode == DistributionMode.Percentage && Constants.ACTIVE_MEMBER_PERMISSIONS.Contains(x.ECommunityPermission))
                 .ToListAsync();
 
-            mCurrentDistributions = eCommunityMembers
+            var distributions = eCommunityMemberships
                 .DistinctBy(x => x.ECommunityId)
                 .Select(x => new ECommunityDistribution() {
                     ECommunityId = x.ECommunityId,
-                    Timestamp = timestamp
+                    Timestamp = timestamp,
+                    IsCurrent = true
                 })
                 .ToList();
 
-            mDb.ECommunityDistribution.AddRange(mCurrentDistributions);
+            mDb.ECommunityDistribution.AddRange(distributions);
             await mDb.SaveChangesAsync();
 
-            foreach (var distribution in mCurrentDistributions) {
-                mDb.SmartMeterPortion.AddRange(eCommunityMembers
+            foreach (var distribution in distributions) {
+                mDb.SmartMeterPortion.AddRange(eCommunityMemberships
                     .Where(x => x.ECommunityId == distribution.ECommunityId)
                     .SelectMany(x => x.Member.SmartMeters)
                     .Select(x => new SmartMeterPortion() {
@@ -68,14 +71,16 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         }
 
         public async Task ForecastArrived(ForecastModel _forecastModel) {
-            var portion = await mDb.SmartMeterPortion
-                .OrderByDescending(x => x.ECommunityDistributionId)
-                .FirstOrDefaultAsync(x => x.SmartMeterId == _forecastModel.SmartMeterId);
+            var currentDistributions = await GetCurrentDistributions();
+            var smartMeterPortion = currentDistributions
+                .SelectMany(x => x.SmartMeterPortions)
+                .FirstOrDefault(x => x.SmartMeterId == _forecastModel.SmartMeterId);
 
-            if (portion != null) {
-                portion.EstimatedActiveEnergyMinus = _forecastModel.ActiveEnergyMinus;
-                portion.EstimatedActiveEnergyPlus = _forecastModel.ActiveEnergyPlus;
-                portion.Flexibility = _forecastModel.Flexibility;
+            if (smartMeterPortion != null) {
+                smartMeterPortion.EstimatedActiveEnergyMinus = _forecastModel.ActiveEnergyMinus;
+                smartMeterPortion.EstimatedActiveEnergyPlus = _forecastModel.ActiveEnergyPlus;
+                smartMeterPortion.Flexibility = _forecastModel.Flexibility;
+                await mDb.SaveChangesAsync();
             }
         }
 
@@ -84,40 +89,38 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         }
 
         public async Task Distribute() {
-            foreach (var distribution in mCurrentDistributions) {
+            foreach (var distribution in await GetCurrentDistributions()) {
                 await Distribute(distribution);
             }
         }
 
         public async Task Distribute(ECommunityDistribution _eCommunityDistribution) {
-            var smartMeterPortions = await mDb.SmartMeterPortion
-                .Where(x => x.ECommunityDistributionId == _eCommunityDistribution.Id)
-                .ToListAsync();
-
-            var sumFeedIn = smartMeterPortions
-                .Sum(x => x.EstimatedActiveEnergyMinus) ?? 0;
+            var sumFeedIn = _eCommunityDistribution.SmartMeterPortions
+                .Sum(x => x.EstimatedActiveEnergyMinus);
 
             // TODO error checking (missing smart meter)
-            var missingSmartMeters = smartMeterPortions.Count(x => x.EstimatedActiveEnergyMinus == null);
+            var missingSmartMeters = _eCommunityDistribution.SmartMeterPortions.Count(x => x.Flexibility == null);
 
             if (sumFeedIn > 0) {
-                var sumConsumption = smartMeterPortions
-                    .Sum(x => x.EstimatedActiveEnergyPlus) ?? 0;
+                var sumConsumption = _eCommunityDistribution.SmartMeterPortions
+                    .Sum(x => x.EstimatedActiveEnergyPlus);
                 var energyDifference = sumFeedIn - sumConsumption;
 
                 if (energyDifference >= 0) {
                     // more feed in than consumption (surplus)
-                    DistributeSurplus(smartMeterPortions, energyDifference);
+                    DistributeSurplus(_eCommunityDistribution.SmartMeterPortions, energyDifference);
                 }
                 else {
                     // more consumption than feed in (shortage)
-                    DistributeShortage(smartMeterPortions, energyDifference, sumConsumption);
+                    DistributeShortage(_eCommunityDistribution.SmartMeterPortions, energyDifference, sumConsumption);
                 }
             }
             await mDb.SaveChangesAsync();
+
+            SendDistributionNotifications(_eCommunityDistribution.SmartMeterPortions, mFCMService.NewDistribution);
         }
 
-        private void DistributeSurplus(List<SmartMeterPortion> _smartMeterPortions, int _energyDifference) {
+        private void DistributeSurplus(IList<SmartMeterPortion> _smartMeterPortions, int _energyDifference) {
             var sumFlexibilityPlus = _smartMeterPortions
                         .Where(x => x.Flexibility > 0)
                         .Sum(x => x.Flexibility);
@@ -126,26 +129,24 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 // members have positive flexibility
                 if (_energyDifference < sumFlexibilityPlus) {
                     // difference < flexibility --> % increase
-                    _smartMeterPortions.ForEach(x => {
-                        if (x.Flexibility > 0) {
-                            x.Deviation = _energyDifference * x.Flexibility / sumFlexibilityPlus;
+                    foreach (var smartMeterPortion in _smartMeterPortions) {
+                        if (smartMeterPortion.Flexibility > 0) {
+                            smartMeterPortion.Deviation = _energyDifference * smartMeterPortion.Flexibility / sumFlexibilityPlus;
                         }
-                        x.Optimized = true;
-                    });
+                    }
                 }
                 else {
                     // difference >= flexibility --> maybe more feed in than consumption
-                    _smartMeterPortions.ForEach(x => {
-                        if (x.Flexibility > 0) {
-                            x.Deviation = x.Flexibility;
+                    foreach (var smartMeterPortion in _smartMeterPortions) {
+                        if (smartMeterPortion.Flexibility > 0) {
+                            smartMeterPortion.Deviation = smartMeterPortion.Flexibility;
                         }
-                        x.Optimized = true;
-                    });
+                    }
                 }
             }
         }
 
-        private void DistributeShortage(List<SmartMeterPortion> _smartMeterPortions, int _energyDifference, int sumConsumption) {
+        private void DistributeShortage(IList<SmartMeterPortion> _smartMeterPortions, int _energyDifference, int sumConsumption) {
             var sumFlexibilityMinus = -_smartMeterPortions
                         .Where(x => x.Flexibility < 0)
                         .Sum(x => x.Flexibility);
@@ -154,32 +155,31 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 // members have negative flexibility
                 if (-_energyDifference <= sumFlexibilityMinus) {
                     // difference <= flexibility --> % decrease based on flexibility
-                    _smartMeterPortions.ForEach(x => {
-                        if (x.Flexibility < 0) {
-                            x.Deviation = -_energyDifference * x.Flexibility / sumFlexibilityMinus;
+                    foreach (var smartMeterPortion in _smartMeterPortions) {
+                        if (smartMeterPortion.Flexibility < 0) {
+                            smartMeterPortion.Deviation = -_energyDifference * smartMeterPortion.Flexibility / sumFlexibilityMinus;
                         }
-                        x.Optimized = true;
-                    });
+                    }
                 }
                 else {
                     // difference > flexibility --> flexibility unsatisfactory
 
                     // step 1: seperate evenly
-                    _smartMeterPortions.ForEach(x => {
-                        x.Deviation = _energyDifference * x.EstimatedActiveEnergyPlus / sumConsumption;
-                    });
+                    foreach (var smartMeterPortion in _smartMeterPortions) {
+                        smartMeterPortion.Deviation = _energyDifference * smartMeterPortion.EstimatedActiveEnergyPlus / sumConsumption;
+                    }
 
                     // step 2: optimize with flexibility
                     OptimizeShortage(_smartMeterPortions);
                 }
-            } else {
+            }
+            else {
                 // no flexibility --> evenly distribute
-                _smartMeterPortions.ForEach(x => {
-                    if (x.Flexibility < 0) {
-                        x.Deviation = -_energyDifference * x.EstimatedActiveEnergyPlus / sumConsumption;
+                foreach (var smartMeterPortion in _smartMeterPortions) {
+                    if (smartMeterPortion.Flexibility < 0) {
+                        smartMeterPortion.Deviation = -_energyDifference * smartMeterPortion.EstimatedActiveEnergyPlus / sumConsumption;
                     }
-                    x.Optimized = true;
-                });
+                }
             }
 
         }
@@ -201,33 +201,89 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         ///     - if not: separate the opened load (0.5 kWh in example above) to the other members
         ///     - REPEAT
         /// </summary>
-        private void OptimizeShortage(List<SmartMeterPortion> _smartMeterPortions) {
-            var openMembers = _smartMeterPortions.Count(); // hom many members are not optimized
+        private void OptimizeShortage(IList<SmartMeterPortion> _smartMeterPortions) {
+            var notOptimizedCount = _smartMeterPortions.Count();
+            var optimizedSmartMeters = Enumerable.Repeat(false, notOptimizedCount).ToList();
 
             void Optimize() {
                 var freeEnergy = 0; // how many energy is free to use (through flexibility members)
 
-                _smartMeterPortions.ForEach(x => {
-                    if(!x.Optimized && x.Flexibility < 0 && x.Flexibility < x.Deviation) {
+                for (int i = 0; i < _smartMeterPortions.Count(); i++) {
+                    if (!optimizedSmartMeters[i] && _smartMeterPortions[i].Flexibility < 0 && _smartMeterPortions[i].Flexibility < _smartMeterPortions[i].Deviation) {
                         // member gets more than he actually needs
-                        freeEnergy += (x.Deviation ?? 0 - x.Flexibility ?? 0);
-                        x.Deviation = x.Flexibility;
-                        x.Optimized = true; // no more changes
-                        openMembers--;
+                        freeEnergy += (_smartMeterPortions[i].Deviation - _smartMeterPortions[i].Flexibility);
+                        _smartMeterPortions[i].Deviation = _smartMeterPortions[i].Flexibility;
+                        optimizedSmartMeters[i] = true; // no more changes
+                        notOptimizedCount--;
                     }
-                });
+                }
 
-                if(freeEnergy > 0) {
-                    _smartMeterPortions.ForEach(x => {
-                        if (!x.Optimized) {
-                            x.Deviation += freeEnergy * 1 / openMembers;
-                        }
-                    });
+                if (freeEnergy > 0) {
+                    optimizedSmartMeters
+                        .Select((optimized, index) => (optimized, index))
+                        .Where(x => x.optimized)
+                        .ToList()
+                        .ForEach(x => {
+                            _smartMeterPortions[x.index].Deviation += freeEnergy * 1 / notOptimizedCount;
+                        });
                     Optimize();
                 }
             }
 
             Optimize();
+        }
+
+        public async Task PortionAck(PortionAckModel _portionAckModel) {
+            var currentDistributions = await GetCurrentDistributions();
+            var smartMeterPortion = currentDistributions
+                .SelectMany(x => x.SmartMeterPortions)
+                .FirstOrDefault(x => x.SmartMeterId == _portionAckModel.SmartMeterId);
+
+            if (smartMeterPortion != null) {
+                smartMeterPortion.Acknowledged = true;
+                var prevFlexibility = smartMeterPortion.Flexibility;
+                smartMeterPortion.Flexibility = _portionAckModel.Flexibility;
+                await mDb.SaveChangesAsync();
+
+                if (prevFlexibility != _portionAckModel.Flexibility) {
+                    // flexibility changed --> new distribution
+                    await Distribute(currentDistributions.FirstOrDefault(x => x.Id == smartMeterPortion.ECommunityDistributionId));
+                }
+            }
+        }
+
+        public async Task FinalizeDistribution() {
+            foreach (var distribution in await GetCurrentDistributions()) {
+                distribution.IsCurrent = false;
+                SendDistributionNotifications(distribution.SmartMeterPortions, mFCMService.FinalDistribution);
+            }
+            await mDb.SaveChangesAsync();
+        }
+
+        private void SendDistributionNotifications(IList<SmartMeterPortion> _smartMeterPortions, FCMAndroidData _fcmAndroidData) {
+
+            _smartMeterPortions
+                .GroupBy(x => x.SmartMeter.MemberId)
+                .ToDictionary(x => x.Key, x => x.ToList())
+                .ToList()
+                .ForEach(_pair => {
+                    var sumConsumption = 0;
+                    _pair.Value
+                        .ForEach(_portion => {
+                            sumConsumption += (_portion.EstimatedActiveEnergyPlus + _portion.Deviation);
+                        });
+
+                    _fcmAndroidData.BodyArgs = new List<string>() { sumConsumption.ToString(), "Wh" };
+                    mFCMService.SendPushNotificationMember(_fcmAndroidData, _pair.Key);
+                });
+        }
+
+        private async Task<List<ECommunityDistribution>> GetCurrentDistributions() {
+            return await mDb.ECommunityDistribution
+                .Where(x => x.IsCurrent)
+                .Include(x => x.SmartMeterPortions)
+                .ThenInclude(x => x.SmartMeter)
+                .ToListAsync();
         }
     }
 }

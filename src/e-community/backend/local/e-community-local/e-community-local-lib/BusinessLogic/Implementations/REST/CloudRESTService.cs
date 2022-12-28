@@ -3,6 +3,8 @@ using e_community_local_lib.CloudData;
 using e_community_local_lib.CloudData.Local;
 using e_community_local_lib.Database;
 using e_community_local_lib.Database.General;
+using e_community_local_lib.Models;
+using e_community_local_lib.Util.BusinessLogic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -67,13 +69,17 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST
             return await Refresh(credentials.RefreshToken);
         }
 
-        public async Task<CloudLocalDto> GetLocalDataPairing(Guid _smartMeterId, String _accessToken)
+        public async Task<CloudLocalDto> GetLocalDataPairing(Guid _smartMeterId, string _refreshToken)
         {
             Log.Information("CloudRESTService::Get Local Data");
+            var login = await Refresh(_refreshToken);
+            if (login == null) {
+                throw new ServiceException(ServiceException.Type.INVALID_REFRESH_TOKEN);
+            }
             var pairingPath = mSection.GetValue<string>("Pairing");
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{mBasePath}/{pairingPath}{_smartMeterId}"))
             {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
                 var response = await mHttpClient.SendAsync(requestMessage);
                 if (response.IsSuccessStatusCode)
                 {
@@ -87,9 +93,19 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST
         public async Task SendHourlyForecast(ForecastModel _forecastModel) {
             Log.Information("CloudRESTService::Send hourly forecast");
 
-            var forecastPath = mSection.GetValue<string>("Forecast");
-            await mHttpClient.PostAsync($"{mBasePath}/{forecastPath}",
-                new StringContent(JsonConvert.SerializeObject(_forecastModel)));
+            var login = await RefreshFromDb();
+            if (login == null) {
+                Log.Error("CloudRESTService::Refreshing Failed");
+            }
+            else {
+                var forecastPath = mSection.GetValue<string>("Forecast");
+                using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{mBasePath}/{forecastPath}")) {
+                    requestMessage.Content = new StringContent(JsonConvert.SerializeObject(_forecastModel), Encoding.UTF8, "application/json");
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
+
+                    var response = await mHttpClient.SendAsync(requestMessage);
+                }
+            }
         }
     }
 }

@@ -143,12 +143,6 @@ namespace e_community_local_lib.BusinessLogic.Implementations
 
         public async Task CloudConnect(CloudConnectModel _cloudConnectModel)
         {
-            var login = await mCloudRESTService.Refresh(_cloudConnectModel.RefreshToken);
-            if (login == null)
-            {
-                throw new ServiceException(ServiceException.Type.INVALID_REFRESH_TOKEN);
-            }
-
             if(_cloudConnectModel.SmartMeter == null)
             {
                 throw new ServiceException(ServiceException.Type.SMART_METER_NULL);
@@ -156,7 +150,7 @@ namespace e_community_local_lib.BusinessLogic.Implementations
             mDb.SmartMeter.RemoveRange(mDb.SmartMeter);
             await mDb.SmartMeter.AddAsync(_cloudConnectModel.SmartMeter.CopyPropertiesTo(new SmartMeter()));
 
-            var local = await mCloudRESTService.GetLocalDataPairing(_cloudConnectModel.SmartMeter.Id, login.AccessToken);
+            var local = await mCloudRESTService.GetLocalDataPairing(_cloudConnectModel.SmartMeter.Id, _cloudConnectModel.RefreshToken);
 
             if (local.BatterySystems.Count() > 0)
             {

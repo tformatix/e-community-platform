@@ -21,7 +21,7 @@ namespace e_community_local_lib.BusinessLogic.Implementations {
 
             var histCount = await mDb.MeterDataHistory.CountAsync();
             if (histCount >= 5) {
-                // we need 5 values for 1 hour
+                // we need 5 values for 1 hour (0, 15, 30, 45, 60)
                 var descOrdered = mDb.MeterDataHistory
                     .OrderByDescending(x => x.Id);
 
