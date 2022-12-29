@@ -52,6 +52,7 @@ namespace e_community_local_lib.Endpoints {
                         if (hubConnection == null || hubConnection.State == HubConnectionState.Disconnected) {
                             // hub connection disconnected (start again)
                             hubConnection = await mHubConnectionService.Reconnect();
+                            await RequestHourlyForecast(); // send forecast
                         }
                         else {
                             if (mRTDataRequested) {
