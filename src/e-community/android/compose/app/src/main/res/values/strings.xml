@@ -127,4 +127,16 @@
     <string name="apply_filter">apply</string>
     <string name="sort_by_distance">Distance</string>
     <string name="sort_by_entry_date">Entry Date</string>
+
+    <!--SHARING SCREEN -->
+    <string name="sharing_wallet">Wallet</string>
+    <string name="sharing_wallet_received">Received</string>
+    <string name="sharing_wallet_sent">Sent</string>
+    <string name="sharing_wallet_balance">Balance</string>
+    <string name="sharing_wallet_eth">Ethereum</string>
+    <string name="sharing_contracts">Contracts</string>
+    <string name="sharing_contracts_active">Active</string>
+    <string name="sharing_contracts_requests">Requests</string>
+    <string name="sharing_contracts_pending">Pending</string>
+    <string name="sharing_contracts_closed">Closed</string>
 </resources>

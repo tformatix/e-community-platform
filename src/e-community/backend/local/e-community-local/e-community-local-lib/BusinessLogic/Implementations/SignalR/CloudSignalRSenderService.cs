@@ -68,8 +68,8 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
 
             var blockchainAccountBalance = new BlockchainAccountBalanceDto
             {
-                Received = "5 ETH",
-                Sent = "1 ETH",
+                Received = "5",
+                Sent = "1",
                 Balance = output
             };
             

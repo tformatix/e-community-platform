@@ -16,5 +16,5 @@ data class BlockchainAccountBalanceDto(
     val sent: kotlin.String? = null,
 
     @Json(name = "balance")
-    val balance: kotlin.String? = null
+    var balance: kotlin.String? = null
 )
