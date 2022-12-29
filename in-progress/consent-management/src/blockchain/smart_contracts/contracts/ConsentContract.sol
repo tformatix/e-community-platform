@@ -41,7 +41,7 @@ contract ConsentContract {
     uint private contractValidInDays;
     uint private pricePerHour;
     uint private totalPrice;
-
+    
     // signature of both parties
     ContractSign private signature;
 

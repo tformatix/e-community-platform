@@ -13,6 +13,10 @@
     <Content Include="Util\Extensions\Python\networking.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Remove="Util\Extensions\Python\goquorum.py" />
+    <Content Include="Util\Extensions\Python\goquorum.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

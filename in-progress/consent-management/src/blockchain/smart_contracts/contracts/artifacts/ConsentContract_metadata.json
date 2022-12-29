@@ -103,11 +103,11 @@
 	},
 	"sources": {
 		"Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContract.sol": {
-			"keccak256": "0x33761931c7256ea8a1ccf816b831786cd73a8bc63a0df36a6b83f4cafc7b9aa1",
+			"keccak256": "0x47fbf982b9477a9f169c281f6b7467698f4ae7955ae8520d4feeb868d71aede1",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://b16023cd638448821de2269df02ebb9c964b916ecabef2e4f139196e882d22c5",
-				"dweb:/ipfs/QmW3VJADaAh2asuoVj1FzhFiRnqSZGprMfUUZQmeskCFYW"
+				"bzz-raw://676d56b8236f82d00745864d52f928c17396935937361e8446758c2b518576fb",
+				"dweb:/ipfs/QmfFeA18xezjSvws9bzeQm6w6ygWE2NLxWK6KbcLkyy1VY"
 			]
 		}
 	},
