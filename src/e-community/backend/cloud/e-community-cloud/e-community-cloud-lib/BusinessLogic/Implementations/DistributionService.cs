@@ -62,6 +62,12 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     .Select(x => new SmartMeterPortion() {
                         ECommunityDistributionId = distribution.Id,
                         SmartMeterId = x.Id,
+                        EstimatedActiveEnergyMinus = 0,
+                        EstimatedActiveEnergyPlus = 0,
+                        Deviation = 0,
+                        Flexibility = 0,
+                        ForecastFromSmartMeter = false,
+                        Acknowledged = false
                     })
                 );
             }
