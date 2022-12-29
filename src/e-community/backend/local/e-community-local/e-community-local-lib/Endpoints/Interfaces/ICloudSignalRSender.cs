@@ -33,6 +33,6 @@ namespace e_community_local_lib.Endpoints.Interfaces
         /// </summary>
         /// <param name="_blockchainAccountBalance"></param>
         /// <returns></returns>
-        Task ReceiveBlockchainAccountDetails(BlockchainAccountBalanceDto _blockchainAccountBalance);
+        Task ReceiveBlockchainAccountBalance(BlockchainAccountBalanceDto _blockchainAccountBalance);
     }
 }

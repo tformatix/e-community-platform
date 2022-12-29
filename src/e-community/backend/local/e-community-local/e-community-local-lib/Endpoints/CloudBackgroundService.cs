@@ -28,7 +28,6 @@ namespace e_community_local_lib.Endpoints {
         private ICloudSignalRSenderService mCloudSignalRSenderService;
         private ILocalChangesService mLocalChangesService;
         private static bool mRTDataRequested = false;
-        private static bool mSendBlockchainAccountBalance = false;
 
         public CloudBackgroundService(IServiceScopeFactory _serviceScopeFactory) {
             mServiceScopeFactory = _serviceScopeFactory;
@@ -57,13 +56,6 @@ namespace e_community_local_lib.Endpoints {
                         else {
                             if (mRTDataRequested) {
                                 _ = mCloudSignalRSenderService.SendRTData();
-                            }
-
-                            // send blockchain account balance only once
-                            if (mSendBlockchainAccountBalance)
-                            {
-                                _ = mCloudSignalRSenderService.SendBlockchainAccountBalance();
-                                mSendBlockchainAccountBalance = false;
                             }
                         }
                     } catch (Exception _exc) {
@@ -128,11 +120,15 @@ namespace e_community_local_lib.Endpoints {
             await mLocalChangesService.SmartMeterChanged(_cloudSmartMeterDto);
         }
 
-        public Task RequestBlockchainAccountBalance()
+        public async Task RequestBlockchainAccountBalance()
         {
             Log.Information("CloudBackgroundService::BlockchainAccountBalance requested");
-            mSendBlockchainAccountBalance = true;
-            return Task.CompletedTask;
+
+            using (var scope = mServiceScopeFactory.CreateScope())
+            {
+                var cloudSignalR = scope.ServiceProvider.GetRequiredService<ICloudSignalRSenderService>();
+                await cloudSignalR.SendBlockchainAccountBalance();
+            }
         }
 
         public async Task RequestHourlyForecast() {

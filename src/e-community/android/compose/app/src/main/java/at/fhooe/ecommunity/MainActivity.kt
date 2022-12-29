@@ -18,8 +18,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -49,7 +48,6 @@ import at.fhooe.ecommunity.ui.screen.sharing.SharingScreen
 import at.fhooe.ecommunity.ui.screen.sharing.SharingViewModel
 import at.fhooe.ecommunity.ui.theme.ECommunityTheme
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 
 
@@ -172,6 +170,8 @@ fun MainScreen() {
         Screen.Profile
     )
 
+    val selectedScreen = remember { mutableStateOf("") }
+
     Scaffold(
         bottomBar = {
             AppBottomNavigation(navController, bottomNavItems)
@@ -179,7 +179,7 @@ fun MainScreen() {
     )
     { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            MainScreenNavigationConfigurations(navController)
+            MainScreenNavigationConfigurations(navController, selectedScreen)
         }
     }
 }
@@ -191,8 +191,9 @@ fun MainScreen() {
  */
 @Composable
 private fun MainScreenNavigationConfigurations(
-    navController: NavHostController
-) {
+    navController: NavHostController,
+    selectedScreen: MutableState<String>,
+    ) {
     // start with home screen
     val startDestination = Screen.Home.route
     val application = ((LocalContext.current as MainActivity).application as ECommunityApplication)

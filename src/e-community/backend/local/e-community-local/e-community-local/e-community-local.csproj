@@ -17,6 +17,10 @@
     <Content Include="Util\Extensions\Python\goquorum.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Remove="Util\Extensions\Python\goquorum_listener.py" />
+    <Content Include="Util\Extensions\Python\goquorum_listener.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

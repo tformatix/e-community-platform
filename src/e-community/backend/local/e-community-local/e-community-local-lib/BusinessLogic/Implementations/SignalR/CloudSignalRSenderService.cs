@@ -53,7 +53,6 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
 
         public async Task SendBlockchainAccountBalance()
         {
-            // TODO call python script and get account balances
             Process processAccountBalance = new Process();
 
             processAccountBalance.StartInfo = new ProcessStartInfo(Constants.PYTHON_EXE, Constants.GET_ACCOUNT_BALANCE)
@@ -74,10 +73,10 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
                 Balance = output
             };
             
-            Log.Information($"CloudSignalRSenderService::SendBlockchainAccountBalance()");
+            Log.Information($"CloudSignalRSenderService::SendBlockchainAccountBalance() ${nameof(ICloudSignalRSender.ReceiveBlockchainAccountBalance)}");
 
             await mHubConnectionService.InvokeSignalR(
-                nameof(ICloudSignalRSender.ReceiveBlockchainAccountDetails),
+                nameof(ICloudSignalRSender.ReceiveBlockchainAccountBalance),
                 blockchainAccountBalance.CopyPropertiesTo(new BlockchainAccountBalanceDto())
             );
         }
