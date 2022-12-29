@@ -32,10 +32,11 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
         public async Task RegisterFCMToken(Guid _memberId, string _token) {
             var fcmToken = mDb.MemberFCMToken
-                .FirstOrDefault(x => x.MemberId == _memberId && x.Token == _token);
+                .FirstOrDefault(x => x.Token == _token);
 
             var validUntil = DateTime.UtcNow.AddMonths(mConfiguration.GetValue<int>("FCMTokenLifetimeMonth"));
             if (fcmToken != null) {
+                fcmToken.MemberId = _memberId;
                 fcmToken.ValidUntil = validUntil;
             }
             else {

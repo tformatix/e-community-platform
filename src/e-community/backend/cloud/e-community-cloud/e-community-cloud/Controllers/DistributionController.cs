@@ -37,7 +37,7 @@ namespace e_community_cloud.Controllers
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> HourlyPortionAck([FromBody] PortionAckModel _portionAckModel) {
-            Log.Information($"Distribution/MeterDataMonitoring");
+            Log.Information($"Distribution/HourlyPortionAck");
 
             // (4)/(5)/(6) member acknowledged portion (change or accept)
             await mDistributionService.PortionAck(_portionAckModel);

@@ -78,16 +78,19 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
         public async Task ForecastArrived(ForecastModel _forecastModel) {
             var currentDistributions = await GetCurrentDistributions();
-            var smartMeterPortion = currentDistributions
-                .SelectMany(x => x.SmartMeterPortions)
-                .FirstOrDefault(x => x.SmartMeterId == _forecastModel.SmartMeterId);
 
-            if (smartMeterPortion != null) {
-                smartMeterPortion.EstimatedActiveEnergyMinus = _forecastModel.ActiveEnergyMinus;
-                smartMeterPortion.EstimatedActiveEnergyPlus = _forecastModel.ActiveEnergyPlus;
-                smartMeterPortion.Flexibility = _forecastModel.Flexibility;
-                smartMeterPortion.ForecastFromSmartMeter = true;
-                await mDb.SaveChangesAsync();
+            if (currentDistributions.Count() > 0) {
+                var smartMeterPortion = currentDistributions
+                    .SelectMany(x => x.SmartMeterPortions)
+                    .FirstOrDefault(x => x.SmartMeterId == _forecastModel.SmartMeterId);
+
+                if (smartMeterPortion != null) {
+                    smartMeterPortion.EstimatedActiveEnergyMinus = _forecastModel.ActiveEnergyMinus;
+                    smartMeterPortion.EstimatedActiveEnergyPlus = _forecastModel.ActiveEnergyPlus;
+                    smartMeterPortion.Flexibility = _forecastModel.Flexibility;
+                    smartMeterPortion.ForecastFromSmartMeter = true;
+                    await mDb.SaveChangesAsync();
+                }
             }
         }
 

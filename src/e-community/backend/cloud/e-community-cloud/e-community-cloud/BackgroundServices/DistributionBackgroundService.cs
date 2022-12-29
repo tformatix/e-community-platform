@@ -28,7 +28,7 @@ namespace e_community_cloud.BackgroundServices {
                     // TODO: Monitoring (1)
 
                     switch (minute + delayMinutes) {
-                        case 0:
+                        case 60:
                             // (7) inform members about their portions
                             await distributionService.FinalizeDistribution();
                             break;
