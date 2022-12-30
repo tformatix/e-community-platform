@@ -1,18 +1,21 @@
-OpenNotification
-- Id
-- MemberId
+ECommunityDashboard
 - Type (portion, assigned portion, non-compliance, offline)
-- Playload<string,string>
+- CurrentDistribution
+- NewDistribution?
+- OfflineSmartMeter?
+- Non-Compliance?
 
 Monitoring
 - ActiveEnergyPlus
 - ActiveEnergyMinus
 
 TODO
-- Error Checking
-- Open Notification
+- Dashboard Request (incl. open notifications)
 - APP
 - Monitoring
+
+- When is a good forecast?
+- What is the reference value for the forecast deviation?
 
 
 Ersatzwerte, Lastprofil und Flexibiltät schlecht --> in BA schreiben
