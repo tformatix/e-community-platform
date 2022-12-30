@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -186,7 +187,7 @@ fun TileCard(_tile: Tile, _meterDataRTDto: MeterDataRTDto) {
         )
 
         var value = 0
-        var color = Color.Black
+        var color = colorResource(id = R.color.value_normal)
 
         when(_tile.tileId) {
             LocalContext.current.getString(R.string.tile_id_community_consumption) -> {
@@ -199,12 +200,12 @@ fun TileCard(_tile: Tile, _meterDataRTDto: MeterDataRTDto) {
 
             LocalContext.current.getString(R.string.tile_id_household_feed_in) -> {
                 value = _meterDataRTDto.activePowerMinus
-                if (value > 0) { color = Color.Green }
+                if (value > 0) { color = colorResource(id = R.color.value_good) }
             }
 
             LocalContext.current.getString(R.string.tile_id_community_feed_in) -> {
                 value = _meterDataRTDto.eCommunityActivePowerMinus
-                if (value > 0) { color = Color.Green }
+                if (value > 0) { color = colorResource(id = R.color.value_good) }
             }
         }
 

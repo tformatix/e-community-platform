@@ -194,8 +194,8 @@ private fun MainScreenNavigationConfigurations(
     navController: NavHostController,
     selectedScreen: MutableState<String>,
     ) {
-    // start with home screen
-    val startDestination = Screen.Home.route
+    // start with eCommunity screen
+    val startDestination = Screen.ECommunity.route
     val application = ((LocalContext.current as MainActivity).application as ECommunityApplication)
 
     NavHost(navController, startDestination = startDestination) {

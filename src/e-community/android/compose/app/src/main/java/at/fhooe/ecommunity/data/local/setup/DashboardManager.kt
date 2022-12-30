@@ -25,7 +25,7 @@ class DashboardManager(private val context: Context, private val tileRepository:
             value = DEFAULT_TILE_VALUE,
             isVisible = true,
             order = 0,
-            colorId = context.getColor(R.color.tile_value_normal))
+            colorId = context.getColor(R.color.value_normal))
 
         val tileHouseholdFeedIn = Tile (
             tileId = context.getString(R.string.dashboard_tile_id_household_feed_in),
@@ -34,7 +34,7 @@ class DashboardManager(private val context: Context, private val tileRepository:
             value = DEFAULT_TILE_VALUE,
             isVisible = true,
             order = 1,
-            colorId = context.getColor(R.color.tile_value_good))
+            colorId = context.getColor(R.color.value_good))
 
         val tileCommunityConsumption = Tile(
             tileId = context.getString(R.string.dashboard_tile_id_community_consumption),
@@ -43,7 +43,7 @@ class DashboardManager(private val context: Context, private val tileRepository:
             value = DEFAULT_TILE_VALUE,
             isVisible = true,
             order = 2,
-            colorId = context.getColor(R.color.tile_value_normal)
+            colorId = context.getColor(R.color.value_normal)
         )
 
         val tileCommunityFeedIn = Tile(
@@ -53,7 +53,7 @@ class DashboardManager(private val context: Context, private val tileRepository:
             value = DEFAULT_TILE_VALUE,
             isVisible = true,
             order = 3,
-            colorId = context.getColor(R.color.tile_value_good)
+            colorId = context.getColor(R.color.value_good)
         )
 
         val list = listOf(tileHouseholdConsumption, tileHouseholdFeedIn, tileCommunityConsumption, tileCommunityFeedIn)
