@@ -13,3 +13,6 @@ TODO
 - Open Notification
 - APP
 - Monitoring
+
+
+Ersatzwerte, Lastprofil und Flexibiltät schlecht --> in BA schreiben

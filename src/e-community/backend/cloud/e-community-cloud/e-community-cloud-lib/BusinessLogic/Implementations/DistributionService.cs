@@ -108,8 +108,21 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             var sumFeedIn = _eCommunityDistribution.SmartMeterPortions
                 .Sum(x => x.EstimatedActiveEnergyMinus);
 
-            // TODO error checking (missing smart meter)
             var missingSmartMeters = _eCommunityDistribution.SmartMeterPortions.Count(x => !x.ForecastFromSmartMeter);
+            if (missingSmartMeters > 0) {
+                // for missing smart meter forecasts use replacement value
+                _eCommunityDistribution.SmartMeterPortions
+                    .Where(x => !x.ForecastFromSmartMeter)
+                    .ToList()
+                    .ForEach(x => {
+                        var replacement = GetReplacementValue(x);
+                        if (replacement != null) {
+                            x.EstimatedActiveEnergyPlus = replacement.EstimatedActiveEnergyPlus;
+                            x.EstimatedActiveEnergyMinus = replacement.EstimatedActiveEnergyMinus;
+                            x.Flexibility = replacement.Flexibility;
+                        }
+                    });
+            }
 
             if (sumFeedIn > 0) {
                 var sumConsumption = _eCommunityDistribution.SmartMeterPortions
@@ -130,6 +143,16 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
         }
 
+        private SmartMeterPortion GetReplacementValue(SmartMeterPortion _smartMeterPortion) {
+            return mDb.SmartMeterPortion
+                .OrderByDescending(x => x.ECommunityDistributionId)
+                .FirstOrDefault(x =>
+                    x.ECommunityDistributionId == _smartMeterPortion.ECommunityDistributionId &&
+                    x.SmartMeterId == _smartMeterPortion.SmartMeterId &&
+                    x.ForecastFromSmartMeter
+                );
+        }
+
         private void DistributeSurplus(IList<SmartMeterPortion> _smartMeterPortions, int _energyDifference) {
             var sumFlexibilityPlus = _smartMeterPortions
                         .Where(x => x.Flexibility > 0)
@@ -142,7 +165,8 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     foreach (var smartMeterPortion in _smartMeterPortions) {
                         if (smartMeterPortion.Flexibility > 0) {
                             smartMeterPortion.Deviation = _energyDifference * smartMeterPortion.Flexibility / sumFlexibilityPlus;
-                        } else {
+                        }
+                        else {
                             smartMeterPortion.Deviation = 0;
                         }
                     }
@@ -152,7 +176,8 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     foreach (var smartMeterPortion in _smartMeterPortions) {
                         if (smartMeterPortion.Flexibility > 0) {
                             smartMeterPortion.Deviation = smartMeterPortion.Flexibility;
-                        } else {
+                        }
+                        else {
                             smartMeterPortion.Deviation = 0;
                         }
                     }
@@ -172,7 +197,8 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     foreach (var smartMeterPortion in _smartMeterPortions) {
                         if (smartMeterPortion.Flexibility < 0) {
                             smartMeterPortion.Deviation = -_energyDifference * smartMeterPortion.Flexibility / sumFlexibilityMinus;
-                        } else {
+                        }
+                        else {
                             smartMeterPortion.Deviation = 0;
                         }
                     }
@@ -268,12 +294,14 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
         public async Task FinalizeDistribution() {
             foreach (var distribution in await GetCurrentDistributions()) {
-                distribution.IsCurrent = false;
-
                 var sumFeedIn = distribution.SmartMeterPortions
                     .Sum(x => x.EstimatedActiveEnergyMinus);
+
                 if (sumFeedIn > 0) {
+                    distribution.IsCurrent = false;
                     SendDistributionNotifications(distribution.SmartMeterPortions, mFCMService.FinalDistribution);
+                } else {
+                    mDb.ECommunityDistribution.Remove(distribution);
                 }
             }
             await mDb.SaveChangesAsync();
