@@ -10,14 +10,14 @@ Monitoring
 - ActiveEnergyMinus
 
 TODO
-- Min Threshold
-- produce more than consume --> include in app
 - Dashboard Request (incl. open notifications)
 - APP
 - Monitoring
+- Tabs (more smart meters)
 
 - When is a good forecast?
 - What is the reference value for the forecast deviation?
+- Good Min Threshold
 
 
 Ersatzwerte, Lastprofil und Flexibiltät schlecht --> in BA schreiben
