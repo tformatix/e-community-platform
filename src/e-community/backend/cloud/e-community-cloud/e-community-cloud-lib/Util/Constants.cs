@@ -15,6 +15,8 @@ namespace e_community_cloud_lib.Util
 
         public const int DISTRIBUTION_MONITOR_INTERVAL_MINUTES = 5;
 
+        public const int DISTRIBUTION_MINIMUM_ENERGY_WH = 100;
+
         public static readonly ECommunityPermission[] ACTIVE_MEMBER_PERMISSIONS = new ECommunityPermission[] { ECommunityPermission.Admin, ECommunityPermission.Member };
     }
 }

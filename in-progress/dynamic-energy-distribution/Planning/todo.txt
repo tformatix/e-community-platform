@@ -10,6 +10,8 @@ Monitoring
 - ActiveEnergyMinus
 
 TODO
+- Min Threshold
+- produce more than consume --> include in app
 - Dashboard Request (incl. open notifications)
 - APP
 - Monitoring

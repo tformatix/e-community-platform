@@ -254,7 +254,6 @@ private fun AppBottomNavigation(navController: NavHostController, bottomNavItems
                         Icon(
                             painter = it,
                             contentDescription = "Icons",
-                            tint = Color.White
                         )
                     }
                 },

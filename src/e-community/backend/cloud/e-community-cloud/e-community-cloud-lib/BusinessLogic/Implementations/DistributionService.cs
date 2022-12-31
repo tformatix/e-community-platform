@@ -124,7 +124,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     });
             }
 
-            if (sumFeedIn > 0) {
+            if (sumFeedIn > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) {
                 var sumConsumption = _eCommunityDistribution.SmartMeterPortions
                     .Sum(x => x.EstimatedActiveEnergyPlus);
                 var energyDifference = sumFeedIn - sumConsumption;
@@ -297,7 +297,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 var sumFeedIn = distribution.SmartMeterPortions
                     .Sum(x => x.EstimatedActiveEnergyMinus);
 
-                if (sumFeedIn > 0) {
+                if (sumFeedIn > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) {
                     distribution.IsCurrent = false;
                     SendDistributionNotifications(distribution.SmartMeterPortions, mFCMService.FinalDistribution);
                 } else {
