@@ -315,10 +315,10 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             var distribution = await mDb.ECommunityDistribution
                 .OrderByDescending(x => x.Id)
                 .Include(x => x.SmartMeterPortions)
-                .FirstOrDefaultAsync(x => !x.IsCurrent);
+                .FirstOrDefaultAsync(x => !x.IsCurrent && x.SmartMeterPortions.Any(portion => portion.SmartMeterId == _smartMeterId));
 
-            if (DateTime.UtcNow.Subtract(distribution.Timestamp).TotalMinutes > 60) {
-                // time difference bigger than 1 hour
+            if (distribution == null || DateTime.UtcNow.Subtract(distribution.Timestamp).TotalMinutes > 60) {
+                // empty or time difference bigger than 1 hour
                 return null;
             }
 
@@ -337,6 +337,11 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
 
             var sumFeedIn = currentDistribution.SmartMeterPortions.Sum(x => x.EstimatedActiveEnergyMinus);
+
+            if(sumFeedIn <= Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) {
+                return null;
+            }
+
             var missingSmartMeters = currentDistribution.SmartMeterPortions.Count(x => !x.ForecastFromSmartMeter);
 
             var sumAssigned = 0;
@@ -346,7 +351,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             var unassigned = sumFeedIn - sumAssigned;
             return new NewDistribution() {
                 MissingSmartMeterCount = missingSmartMeters,
-                UnassignedActiveEnergyMinus = (Math.Abs(unassigned) > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) ? unassigned : 0,
+                UnassignedActiveEnergyMinus = (unassigned > 0) ? unassigned : 0,
                 SmartMeterPortions = currentDistribution.SmartMeterPortions
                     .Where(x => x.SmartMeter.MemberId == _memberId)
                     .ToList(),

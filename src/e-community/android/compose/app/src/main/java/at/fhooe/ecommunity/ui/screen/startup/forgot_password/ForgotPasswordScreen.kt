@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.extension.gesturesDisabled
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 import at.fhooe.ecommunity.util.Validator
@@ -36,12 +36,12 @@ fun ForgotPasswordScreen(_viewModel: ForgotPasswordViewModel, _navController: Na
     var isLoading = false // indicator whether the view model state is RUNNING (loading) and the gestures of the underlying layout should be disabled
 
     when (viewModelState.mState) {
-        LegacyLoadingState.State.RUNNING -> {
+        LoadingState.State.RUNNING -> {
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LegacyLoadingState.State.SUCCESS -> {
+        LoadingState.State.SUCCESS -> {
             // view model operation succeeded
             _viewModel.backToIdle() // bring the view model back to the idle state
             Toast.makeText(_viewModel.mApplication, _viewModel.mApplication.getString(R.string.forgot_password_toast_success), Toast.LENGTH_LONG)
@@ -50,7 +50,7 @@ fun ForgotPasswordScreen(_viewModel: ForgotPasswordViewModel, _navController: Na
             _navController.popBackStack() // remove previous login screen from the backstack
             _navController.navigate("${Screen.Login.route}?email=${emailState.value.text}") // go back to login
         }
-        LegacyLoadingState.State.FAILED -> {
+        LoadingState.State.FAILED -> {
             // view model operation failed
             _viewModel.backToIdle() // bring the view model back to the idle state
             viewModelState.mException?.let {

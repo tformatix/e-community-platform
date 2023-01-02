@@ -30,7 +30,7 @@ import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ECommunityDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MemberDto
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 
@@ -70,17 +70,17 @@ fun SearchScreen(_viewModel: SearchViewModel, _navController: NavHostController)
     var isLoading = false
 
     when(state.mState) {
-        LegacyLoadingState.State.SUCCESS -> {
+        LoadingState.State.SUCCESS -> {
             isLoading = false
             _viewModel.backToIdle()
         }
-        LegacyLoadingState.State.RUNNING -> {
+        LoadingState.State.RUNNING -> {
             Log.d(TAG, "loading")
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LegacyLoadingState.State.FAILED -> {
+        LoadingState.State.FAILED -> {
             //
         }
         else -> {}

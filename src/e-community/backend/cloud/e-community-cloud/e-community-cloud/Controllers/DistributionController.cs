@@ -3,6 +3,7 @@ using e_community_cloud_lib.BusinessLogic.Interfaces;
 using e_community_cloud_lib.Models.Distribution;
 using e_community_cloud_lib.Util.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
@@ -21,9 +22,8 @@ namespace e_community_cloud.Controllers {
             mDistributionService = _distributionService;
         }
 
-        [ProducesResponseType(typeof(OkDto), 200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [ProducesResponseType(typeof(OkDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> HourlyForecast([FromBody] ForecastModel _forecastModel) {
@@ -35,9 +35,8 @@ namespace e_community_cloud.Controllers {
             return Ok(new OkDto());
         }
 
-        [ProducesResponseType(typeof(OkDto), 200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [ProducesResponseType(typeof(OkDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> HourlyPortionAck([FromBody] PortionAckModel _portionAckModel) {
@@ -49,17 +48,23 @@ namespace e_community_cloud.Controllers {
             return Ok(new OkDto());
         }
 
-        [ProducesResponseType(typeof(CurrentPortionDto), 200)]
-        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [ProducesResponseType(typeof(CurrentPortionDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> CurrentPortion(Guid _smartMeterId) {
             Log.Information($"Distribution/CurrentPortion/{_smartMeterId}");
-            return Ok((await mDistributionService.GetCurrentPortion(_smartMeterId)).CopyPropertiesTo(new CurrentPortionDto()));
+            var currentPortion = await mDistributionService.GetCurrentPortion(_smartMeterId);
+            if(currentPortion != null) {
+                return Ok(currentPortion.CopyPropertiesTo(new CurrentPortionDto()));
+            }
+            
+            return NotFound();
         }
 
-        [ProducesResponseType(typeof(NewDistributionDto), 200)]
-        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [ProducesResponseType(typeof(NewDistributionDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> NewDistribution() {
@@ -78,11 +83,11 @@ namespace e_community_cloud.Controllers {
                         .ToList()
                 });
             }
-            return Ok(null);
+            return NotFound();
         }
 
-        [ProducesResponseType(typeof(OkDto), 200)]
-        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [ProducesResponseType(typeof(OkDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> MeterDataMonitoring([FromBody] MeterDataMonitoringModel _meterDataMonitoringModel) {

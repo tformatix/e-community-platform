@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 import at.fhooe.ecommunity.ui.screen.home.search.*
@@ -27,17 +27,17 @@ fun SearchProfileScreen(_memberId: String, _viewModel: SearchProfileViewModel, _
     var isLoading = false
 
     when(state.mState) {
-        LegacyLoadingState.State.SUCCESS -> {
+        LoadingState.State.SUCCESS -> {
             isLoading = false
             _viewModel.backToIdle()
         }
-        LegacyLoadingState.State.RUNNING -> {
+        LoadingState.State.RUNNING -> {
             Log.d(TAG, "loading")
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LegacyLoadingState.State.FAILED -> {
+        LoadingState.State.FAILED -> {
             //
         }
         else -> {}

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 import at.fhooe.ecommunity.ui.screen.sharing.SharingViewModel
 import com.vanpra.composematerialdialogs.MaterialDialog
@@ -42,17 +42,17 @@ fun SharingAddOrUpdContract(_memberId: String, _viewModel: SharingViewModel, _na
     var isLoading = false
 
     when(state.mState) {
-        LegacyLoadingState.State.SUCCESS -> {
+        LoadingState.State.SUCCESS -> {
             isLoading = false
             _viewModel.backToIdle()
         }
-        LegacyLoadingState.State.RUNNING -> {
+        LoadingState.State.RUNNING -> {
             Log.d(TAG, "loading")
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LegacyLoadingState.State.FAILED -> {
+        LoadingState.State.FAILED -> {
             //
         }
         else -> {}

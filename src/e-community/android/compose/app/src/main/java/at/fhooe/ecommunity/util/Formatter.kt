@@ -20,7 +20,7 @@ class Formatter(private val mContext: Context) {
      * @return formatted string
      */
     fun convertHtmlToString(id: Int): CharSequence {
-        return Html.fromHtml(mContext.getString(id),Html.FROM_HTML_MODE_LEGACY)
+        return Html.fromHtml(mContext.getString(id), Html.FROM_HTML_MODE_LEGACY)
     }
 
     /**
@@ -29,34 +29,32 @@ class Formatter(private val mContext: Context) {
      * >= 100000 = 1mW
      * >= 100000000 = 1GW
      * @param value meter data value
+     * @param isEnergy is energy value (not power)
      * @return formatted meter data value
      */
-    fun formatSmartMeterValue(value: Int): String {
-        var formattedValue = ""
+    fun formatSmartMeterValue(value: Int, isEnergy: Boolean = false): String {
         var firstNumber = 0
-        var commaNumber = 0.0
+        val commaNumber: Double
         var unit = ""
+        val energyUnit = if (isEnergy) Constants.HOUR_UNIT else ""
 
         if (value < Constants.KILOWATT) {
-            return "$value ${Constants.WATT_UNIT}"
-        }
-        else if (value >= Constants.KILOWATT && value < Constants.MEGAWATT) {
+            return "$value ${Constants.WATT_UNIT}$energyUnit"
+        } else if (value >= Constants.KILOWATT && value < Constants.MEGAWATT) {
             firstNumber += value / Constants.KILOWATT
             commaNumber = value.toDouble() % Constants.KILOWATT
             unit = Constants.KILOWATT_UNIT
-        }
-        else if (value >= Constants.MEGAWATT && value < Constants.GIGAWATT) {
+        } else if (value >= Constants.MEGAWATT && value < Constants.GIGAWATT) {
             firstNumber += value / Constants.MEGAWATT
             commaNumber = value.toDouble() % Constants.MEGAWATT
             unit = Constants.MEGAWATT_UNIT
-        }
-        else {
+        } else {
             firstNumber += value / Constants.GIGAWATT
             commaNumber = value.toDouble() % Constants.GIGAWATT
             unit = Constants.GIGAWATT_UNIT
         }
 
-        return "$firstNumber.${commaNumber.toString().substring(0,2)} $unit"
+        return "$firstNumber.${commaNumber.toString().substring(0, 2)} $unit$energyUnit"
     }
 
     /**
@@ -101,7 +99,7 @@ class Formatter(private val mContext: Context) {
         var conString = ""
 
         statusDto.isWiredConnected.let {
-            if (it== true) {
+            if (it == true) {
                 conString += "| Wired |"
             }
         }

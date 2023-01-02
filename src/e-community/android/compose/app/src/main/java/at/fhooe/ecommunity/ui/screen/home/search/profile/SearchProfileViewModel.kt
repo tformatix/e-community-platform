@@ -6,7 +6,7 @@ import at.fhooe.ecommunity.Constants
 import at.fhooe.ecommunity.ECommunityApplication
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.SearchApi
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.base.LegacyLoadingStateViewModel
 import at.fhooe.ecommunity.ui.screen.home.search.SearchQuery
 import kotlinx.coroutines.CoroutineScope
@@ -28,17 +28,17 @@ class SearchProfileViewModel(_application: ECommunityApplication) : LegacyLoadin
 
         cloudRESTRepository.authorizedBackendCall(null) { token ->
             CoroutineScope(Dispatchers.IO).launch {
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
+                mState.emit(LoadingState(LoadingState.State.RUNNING))
 
                 val searchApi = SearchApi(Constants.HTTP_BASE_URL_CLOUD)
 
                 try {
 
-                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
+                    mState.emit(LoadingState(LoadingState.State.SUCCESS))
                 }
                 catch (_e: Exception) {
                     Log.e(TAG, _e.toString())
-                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _e))
+                    mState.emit(LoadingState(LoadingState.State.FAILED, mException = _e))
                 }
             }
         }

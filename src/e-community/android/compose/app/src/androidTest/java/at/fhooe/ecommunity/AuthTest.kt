@@ -2,7 +2,7 @@ package at.fhooe.ecommunity
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.screen.startup.login.LoginViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -25,6 +25,6 @@ class AuthTest {
         val application = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as ECommunityApplication
         val loginViewModel = LoginViewModel(application)
 
-        val results = mutableListOf<LegacyLoadingState>()
+        val results = mutableListOf<LoadingState>()
     }
 }

@@ -5,7 +5,7 @@ import at.fhooe.ecommunity.ECommunityApplication
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.AuthApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.RegisterMemberModel
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.base.LegacyLoadingStateViewModel
 import at.fhooe.ecommunity.Constants
 import kotlinx.coroutines.CoroutineScope
@@ -29,15 +29,15 @@ class RegisterViewModel(_application: ECommunityApplication) : LegacyLoadingStat
         Log.d(TAG, "register($_email)")
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
+                mState.emit(LoadingState(LoadingState.State.RUNNING))
 
                 val authApi = AuthApi(Constants.HTTP_BASE_URL_CLOUD)
                 authApi.authRegisterPost(RegisterMemberModel(_email, _username, _password, Locale.getDefault().language))
 
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
+                mState.emit(LoadingState(LoadingState.State.SUCCESS))
             } catch (_exc: Exception) {
                 // an error occurred
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _exc))
+                mState.emit(LoadingState(LoadingState.State.FAILED, mException = _exc))
             }
         }
     }

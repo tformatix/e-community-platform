@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.extension.gesturesDisabled
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.model.Local
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 
@@ -36,15 +36,15 @@ fun PairingDiscovery(_viewModel: PairingViewModel, _navController: NavHostContro
     var isLoading = true
 
     when(state.mState) {
-        LegacyLoadingState.State.SUCCESS -> {
+        LoadingState.State.SUCCESS -> {
             isLoading = false
             _viewModel.backToIdle()
         }
-        LegacyLoadingState.State.RUNNING -> {
+        LoadingState.State.RUNNING -> {
             LoadingIndicator()
             isLoading = true
         }
-        LegacyLoadingState.State.FAILED -> {
+        LoadingState.State.FAILED -> {
             state.mException?.let {
                 Toast.makeText(
                     _viewModel.mApplication,

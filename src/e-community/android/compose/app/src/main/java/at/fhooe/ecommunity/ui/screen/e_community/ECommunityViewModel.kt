@@ -19,6 +19,8 @@ class ECommunityViewModel(_application: ECommunityApplication) : LoadingStateVie
         const val CURRENT = 1
         const val NEW = 2
         const val MONITORING = 3
+
+        const val NR_OPERATIONS = 4
     }
 
     private val distributionApi = DistributionApi(Constants.HTTP_BASE_URL_CLOUD)
@@ -27,8 +29,17 @@ class ECommunityViewModel(_application: ECommunityApplication) : LoadingStateVie
     var newDistribution: NewDistributionDto? = null
         private set
 
+    fun init(){
+        performance(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387")) // TODO
+        currentPortion(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387")) // TODO
+        newDistribution()
+        monitoring()
+    }
+
     fun performance(_smartMeterId: UUID) {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::performance($_smartMeterId)")
+        emitState(LoadingState(LoadingState.State.RUNNING, PERFORMANCE))
+        emitState(LoadingState(LoadingState.State.SUCCESS, PERFORMANCE))
     }
 
     fun currentPortion(_smartMeterId: UUID) {
@@ -51,5 +62,7 @@ class ECommunityViewModel(_application: ECommunityApplication) : LoadingStateVie
 
     fun monitoring() {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::monitoring()")
+        emitState(LoadingState(LoadingState.State.RUNNING, MONITORING))
+        emitState(LoadingState(LoadingState.State.SUCCESS, MONITORING))
     }
 }

@@ -40,6 +40,7 @@ object Constants {
     const val KILOWATT_UNIT = "kW"
     const val MEGAWATT_UNIT = "MW"
     const val GIGAWATT_UNIT = "GW"
+    const val HOUR_UNIT = "h"
     const val TIMER_COUNT = 30
     const val EXTEND_TIMER = 300000 /* 5min */
     const val CHECK_SIGNALR_TIMER = 3000 /* 10sec */

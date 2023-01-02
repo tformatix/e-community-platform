@@ -20,7 +20,7 @@ import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.BlockchainAccountBalanceDto
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.model.RemoteException
 import at.fhooe.ecommunity.ui.screen.home.*
 
@@ -51,14 +51,14 @@ fun SharingScreen(_viewModel: SharingViewModel, _navController: NavHostControlle
     }
 
     when(state.mState) {
-        LegacyLoadingState.State.SUCCESS -> {
+        LoadingState.State.SUCCESS -> {
             isLoading.value = false
             _viewModel.backToIdle()
         }
-        LegacyLoadingState.State.RUNNING -> {
+        LoadingState.State.RUNNING -> {
             isLoading.value = true
         }
-        LegacyLoadingState.State.FAILED -> {
+        LoadingState.State.FAILED -> {
             // view model operation failed
             _viewModel.backToIdle() // bring the view model back to the idle state
             Log.d(TAG, "error")

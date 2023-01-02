@@ -3,7 +3,6 @@ package at.fhooe.ecommunity.ui.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.fhooe.ecommunity.ECommunityApplication
-import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.model.LoadingState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +30,7 @@ abstract class LoadingStateViewModel(
      */
     protected fun getDefaultExceptionHandler(_id: Int = -1): CoroutineExceptionHandler {
         return CoroutineExceptionHandler { _, _exc ->
-            emitRemoteErrorState(_exc, _id)
+            emitState(LoadingState(LoadingState.State.FAILED, _id, _exc))
         }
     }
 
@@ -46,23 +45,5 @@ abstract class LoadingStateViewModel(
         if (mState.value.mState == LoadingState.State.SUCCESS || mState.value.mState == LoadingState.State.FAILED) {
             viewModelScope.launch { mState.emit(LoadingState(LoadingState.State.IDLE)) }
         }
-    }
-
-    /**
-     * emits new error loading state
-     * @param _exception some exception
-     * @param _id a view model must process more than one action and these must be distinguished (e.g. Login and Register)
-     */
-    protected fun emitRemoteErrorState(_exception: Throwable, _id: Int = -1) {
-        emitErrorState(mApplication.remoteExceptionRepository.exceptionToString(_exception), _id)
-    }
-
-    /**
-     * emits new error loading state
-     * @param _exception exception message
-     * @param _id a view model must process more than one action and these must be distinguished (e.g. Login and Register)
-     */
-    protected fun emitErrorState(_exception: String, _id: Int = -1) {
-        emitState(LoadingState(LoadingState.State.FAILED, _id, _exception))
     }
 }

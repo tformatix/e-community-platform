@@ -7,7 +7,7 @@ import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.SmartMeterApi
 import at.fhooe.ecommunity.data.remote.repository.CloudSignalRRepository
 import at.fhooe.ecommunity.data.remote.signalr.dto.MeterDataRTDto
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.base.LegacyLoadingStateViewModel
 import at.fhooe.ecommunity.Constants
 import com.google.gson.Gson
@@ -72,7 +72,7 @@ class HomeViewModel(_application: ECommunityApplication) : LegacyLoadingStateVie
         }
         cloudRESTRepository.authorizedBackendCall(handler) { token ->
             CoroutineScope(Dispatchers.IO).launch {
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
+                mState.emit(LoadingState(LoadingState.State.RUNNING))
 
                 // start signal r
                 startSignalR(token, _meterDataRTDto)
@@ -84,15 +84,15 @@ class HomeViewModel(_application: ECommunityApplication) : LegacyLoadingStateVie
                         val start = smartMeterApi.smartMeterRequestRTDataGet()
 
                         Log.d(TAG, start.toString())
-                        mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
+                        mState.emit(LoadingState(LoadingState.State.SUCCESS))
                     }
                     catch (_e: Exception) {
                         Log.e(TAG, _e.toString())
-                        mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _e))
+                        mState.emit(LoadingState(LoadingState.State.FAILED, mException = _e))
                     }
                 }
                 else {
-                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
+                    mState.emit(LoadingState(LoadingState.State.SUCCESS))
                 }
             }
         }
@@ -110,17 +110,17 @@ class HomeViewModel(_application: ECommunityApplication) : LegacyLoadingStateVie
         cloudRESTRepository.authorizedBackendCall(handler) {
 
             CoroutineScope(Dispatchers.IO).launch {
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
+                mState.emit(LoadingState(LoadingState.State.RUNNING))
                 val smartMeterApi = SmartMeterApi(Constants.HTTP_BASE_URL_CLOUD)
 
                 try {
                     val stop = smartMeterApi.smartMeterStopRTDataGet()
 
-                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
+                    mState.emit(LoadingState(LoadingState.State.SUCCESS))
                 }
                 catch (_e: Exception) {
                     Log.e(TAG, _e.toString())
-                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _e))
+                    mState.emit(LoadingState(LoadingState.State.FAILED, mException = _e))
                 }
             }
         }
@@ -144,17 +144,17 @@ class HomeViewModel(_application: ECommunityApplication) : LegacyLoadingStateVie
         cloudRESTRepository.authorizedBackendCall(handler) {
 
             CoroutineScope(Dispatchers.IO).launch {
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
+                mState.emit(LoadingState(LoadingState.State.RUNNING))
                 val smartMeterApi = SmartMeterApi(Constants.HTTP_BASE_URL_CLOUD)
 
                 try {
                     val extend = smartMeterApi.smartMeterExtendRTDataGet()
 
-                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
+                    mState.emit(LoadingState(LoadingState.State.SUCCESS))
                 }
                 catch (_e: Exception) {
                     Log.e(TAG, _e.toString())
-                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _e))
+                    mState.emit(LoadingState(LoadingState.State.FAILED, mException = _e))
                 }
             }
         }

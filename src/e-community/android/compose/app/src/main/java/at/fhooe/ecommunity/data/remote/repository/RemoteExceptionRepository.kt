@@ -29,6 +29,8 @@ class RemoteExceptionRepository(private val mContext: Context) {
             is ClientException -> {
                 if (_exception.statusCode == 403)
                     return RemoteException(RemoteException.Type.UNAUTHORIZED, RemoteException.Category.CLIENT_ERROR)
+                else if(_exception.statusCode == 404)
+                    return RemoteException(RemoteException.Type.NOT_FOUND, RemoteException.Category.CLIENT_ERROR)
 
                 if (_exception.response is ClientError<*>) {
                     if (_exception.response.body is String) {
@@ -64,6 +66,7 @@ class RemoteExceptionRepository(private val mContext: Context) {
     fun remoteExceptionToString(_remoteException: RemoteException): String {
         val errorStr = when (_remoteException.mType) {
             RemoteException.Type.UNAUTHORIZED -> mContext.getString(R.string.error_403)
+            RemoteException.Type.NOT_FOUND -> mContext.getString(R.string.error_404)
             RemoteException.Type.SERVER_ERROR -> mContext.getString(R.string.error_500)
             RemoteException.Type.NO_INTERNET -> mContext.getString(R.string.error_no_internet)
             RemoteException.Type.SERVER_UNREACHABLE -> mContext.getString(R.string.error_server_unreachable)

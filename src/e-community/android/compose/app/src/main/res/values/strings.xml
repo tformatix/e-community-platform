@@ -163,9 +163,9 @@
     <string name="e_community_distribution_assigned">assigned</string>
     <string name="e_community_new_distribution_title">New Hour - New Energy Distribution!</string>
     <string name="e_community_new_distribution_accept_icon_desc">Accept</string>
-    <string name="e_community_new_distribution_more_energy">Probably %1$d %2$s energy still available - Increase Flexibility?</string>
+    <string name="e_community_new_distribution_more_energy">Probably %1$s energy still available - Increase Flexibility?</string>
     <string name="e_community_new_distribution_forecasts_missing">Missing Forecasts from %1$d Smart Meters - Calculation may be incorrect!</string>
-    <string name="e_community_new_distribution_change_flexibility">change flexibility (kWh)</string>
+    <string name="e_community_new_distribution_change_flexibility">change flexibility (Wh)</string>
     <string name="e_community_new_distribution_change_flexibility_error">Flexibility must be a number!</string>
     <string name="e_community_new_distribution_change_flexibility_minus_icon_desc">minus</string>
     <string name="e_community_new_distribution_change_flexibility_plus_icon_desc">plus</string>

@@ -26,7 +26,7 @@ import at.fhooe.ecommunity.data.local.setup.DashboardManager
 import at.fhooe.ecommunity.data.remote.signalr.dto.MeterDataRTDto
 import at.fhooe.ecommunity.ui.component.LifecycleListener
 import at.fhooe.ecommunity.extension.gesturesDisabled
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.model.RemoteException
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
@@ -63,15 +63,15 @@ fun HomeScreen(_viewModel: HomeViewModel, _navController: NavHostController) {
     val timerCount = remember { mutableStateOf(0) }
 
     when(state.mState) {
-        LegacyLoadingState.State.SUCCESS -> {
+        LoadingState.State.SUCCESS -> {
             isLoading = false
             _viewModel.backToIdle()
         }
-        LegacyLoadingState.State.RUNNING -> {
+        LoadingState.State.RUNNING -> {
             LoadingIndicator()
             isLoading = true
         }
-        LegacyLoadingState.State.FAILED -> {
+        LoadingState.State.FAILED -> {
             // view model operation failed
             _viewModel.backToIdle() // bring the view model back to the idle state
             Log.d(TAG, "error")
@@ -460,8 +460,8 @@ fun checkConnection(
                 Log.e(TAG, "lost SignalR connection")
                 CoroutineScope(Dispatchers.Default).launch {
                     _viewModel.mState.emit(
-                        LegacyLoadingState(
-                            LegacyLoadingState.State.FAILED,
+                        LoadingState(
+                            LoadingState.State.FAILED,
                             mException = null))
                 }
 

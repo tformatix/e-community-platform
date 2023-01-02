@@ -5,7 +5,7 @@ import at.fhooe.ecommunity.ECommunityApplication
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.AuthApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ForgotPasswordModel
-import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.base.LegacyLoadingStateViewModel
 import at.fhooe.ecommunity.Constants
 import kotlinx.coroutines.CoroutineScope
@@ -26,15 +26,15 @@ class ForgotPasswordViewModel(_application: ECommunityApplication): LegacyLoadin
         Log.d(TAG, "forgotPassword($_email)")
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
+                mState.emit(LoadingState(LoadingState.State.RUNNING))
 
                 val authApi = AuthApi(Constants.HTTP_BASE_URL_CLOUD)
                 authApi.authForgotPasswordPost(ForgotPasswordModel(_email))
 
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
+                mState.emit(LoadingState(LoadingState.State.SUCCESS))
             } catch (_exc: Exception){
                 // an error occurred
-                mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _exc))
+                mState.emit(LoadingState(LoadingState.State.FAILED, mException = _exc))
             }
         }
     }

@@ -29,6 +29,7 @@ data class RemoteException(val mType: Type, val mCategory: Category = Category.U
     enum class Type {
         // general errors
         UNAUTHORIZED,
+        NOT_FOUND,
         SERVER_ERROR,
         NO_INTERNET,
         SERVER_UNREACHABLE,
