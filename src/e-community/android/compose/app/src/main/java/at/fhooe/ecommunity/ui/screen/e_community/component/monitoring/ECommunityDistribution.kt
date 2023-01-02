@@ -19,14 +19,30 @@ import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityTile
 import at.fhooe.ecommunity.util.Formatter
 
 @Composable
-fun ECommunityDistribution(currentPortion: CurrentPortionDto) {
+fun ECommunityDistribution(currentPortion: CurrentPortionDto?) {
     val formatter = Formatter(LocalContext.current)
-    val flexibility = currentPortion.flexibility ?: 0
-    val flexibilitySign =
-        if (flexibility > 0) "+"
-        else if (flexibility < 0) "-"
-        else ""
 
+    val forecastString: String
+    val flexibilityString: String
+    val assignedString: String
+    if (currentPortion == null) {
+        forecastString = "-"
+        flexibilityString = ""
+        assignedString = "-"
+    } else {
+        forecastString = formatter.formatSmartMeterValue(currentPortion.estimatedActiveEnergyPlus ?: 0, true)
+
+        val flexibility = currentPortion.flexibility ?: 0
+        flexibilityString =
+            if (flexibility > 0) "(+${formatter.formatSmartMeterValue(flexibility, true)})"
+            else if (flexibility < 0) "(-${formatter.formatSmartMeterValue(flexibility, true)})"
+            else ""
+
+        assignedString = formatter.formatSmartMeterValue(
+            (currentPortion.estimatedActiveEnergyPlus ?: 0) + (currentPortion.deviation ?: 0),
+            true
+        )
+    }
     Text(
         text = stringResource(R.string.e_community_distribution_title),
         fontWeight = FontWeight.Bold,
@@ -41,18 +57,15 @@ fun ECommunityDistribution(currentPortion: CurrentPortionDto) {
     ) {
         ECommunityTile(
             title = stringResource(R.string.e_community_distribution_forecast),
-            content = formatter.formatSmartMeterValue(currentPortion.estimatedActiveEnergyPlus ?: 0, true),
-            subContent = "(${flexibilitySign}${formatter.formatSmartMeterValue(flexibility, true)})",
+            content = forecastString,
+            subContent = flexibilityString,
             modifier = Modifier
                 .weight(1f)
                 .padding(end = 4.dp)
         )
         ECommunityTile(
             title = stringResource(R.string.e_community_distribution_assigned),
-            content = formatter.formatSmartMeterValue(
-                (currentPortion.estimatedActiveEnergyPlus ?: 0) + (currentPortion.deviation ?: 0),
-                true
-            ),
+            content = assignedString,
             color = colorResource(id = R.color.value_bad),
             modifier = Modifier
                 .weight(1f)

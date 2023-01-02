@@ -76,17 +76,15 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
             viewModel.newDistribution?.let {
                 ECommunityNewDistribution(
                     newDistribution = it,
-                    onAccepted = { (portion, flexibility) ->
-
+                    onAccepted = { portion, flexibility ->
+                        // TODO
                     }
                 )
             }
 //            ECommunityNonCompliance()
             ECommunityPerformance()
             ECommunityDivider()
-            viewModel.currentPortion?.let {
-                ECommunityDistribution(it)
-            }
+            ECommunityDistribution(viewModel.currentPortion)
         }
     }
 }

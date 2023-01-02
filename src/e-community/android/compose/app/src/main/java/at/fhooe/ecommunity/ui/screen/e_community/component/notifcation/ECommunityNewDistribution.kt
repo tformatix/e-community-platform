@@ -35,7 +35,7 @@ import at.fhooe.ecommunity.util.Formatter
 @Composable
 fun ECommunityNewDistribution(
     newDistribution: NewDistributionDto,
-    onAccepted: (portion: NewPortionDto) -> Unit
+    onAccepted: (portion: NewPortionDto, flexibility: Int) -> Unit
 ) {
     val formatter = Formatter(LocalContext.current)
 
