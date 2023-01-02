@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,7 +50,7 @@ fun ECommunityTile(
             if (icon != null) {
                 Icon(
                     imageVector = icon,
-                    contentDescription = "Some Icon",
+                    contentDescription = stringResource(R.string.e_community_tile_icon_desc),
                     tint = color,
                     modifier = Modifier
                         .size(23.dp)

@@ -60,9 +60,9 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                 .verticalScroll(rememberScrollState())
                 .padding(vertical = dimensionResource(id = R.dimen.activity_vertical_margin))
         ) {
-//            ECommunityOffline()
-//            ECommunityNewDistribution()
-//            ECommunityNonCompliance()
+            ECommunityOffline()
+            ECommunityNewDistribution()
+            ECommunityNonCompliance()
             ECommunityPerformance()
             ECommunityDivider()
             ECommunityDistribution()

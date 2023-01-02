@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,7 @@ fun ECommunityTopBar() {
             Image(
                 // painter = rememberAsyncImagePainter("https://avatars.githubusercontent.com/u/45870302?v=4"), // load image from URL
                 painter = painterResource(id = R.drawable.ic_default_group_pic),
-                contentDescription = "Group Icon",
+                contentDescription = stringResource(R.string.e_community_top_bar_group_icon_desc),
                 contentScale = ContentScale.Crop, // crop the image if it's not a square
                 modifier = Modifier
                     .size(40.dp)
@@ -75,7 +76,7 @@ fun ECommunityTopBar() {
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.WbSunny,
-                        contentDescription = "Feed in",
+                        contentDescription = stringResource(R.string.e_community_top_bar_feed_in_icon_desc),
                         tint = colorResource(id = R.color.value_good),
                         modifier = Modifier
                             .size(20.dp)
@@ -93,7 +94,7 @@ fun ECommunityTopBar() {
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Power,
-                        contentDescription = "Consumption",
+                        contentDescription = stringResource(R.string.e_community_top_bar_consumption_icon_desc),
                         tint = colorResource(id = R.color.value_bad),
                         modifier = Modifier
                             .size(20.dp)
@@ -108,7 +109,7 @@ fun ECommunityTopBar() {
             }
             Icon(
                 imageVector = Icons.Outlined.ArrowForwardIos,
-                contentDescription = "Detail eCommunity Screen",
+                contentDescription = stringResource(R.string.e_community_top_bar_detail_icon_desc),
                 tint = colorResource(id = R.color.white),
                 modifier = Modifier
                     .padding(start = 8.dp)

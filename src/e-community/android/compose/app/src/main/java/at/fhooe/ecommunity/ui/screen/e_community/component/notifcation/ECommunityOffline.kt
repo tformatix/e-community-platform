@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,13 +38,13 @@ fun ECommunityOffline() {
     ) {
         Icon(
             imageVector = Icons.Outlined.CloudOff,
-            contentDescription = "Close",
+            contentDescription = stringResource(R.string.e_community_offline_icon_desc),
             tint = colorResource(id = R.color.value_bad),
             modifier = Modifier
                 .padding(end = 4.dp)
         )
         Text(
-            text = "Smart Meter Fischer's House 1 Offline!",
+            text = stringResource(R.string.e_community_offline_title, "Fischer's House 1"),
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
         )

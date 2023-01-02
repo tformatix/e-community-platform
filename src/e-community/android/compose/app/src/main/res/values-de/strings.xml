@@ -118,4 +118,38 @@
     <string name="sharing_contracts_requests">Anfragen</string>
     <string name="sharing_contracts_pending">Offen</string>
     <string name="sharing_contracts_closed">Geschlossen</string>
+
+    <!--COMMUNITY SCREEN-->
+    <string name="e_community_top_bar_group_icon_desc">Gruppen-Icon</string>
+    <string name="e_community_top_bar_feed_in_icon_desc">Einspeisung</string>
+    <string name="e_community_top_bar_consumption_icon_desc">Verbrauch</string>
+    <string name="e_community_top_bar_detail_icon_desc">Detail eCommunity Screen</string>
+    <string name="e_community_tile_icon_desc">Undefinierbares Icon</string>
+    <string name="e_community_performance_title">DEINE Performance</string>
+    <string name="e_community_performance_good_forecasts">Anzahl der guten Prognosen</string>
+    <string name="e_community_performance_forecast_deviation">Prognoseabweichung</string>
+    <string name="e_community_performance_day">Tag</string>
+    <string name="e_community_performance_week">Woche</string>
+    <string name="e_community_performance_month">Monat</string>
+    <string name="e_community_performance_year">Jahr</string>
+    <string name="e_community_performance_total">Total</string>
+    <string name="e_community_distribution_title">Stündliche Verteilung</string>
+    <string name="e_community_distribution_forecast">Prognose</string>
+    <string name="e_community_distribution_assigned">zugewiesen</string>
+    <string name="e_community_new_distribution_title">Neue Stunde - neue Energieverteilung!</string>
+    <string name="e_community_new_distribution_accept_icon_desc">Akzeptieren</string>
+    <string name="e_community_new_distribution_more_energy">Wahrscheinlich %1$d %2$s Energie noch verfügbar - Flexibilität erhöhen?</string>
+    <string name="e_community_new_distribution_forecasts_missing">Fehlende Prognosen von %1$d Smart Meters - Die Berechnung kann falsch sein!</string>
+    <string name="e_community_new_distribution_change_flexibility">Flexibilität ändern (kWh)</string>
+    <string name="e_community_new_distribution_change_flexibility_error">Flexibilität muss eine Zahl sein!</string>
+    <string name="e_community_new_distribution_change_flexibility_minus_icon_desc">Minus</string>
+    <string name="e_community_new_distribution_change_flexibility_plus_icon_desc">Plus</string>
+    <string name="e_community_new_distribution_estimated_consumption">geschätzter Verbrauch</string>
+    <string name="e_community_new_distribution_assigned">zugewiesen</string>
+    <string name="e_community_non_compliance_title">Prognose wurde nicht eingehalten!</string>
+    <string name="e_community_non_compliance_close_icon_desc">Schließen</string>
+    <string name="e_community_non_compliance_forecast">Prognose</string>
+    <string name="e_community_non_compliance_current">derzeitiger voraussichtlicher Verbrauch</string>
+    <string name="e_community_offline_icon_desc">Offline</string>
+    <string name="e_community_offline_title">Smart Meter "%1$s" offline!</string>
 </resources>

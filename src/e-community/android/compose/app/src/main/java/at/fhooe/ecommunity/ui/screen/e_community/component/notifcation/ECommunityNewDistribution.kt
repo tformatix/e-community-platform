@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -61,7 +62,7 @@ fun ECommunityNewDistribution() {
             )
             // title
             Text(
-                text = "New Hour - New Energy Distribution!",
+                text = stringResource(R.string.e_community_new_distribution_title),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -77,20 +78,20 @@ fun ECommunityNewDistribution() {
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Done,
-                    contentDescription = "Accept",
+                    contentDescription = stringResource(R.string.e_community_new_distribution_accept_icon_desc),
                     tint = colorResource(id = R.color.value_good),
                 )
             }
         }
         // more energy available
         Text(
-            text = "Probably 4 kWh energy still available - Increase Flexibility?",
+            text = stringResource(R.string.e_community_new_distribution_more_energy, 4, "kWh"),
             color = colorResource(id = R.color.value_good),
             fontSize = 10.sp
         )
         // forecasts are missing
         Text(
-            text = "Missing Forecasts from 2 Smart Meters - Calculation may be incorrect!",
+            text = stringResource(R.string.e_community_new_distribution_forecasts_missing, 2),
             color = colorResource(id = R.color.value_bad),
             fontSize = 10.sp
         )
@@ -105,14 +106,14 @@ fun ECommunityNewDistribution() {
                 .padding(top = 8.dp)
         ) {
             Text(
-                text = "change flexibility (kWh)",
+                text = stringResource(R.string.e_community_new_distribution_change_flexibility),
                 fontStyle = FontStyle.Italic,
                 color = if (isFlexibilityError) colorResource(id = R.color.value_bad) else Color.Black,
                 fontSize = 12.sp,
             )
             if (isFlexibilityError) {
                 Text(
-                    text = "Flexibility must be a number!",
+                    text = stringResource(R.string.e_community_new_distribution_change_flexibility_error),
                     color = colorResource(id = R.color.value_bad),
                     style = MaterialTheme.typography.caption,
                 )
@@ -128,7 +129,7 @@ fun ECommunityNewDistribution() {
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.RemoveCircleOutline,
-                        contentDescription = "sub"
+                        contentDescription = stringResource(R.string.e_community_new_distribution_change_flexibility_minus_icon_desc)
                     )
                 }
                 BasicTextField(
@@ -150,7 +151,7 @@ fun ECommunityNewDistribution() {
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.AddCircleOutline,
-                        contentDescription = "add"
+                        contentDescription = stringResource(R.string.e_community_new_distribution_change_flexibility_plus_icon_desc)
                     )
                 }
             }
@@ -161,7 +162,7 @@ fun ECommunityNewDistribution() {
                 .fillMaxWidth()
         ) {
             ECommunityTile(
-                title = "estimated consumption",
+                title = stringResource(R.string.e_community_new_distribution_estimated_consumption),
                 content = "1.7 kWh",
                 background = Color.White,
                 modifier = Modifier
@@ -169,7 +170,7 @@ fun ECommunityNewDistribution() {
                     .padding(end = 4.dp)
             )
             ECommunityTile(
-                title = "assigned",
+                title = stringResource(R.string.e_community_new_distribution_assigned),
                 content = "1.6 kWh",
                 color = colorResource(id = R.color.value_good),
                 background = Color.White,

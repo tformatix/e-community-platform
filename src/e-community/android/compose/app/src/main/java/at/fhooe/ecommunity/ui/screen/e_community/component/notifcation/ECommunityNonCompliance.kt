@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,7 +40,7 @@ fun ECommunityNonCompliance() {
                 .fillMaxWidth()
         ) {
             Text(
-                text = "Forecast was not met!",
+                text = stringResource(R.string.e_community_non_compliance_title),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -52,7 +53,7 @@ fun ECommunityNonCompliance() {
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(R.string.e_community_non_compliance_close_icon_desc),
                     tint = colorResource(id = R.color.value_bad),
                 )
             }
@@ -62,7 +63,7 @@ fun ECommunityNonCompliance() {
                 .fillMaxWidth()
         ) {
             ECommunityTile(
-                title = "forecast",
+                title = stringResource(R.string.e_community_non_compliance_forecast),
                 content = "2.3 kWh",
                 subContent = "(+0.3 kWh)",
                 background = Color.White,
@@ -71,7 +72,7 @@ fun ECommunityNonCompliance() {
                     .padding(end = 4.dp)
             )
             ECommunityTile(
-                title = "current projected consumption",
+                title = stringResource(R.string.e_community_non_compliance_current),
                 content = "3.1 kWh",
                 color = colorResource(id = R.color.value_bad),
                 icon = Icons.Outlined.WarningAmber,

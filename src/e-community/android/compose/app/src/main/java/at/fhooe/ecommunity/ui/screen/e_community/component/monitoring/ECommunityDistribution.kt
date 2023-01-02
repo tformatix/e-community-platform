@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,7 +18,7 @@ import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityTile
 @Composable
 fun ECommunityDistribution() {
     Text(
-        text = "Hourly Distribution",
+        text = stringResource(R.string.e_community_distribution_title),
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
         modifier = Modifier
@@ -29,7 +30,7 @@ fun ECommunityDistribution() {
             .padding(horizontal = dimensionResource(id = R.dimen.activity_vertical_margin))
     ) {
         ECommunityTile(
-            title = "forecast",
+            title = stringResource(R.string.e_community_distribution_forecast),
             content = "2.3 kWh",
             subContent = "(+0.3 kWh)",
             modifier = Modifier
@@ -37,7 +38,7 @@ fun ECommunityDistribution() {
                 .padding(end = 4.dp)
         )
         ECommunityTile(
-            title = "assigned",
+            title = stringResource(R.string.e_community_distribution_assigned),
             content = "2.1 kWh",
             color = colorResource(id = R.color.value_bad),
             modifier = Modifier
