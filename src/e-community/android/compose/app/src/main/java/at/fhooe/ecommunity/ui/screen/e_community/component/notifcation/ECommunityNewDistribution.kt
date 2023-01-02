@@ -3,10 +3,15 @@ package at.fhooe.ecommunity.ui.screen.e_community.component.notifcation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.AddCircleOutline
+import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.RemoveCircleOutline
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +45,7 @@ fun ECommunityNewDistribution() {
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(colorResource(id = R.color.gray_light))
-            .padding(8.dp)
+            .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
     ) {
         // header
         Box(
@@ -63,13 +68,19 @@ fun ECommunityNewDistribution() {
                     .align(Alignment.Center)
             )
             // accept icon
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_check),
-                contentDescription = "Accept",
-                tint = colorResource(id = R.color.value_good),
+            IconButton(
+                onClick = {
+                    // TODO
+                },
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-            )
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Done,
+                    contentDescription = "Accept",
+                    tint = colorResource(id = R.color.value_good),
+                )
+            }
         }
         // more energy available
         Text(
@@ -84,42 +95,66 @@ fun ECommunityNewDistribution() {
             fontSize = 10.sp
         )
         // input flexibility
-        TextField(
-            value = flexibility,
-            onValueChange = { flexibility = it },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                errorLabelColor = colorResource(id = R.color.value_bad),
-                errorCursorColor = colorResource(id = R.color.value_bad),
-                errorIndicatorColor = colorResource(id = R.color.value_bad),
-            ),
-            textStyle = LocalTextStyle.current.copy(fontSize = 20.sp),
-            label = {
-                Text(
-                    text = "Change Flexibility (kWh):",
-                    fontStyle = FontStyle.Italic,
-                    fontSize = 12.sp
-                )
-            },
-            isError = isFlexibilityError,
-            trailingIcon = {
-                if (isFlexibilityError) {
-                    Icon(
-                        imageVector = Icons.Filled.Error,
-                        contentDescription = "error",
-                        tint = colorResource(id = R.color.value_bad)
-                    )
-                }
-            },
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .padding(vertical = 8.dp)
                 .fillMaxWidth()
+                .padding(vertical = 8.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(Color.White)
-                .padding(0.dp)
-        )
+                .padding(top = 8.dp)
+        ) {
+            Text(
+                text = "change flexibility (kWh)",
+                fontStyle = FontStyle.Italic,
+                color = if (isFlexibilityError) colorResource(id = R.color.value_bad) else Color.Black,
+                fontSize = 12.sp,
+            )
+            if (isFlexibilityError) {
+                Text(
+                    text = "Flexibility must be a number!",
+                    color = colorResource(id = R.color.value_bad),
+                    style = MaterialTheme.typography.caption,
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = {
+                        flexibility = ((flexibility.toDouble() * 10 - 1) / 10).toString()
+                    },
+                    enabled = !isFlexibilityError
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.RemoveCircleOutline,
+                        contentDescription = "sub"
+                    )
+                }
+                BasicTextField(
+                    value = flexibility,
+                    onValueChange = { flexibility = it },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    textStyle = LocalTextStyle.current.copy(
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        color = if (isFlexibilityError) colorResource(id = R.color.value_bad) else Color.Black
+                    )
+                )
+                IconButton(
+                    onClick = {
+                        flexibility = ((flexibility.toDouble() * 10 + 1) / 10).toString()
+                    },
+                    enabled = !isFlexibilityError
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.AddCircleOutline,
+                        contentDescription = "add"
+                    )
+                }
+            }
+        }
         // tiles
         Row(
             modifier = Modifier

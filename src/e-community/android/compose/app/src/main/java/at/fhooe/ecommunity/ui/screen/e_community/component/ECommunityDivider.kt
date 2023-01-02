@@ -14,6 +14,6 @@ fun ECommunityDivider() {
         color = colorResource(id = R.color.gray_light),
         thickness = 1.dp,
         modifier = Modifier
-            .padding(vertical = 8.dp)
+            .padding(vertical = 16.dp)
     )
 }

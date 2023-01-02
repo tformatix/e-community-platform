@@ -2,6 +2,8 @@ package at.fhooe.ecommunity.ui.screen.e_community
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -55,11 +57,12 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
+                .verticalScroll(rememberScrollState())
                 .padding(vertical = dimensionResource(id = R.dimen.activity_vertical_margin))
         ) {
-            ECommunityOffline()
-            ECommunityNewDistribution()
-            ECommunityNonCompliance()
+//            ECommunityOffline()
+//            ECommunityNewDistribution()
+//            ECommunityNonCompliance()
             ECommunityPerformance()
             ECommunityDivider()
             ECommunityDistribution()

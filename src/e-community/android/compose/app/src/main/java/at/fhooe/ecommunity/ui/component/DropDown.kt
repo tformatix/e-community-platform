@@ -1,0 +1,64 @@
+package at.fhooe.ecommunity.ui.component
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.sp
+import at.fhooe.ecommunity.R
+
+@Composable
+fun DropDown(items: List<String>, onSelected: (idx: Int) -> Unit, modifier: Modifier = Modifier) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedIndex by remember { mutableStateOf(0) }
+
+    Box(
+        modifier = modifier
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .clickable(onClick = { expanded = true })
+        ){
+            Text(
+                text = items[selectedIndex],
+                fontSize = 12.sp,
+            )
+            Icon(
+                imageVector = Icons.Outlined.ArrowDropDown,
+                contentDescription = "drop down"
+            )
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            items.forEachIndexed { idx, item ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedIndex = idx
+                        expanded = false
+                        onSelected(idx)
+                    },
+                    modifier = Modifier
+                        .background(if (idx == selectedIndex) colorResource(id = R.color.gray_light) else Color.White)
+                ) {
+                    Text(
+                        text = item,
+                    )
+                }
+            }
+        }
+    }
+}

@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowForwardIos
+import androidx.compose.material.icons.outlined.Power
+import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,7 +74,7 @@ fun ECommunityTopBar() {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_sun),
+                        imageVector = Icons.Outlined.WbSunny,
                         contentDescription = "Feed in",
                         tint = colorResource(id = R.color.value_good),
                         modifier = Modifier
@@ -88,7 +92,7 @@ fun ECommunityTopBar() {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_power),
+                        imageVector = Icons.Outlined.Power,
                         contentDescription = "Consumption",
                         tint = colorResource(id = R.color.value_bad),
                         modifier = Modifier
@@ -103,7 +107,7 @@ fun ECommunityTopBar() {
                 }
             }
             Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_forward),
+                imageVector = Icons.Outlined.ArrowForwardIos,
                 contentDescription = "Detail eCommunity Screen",
                 tint = colorResource(id = R.color.white),
                 modifier = Modifier

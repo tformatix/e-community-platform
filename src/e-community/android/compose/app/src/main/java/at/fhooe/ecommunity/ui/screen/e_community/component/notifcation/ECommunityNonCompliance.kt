@@ -4,16 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,7 +32,7 @@ fun ECommunityNonCompliance() {
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(colorResource(id = R.color.gray_light))
-            .padding(8.dp)
+            .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
     ) {
         Box(
             modifier = Modifier
@@ -43,17 +45,20 @@ fun ECommunityNonCompliance() {
                 modifier = Modifier
                     .align(Alignment.Center)
             )
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_close),
-                contentDescription = "Close",
-                tint = colorResource(id = R.color.value_bad),
+            IconButton(
+                onClick = { /*TODO*/ },
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-            )
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = "Close",
+                    tint = colorResource(id = R.color.value_bad),
+                )
+            }
         }
         Row(
             modifier = Modifier
-                .padding(vertical = 8.dp)
                 .fillMaxWidth()
         ) {
             ECommunityTile(
@@ -69,7 +74,7 @@ fun ECommunityNonCompliance() {
                 title = "current projected consumption",
                 content = "3.1 kWh",
                 color = colorResource(id = R.color.value_bad),
-                icon = ImageVector.vectorResource(id = R.drawable.ic_warning),
+                icon = Icons.Outlined.WarningAmber,
                 background = Color.White,
                 modifier = Modifier
                     .weight(1f)
