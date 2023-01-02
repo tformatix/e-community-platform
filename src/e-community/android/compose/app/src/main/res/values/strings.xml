@@ -123,10 +123,11 @@
     <string name="nothing_found">Nothing was found :(</string>
 
     <!-- SEARCH FILTER SCREEN -->
-    <string name="sort_by">Sort By</string>
-    <string name="apply_filter">apply</string>
-    <string name="sort_by_distance">Distance</string>
-    <string name="sort_by_entry_date">Entry Date</string>
+    <string name="search_filter_sort_by">Sort By</string>
+    <string name="search_filter_apply_filter">apply</string>
+    <string name="search_filter_sortby_distance">Distance</string>
+    <string name="search_filter_sortby_entry_date">Entry Date</string>
+    <string name="search_filter_sortby_recommended">Recommended</string>
 
     <!--SHARING SCREEN -->
     <string name="sharing_wallet">Wallet</string>
@@ -134,11 +135,14 @@
     <string name="sharing_wallet_sent">Sent</string>
     <string name="sharing_wallet_balance">Balance</string>
     <string name="sharing_wallet_eth">Ethereum</string>
+    <string name="sharing_wallet_currency_ethereum">Ethereum</string>
+    <string name="sharing_wallet_currency_euro">Euro</string>
     <string name="sharing_contracts">Contracts</string>
     <string name="sharing_contracts_active">Active</string>
     <string name="sharing_contracts_requests">Requests</string>
     <string name="sharing_contracts_pending">Pending</string>
     <string name="sharing_contracts_closed">Closed</string>
+    <string name="sharing_contract_name">Contract\'s name</string>
 
     <!--COMMUNITY SCREEN-->
     <string name="e_community_top_bar_group_icon_desc">Group Icon</string>

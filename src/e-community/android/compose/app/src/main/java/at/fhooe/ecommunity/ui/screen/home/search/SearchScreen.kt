@@ -25,6 +25,7 @@ import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
 import at.fhooe.ecommunity.Constants
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
@@ -91,7 +92,7 @@ fun SearchScreen(_viewModel: SearchViewModel, _navController: NavHostController)
     ){
         // load search results
         Box() {
-            SearchResults(searchQuery, searchLayout, userSearchResults, eCommSearchResults)
+            SearchResults(searchQuery, searchLayout, userSearchResults, eCommSearchResults, _navController)
         }
     }
 }
@@ -106,7 +107,8 @@ fun SearchResults(
     _searchQuery: MutableState<SearchQuery>,
     _searchLayout: MutableState<SearchLayout>,
     _userSearchResults: State<List<MemberDto>>,
-    _eCommSearchResults: State<List<ECommunityDto>>
+    _eCommSearchResults: State<List<ECommunityDto>>,
+    _navController: NavHostController
 ) {
 
     val searchQuery = _searchQuery.value
@@ -117,19 +119,19 @@ fun SearchResults(
         if (it.isNotEmpty()) {
             if (searchQuery.userSearch && searchQuery.eCommSearch) {
                 // display all results
-                AllSearchResults(_searchLayout, _userSearchResults, _eCommSearchResults)
+                AllSearchResults(_searchLayout, _userSearchResults, _eCommSearchResults, _navController)
             }
             else if (searchQuery.userSearch && !searchQuery.eCommSearch) {
                 // users only
-                UserSearchResults(_searchLayout, _userSearchResults)
+                UserSearchResults(_searchLayout, _userSearchResults, _navController)
             }
             else if (!searchQuery.userSearch && searchQuery.eCommSearch) {
                 // eComms only
-                ECommSearchResults(_searchLayout, _eCommSearchResults)
+                ECommSearchResults(_searchLayout, _eCommSearchResults, _navController)
             }
             else {
                 // everything filtered out -> display all
-                AllSearchResults(_searchLayout, _userSearchResults, _eCommSearchResults)
+                AllSearchResults(_searchLayout, _userSearchResults, _eCommSearchResults, _navController)
             }
         }
     }
@@ -144,14 +146,15 @@ fun SearchResults(
 fun AllSearchResults(
     _searchLayout: MutableState<SearchLayout>,
     _userSearchResults: State<List<MemberDto>>,
-    _eCommSearchResults: State<List<ECommunityDto>>
+    _eCommSearchResults: State<List<ECommunityDto>>,
+    _navController: NavHostController
 ) {
     Column(modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         // divide screen
-        UserSearchResults(_searchLayout, _userSearchResults)
-        ECommSearchResults(_searchLayout, _eCommSearchResults)
+        UserSearchResults(_searchLayout, _userSearchResults, _navController)
+        ECommSearchResults(_searchLayout, _eCommSearchResults, _navController)
     }
 }
 
@@ -161,9 +164,9 @@ fun AllSearchResults(
  * @see Composable
  */
 @Composable
-fun UserSearchResults(_searchLayout: MutableState<SearchLayout>, _userSearchResults: State<List<MemberDto>>) {
+fun UserSearchResults(_searchLayout: MutableState<SearchLayout>, _userSearchResults: State<List<MemberDto>>, _navController: NavHostController) {
     if (!_searchLayout.value.expandedECommView) {
-        ResultTemplate(_searchLayout, stringResource(R.string.people_filter), _userSearchResults.value)
+        ResultTemplate(_searchLayout, stringResource(R.string.people_filter), _userSearchResults.value, _navController)
     }
 }
 
@@ -173,15 +176,15 @@ fun UserSearchResults(_searchLayout: MutableState<SearchLayout>, _userSearchResu
  * @see Composable
  */
 @Composable
-fun ECommSearchResults(_searchLayout: MutableState<SearchLayout>, _eCommSearchResults: State<List<ECommunityDto>>) {
+fun ECommSearchResults(_searchLayout: MutableState<SearchLayout>, _eCommSearchResults: State<List<ECommunityDto>>, _navController: NavHostController) {
     if (!_searchLayout.value.expandedUserView) {
-        ResultTemplate(_searchLayout, stringResource(R.string.ecommunities_filter), _eCommSearchResults.value)
+        ResultTemplate(_searchLayout, stringResource(R.string.ecommunities_filter), _eCommSearchResults.value, _navController)
     }
 }
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
-fun ResultTemplate(_searchLayout: MutableState<SearchLayout>, _category: String, _items: List<Any>) {
+fun ResultTemplate(_searchLayout: MutableState<SearchLayout>, _category: String, _items: List<Any>, _navController: NavHostController) {
 
     val isExpandedView = _searchLayout.value.expandedUserView || _searchLayout.value.expandedECommView
 
@@ -202,14 +205,14 @@ fun ResultTemplate(_searchLayout: MutableState<SearchLayout>, _category: String,
                 if (isExpandedView) {
                     LazyColumn {
                         items(_items) { item ->
-                            ResultUserSearch(item)
+                            ResultUserSearch(item, _navController)
                         }
                     }
                 }
                 else {
                     LazyColumn {
                         items(_items.take(Constants.VIEW_MORE_RESULTS)) { item ->
-                            ResultUserSearch(item)
+                            ResultUserSearch(item, _navController)
                         }
                     }
                 }
@@ -285,8 +288,15 @@ fun ResultTemplate(_searchLayout: MutableState<SearchLayout>, _category: String,
  * template for each
  */
 @Composable
-fun ResultUserSearch(_item: Any) {
-    Row() {
+fun ResultUserSearch(_item: Any, _navController: NavHostController) {
+    Row(modifier = Modifier.clickable {
+
+            // navigate to user specific page
+            if (_item is MemberDto) {
+                _navController.navigate("${Screen.SearchProfile.route}?memberId=${_item.id}")
+            }
+        }
+    ) {
         // image
         Image(
             modifier = Modifier

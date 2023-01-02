@@ -41,11 +41,16 @@ import at.fhooe.ecommunity.ui.screen.home.HomeViewModel
 import at.fhooe.ecommunity.ui.screen.home.search.SearchFilterScreen
 import at.fhooe.ecommunity.ui.screen.home.search.SearchScreen
 import at.fhooe.ecommunity.ui.screen.home.search.SearchViewModel
+import at.fhooe.ecommunity.ui.screen.home.search.profile.SearchProfileScreen
+import at.fhooe.ecommunity.ui.screen.home.search.profile.SearchProfileViewModel
 import at.fhooe.ecommunity.ui.screen.profile.ProfileScreen
 import at.fhooe.ecommunity.ui.screen.profile.ProfileViewModel
 import at.fhooe.ecommunity.ui.screen.profile.pairing.*
 import at.fhooe.ecommunity.ui.screen.sharing.SharingScreen
 import at.fhooe.ecommunity.ui.screen.sharing.SharingViewModel
+import at.fhooe.ecommunity.ui.screen.sharing.contract.add_upd_contract.SharingAddOrUpdContract
+import at.fhooe.ecommunity.ui.screen.startup.login.LoginScreen
+import at.fhooe.ecommunity.ui.screen.startup.login.LoginViewModel
 import at.fhooe.ecommunity.ui.theme.ECommunityTheme
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -231,6 +236,32 @@ private fun MainScreenNavigationConfigurations(
         }
         composable(Screen.SearchFilter.route) {
             SearchFilterScreen(SearchViewModel(application), navController)
+        }
+
+        Screen.SearchProfile.arguments?.let { arguments ->
+            composable(
+                Screen.SearchProfile.getRouteWithArguments(), arguments = arguments
+            ) { backStack ->
+                backStack.arguments?.getString(arguments[0].name)?.let {
+                    SearchProfileScreen(
+                        it,
+                        SearchProfileViewModel(application),
+                        navController
+                    )
+                }
+            }
+        }
+
+        Screen.SharingAddOrUpdContract.arguments?.let { arguments ->
+            composable(Screen.SharingAddOrUpdContract.getRouteWithArguments(), arguments = arguments) {
+                backStack ->
+                backStack.arguments?.getString(arguments[0].name)?.let {
+                    SharingAddOrUpdContract(
+                        it,
+                        SharingViewModel(application),
+                        navController)
+                }
+            }
         }
     }
 }

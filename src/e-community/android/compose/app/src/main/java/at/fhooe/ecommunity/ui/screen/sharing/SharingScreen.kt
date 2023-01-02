@@ -3,9 +3,7 @@ package at.fhooe.ecommunity.ui.screen.sharing
 import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -16,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +25,7 @@ import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.BlockchainAccountBalanceDto
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.model.RemoteException
+import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.screen.home.*
 
 /**
@@ -98,7 +97,7 @@ fun SharingScreen(_viewModel: SharingViewModel, _navController: NavHostControlle
 
     // build screen (TopBar and GridLayout)
     Scaffold(
-        topBar = { TopBarHome(_navController) }
+        topBar = { TopBarSharing(_navController) }
     ) {
         DashboardSharing(isLoading, blockchainAccountBalance)
     }
@@ -200,29 +199,13 @@ fun DashboardWallet(_blockchainAccountBalance: MutableState<BlockchainAccountBal
                 style = MaterialTheme.typography.h3
             )
 
-            val currencies = ArrayList<String>()
-            currencies.add("bl")
-            currencies.add("sadf")
+            val currencyEthereum = WalletCurrency(
+                name = stringResource(R.string.sharing_wallet_currency_ethereum),
+                iconId = R.drawable.ic_eth,
+                iconDescription = stringResource(R.string.sharing_wallet_currency_ethereum)
+            )
 
-            LazyRow {
-                itemsIndexed(currencies) { index, item ->
-                    Card(elevation = 6.dp) {
-                        Row {
-                            Image(
-                                painter = painterResource(R.drawable.ic_eth),
-                                modifier = Modifier
-                                    .height(20.dp)
-                                    .width(20.dp),
-                                contentDescription = stringResource(R.string.sharing_wallet_eth),
-                            )
-
-                            Text(
-                                text = "Ethereum",
-                                style = MaterialTheme.typography.h6)
-                        }
-                    }
-                }
-            }
+            WalletCurrencyCard(currencyEthereum)
 
             Box(
                 modifier = Modifier
@@ -251,11 +234,38 @@ fun DashboardWallet(_blockchainAccountBalance: MutableState<BlockchainAccountBal
                             .weight(1.0f)
                             .fillMaxWidth()) {
 
-                        _blockchainAccountBalance.value.balance = "10"
+                        _blockchainAccountBalance.value.balance = "0.54"
                         WalletCard(stringResource(R.string.sharing_wallet_balance), _blockchainAccountBalance.value.balance)
                     }
                 }
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun WalletCurrencyCard(
+    _walletCurrency: WalletCurrency
+) {
+
+    Card(modifier = Modifier
+        .clip(RoundedCornerShape(10.dp)),
+        elevation = 6.dp) {
+        Row(horizontalArrangement = Arrangement.Center) {
+            Image(
+                painter = painterResource(_walletCurrency.iconId),
+                modifier = Modifier
+                    .padding(top = 3.dp)
+                    .height(20.dp)
+                    .width(20.dp),
+                contentDescription = _walletCurrency.iconDescription,
+            )
+
+            Text(
+                modifier = Modifier.padding(end = 3.dp),
+                text = _walletCurrency.name,
+                style = MaterialTheme.typography.h6)
         }
     }
 }
@@ -274,11 +284,11 @@ fun WalletCard(_action: String, _value: String?) {
         )
     }
 
-    Image(
+    /*Image(
         painter = painterResource(R.drawable.ic_eth),
         modifier = Modifier.height(50.dp),
         contentDescription = stringResource(R.string.sharing_wallet_eth),
-    )
+    )*/
 }
 
 @Composable
@@ -298,5 +308,18 @@ fun ContractsCard(_action: String, _value: String?, _iconId: Int) {
     Image(
         painter = painterResource(_iconId),
         contentDescription = stringResource(R.string.sharing_wallet_eth),
+    )
+}
+
+/**
+ * topBar has a switch for realtime/history and a filter function
+ * @see Composable
+ */
+@Composable
+fun TopBarSharing(_navController: NavHostController) {
+
+    TopAppBar(
+        title = { Text("Sharing")},
+        actions = { }
     )
 }

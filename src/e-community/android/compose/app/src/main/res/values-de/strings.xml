@@ -102,10 +102,11 @@
     <string name="nothing_found">Es wurde nichts gefunden :(</string>
 
     <!-- SEARCH FILTER SCREEN -->
-    <string name="sort_by">Sortieren nach</string>
-    <string name="apply_filter">Speichern</string>
-    <string name="sort_by_distance">Distanz</string>
-    <string name="sort_by_entry_date">Eintritts Datum</string>
+    <string name="search_filter_sort_by">Sortieren nach</string>
+    <string name="search_filter_apply_filter">Speichern</string>
+    <string name="search_filter_sortby_distance">Distanz</string>
+    <string name="search_filter_sortby_entry_date">Eintritts Datum</string>
+    <string name="search_filter_sortby_recommended">Empfohlen</string>
 
     <!--SHARING SCREEN -->
     <string name="sharing_wallet">Wallet</string>
@@ -113,11 +114,14 @@
     <string name="sharing_wallet_sent">Gesendet</string>
     <string name="sharing_wallet_balance">Bilanz</string>
     <string name="sharing_wallet_eth">Ethereum</string>
+    <string name="sharing_wallet_currency_ethereum">Ethereum</string>
+    <string name="sharing_wallet_currency_euro">Euro</string>
     <string name="sharing_contracts">Verträge</string>
     <string name="sharing_contracts_active">Aktiv</string>
     <string name="sharing_contracts_requests">Anfragen</string>
     <string name="sharing_contracts_pending">Offen</string>
     <string name="sharing_contracts_closed">Geschlossen</string>
+    <string name="sharing_contract_name">Vertragsname</string>
 
     <!--COMMUNITY SCREEN-->
     <string name="e_community_top_bar_group_icon_desc">Gruppen-Icon</string>
