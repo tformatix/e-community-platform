@@ -39,13 +39,21 @@ fun ECommunityNonCompliance() {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text(
-                text = stringResource(R.string.e_community_non_compliance_title),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .align(Alignment.Center)
-            )
+            ) {
+                Text(
+                    text = stringResource(R.string.e_community_non_compliance_title),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                Text(
+                    text = "Fischer's House 1",
+                    fontSize = 10.sp,
+                )
+            }
             IconButton(
                 onClick = { /*TODO*/ },
                 modifier = Modifier

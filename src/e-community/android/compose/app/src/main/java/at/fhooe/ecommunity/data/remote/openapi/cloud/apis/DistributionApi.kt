@@ -22,9 +22,11 @@ package at.fhooe.ecommunity.data.remote.openapi.cloud.apis
 
 import java.io.IOException
 
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.CurrentPortionDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ErrorDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ForecastModel
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MeterDataMonitoringModel
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.NewDistributionDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.OkDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.PortionAckModel
 
@@ -49,6 +51,81 @@ class DistributionApi(basePath: kotlin.String = defaultBasePath) : ApiClient(bas
         val defaultBasePath: String by lazy {
             System.getProperties().getProperty(ApiClient.baseUrlKey, "http://localhost")
         }
+    }
+
+    /**
+    * 
+    * 
+    * @param smartMeterId  (optional)
+    * @return CurrentPortionDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun distributionCurrentPortionGet(smartMeterId: java.util.UUID?) : CurrentPortionDto {
+        val localVarResponse = distributionCurrentPortionGetWithHttpInfo(smartMeterId = smartMeterId)
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as CurrentPortionDto
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+    * 
+    * 
+    * @param smartMeterId  (optional)
+    * @return ApiResponse<CurrentPortionDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun distributionCurrentPortionGetWithHttpInfo(smartMeterId: java.util.UUID?) : ApiResponse<CurrentPortionDto?> {
+        val localVariableConfig = distributionCurrentPortionGetRequestConfig(smartMeterId = smartMeterId)
+
+        return request<Unit, CurrentPortionDto>(
+            localVariableConfig
+        )
+    }
+
+    /**
+    * To obtain the request config of the operation distributionCurrentPortionGet
+    *
+    * @param smartMeterId  (optional)
+    * @return RequestConfig
+    */
+    fun distributionCurrentPortionGetRequestConfig(smartMeterId: java.util.UUID?) : RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
+            .apply {
+                if (smartMeterId != null) {
+                    put("_smartMeterId", listOf(smartMeterId.toString()))
+                }
+            }
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/Distribution/CurrentPortion",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            body = localVariableBody
+        )
     }
 
     /**
@@ -258,6 +335,73 @@ class DistributionApi(basePath: kotlin.String = defaultBasePath) : ApiClient(bas
         return RequestConfig(
             method = RequestMethod.POST,
             path = "/Distribution/MeterDataMonitoring",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            body = localVariableBody
+        )
+    }
+
+    /**
+    * 
+    * 
+    * @return NewDistributionDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun distributionNewDistributionGet() : NewDistributionDto {
+        val localVarResponse = distributionNewDistributionGetWithHttpInfo()
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as NewDistributionDto
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+    * 
+    * 
+    * @return ApiResponse<NewDistributionDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun distributionNewDistributionGetWithHttpInfo() : ApiResponse<NewDistributionDto?> {
+        val localVariableConfig = distributionNewDistributionGetRequestConfig()
+
+        return request<Unit, NewDistributionDto>(
+            localVariableConfig
+        )
+    }
+
+    /**
+    * To obtain the request config of the operation distributionNewDistributionGet
+    *
+    * @return RequestConfig
+    */
+    fun distributionNewDistributionGetRequestConfig() : RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/Distribution/NewDistribution",
             query = localVariableQuery,
             headers = localVariableHeaders,
             body = localVariableBody

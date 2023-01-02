@@ -111,6 +111,7 @@ namespace e_community_cloud
             _services.AddScoped<IFCMService, FCMService>();
             _services.AddScoped<IDistributionService, DistributionService>();
             _services.AddScoped<IBlockchainService, BlockchainService>();
+            _services.AddScoped<IReplacementValueService, ReplacementValueService>();
         }
 
         private void AddIdentity(IServiceCollection _services)

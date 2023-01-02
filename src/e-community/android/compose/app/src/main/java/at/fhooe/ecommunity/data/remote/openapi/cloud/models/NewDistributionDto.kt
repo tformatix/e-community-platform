@@ -20,23 +20,28 @@
 
 package at.fhooe.ecommunity.data.remote.openapi.cloud.models
 
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.NewPortionDto
 
 import com.squareup.moshi.Json
 
 /**
  * 
  *
- * @param smartMeterId 
- * @param flexibility 
+ * @param newPortions 
+ * @param unassignedActiveEnergyMinus 
+ * @param missingSmartMeterCount 
  */
 
-data class PortionAckModel (
+data class NewDistributionDto (
 
-    @Json(name = "smartMeterId")
-    val smartMeterId: java.util.UUID? = null,
+    @Json(name = "newPortions")
+    val newPortions: kotlin.collections.List<NewPortionDto>? = null,
 
-    @Json(name = "flexibility")
-    val flexibility: kotlin.Int? = null
+    @Json(name = "unassignedActiveEnergyMinus")
+    val unassignedActiveEnergyMinus: kotlin.Int? = null,
+
+    @Json(name = "missingSmartMeterCount")
+    val missingSmartMeterCount: kotlin.Int? = null
 
 )
 

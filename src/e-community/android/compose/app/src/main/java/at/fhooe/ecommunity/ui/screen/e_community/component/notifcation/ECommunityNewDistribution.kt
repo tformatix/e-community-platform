@@ -53,21 +53,22 @@ fun ECommunityNewDistribution() {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            // remaining time
-            Text(
-                text = "1:20",
-                fontSize = 10.sp,
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-            )
             // title
-            Text(
-                text = stringResource(R.string.e_community_new_distribution_title),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .align(Alignment.Center)
-            )
+            ) {
+                Text(
+                    text = stringResource(R.string.e_community_new_distribution_title),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                Text(
+                    text = "Fischer's House 1",
+                    fontSize = 10.sp,
+                )
+            }
             // accept icon
             IconButton(
                 onClick = {

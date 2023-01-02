@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.Models.Distribution
 {
-    public class MeterDataMonitoringModel
-    {
+    public class MeterDataMonitoringModel {
+        public Guid SmartMeterId { get; set; }
         /// <summary>
         /// current energy A+ (consumption)
         /// </summary>

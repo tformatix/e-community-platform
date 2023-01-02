@@ -26,17 +26,21 @@ import com.squareup.moshi.Json
 /**
  * 
  *
- * @param smartMeterId 
+ * @param estimatedActiveEnergyPlus 
  * @param flexibility 
+ * @param deviation 
  */
 
-data class PortionAckModel (
+data class CurrentPortionDto (
 
-    @Json(name = "smartMeterId")
-    val smartMeterId: java.util.UUID? = null,
+    @Json(name = "estimatedActiveEnergyPlus")
+    val estimatedActiveEnergyPlus: kotlin.Int? = null,
 
     @Json(name = "flexibility")
-    val flexibility: kotlin.Int? = null
+    val flexibility: kotlin.Int? = null,
+
+    @Json(name = "deviation")
+    val deviation: kotlin.Int? = null
 
 )
 

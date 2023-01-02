@@ -8,7 +8,7 @@ import java.lang.Exception
  * @param mId (optional) a view model must process more than one action and these must be distinguished (e.g. Login and Register)
  * @param mException (optional) some exception
  */
-data class LoadingState(val mState: State, val mId: Int = 0, val mException: Exception? = null) {
+data class LoadingState(val mState: State, val mId: Int = 0, val mException: String? = null) {
     /**
      * state of a view model
      */

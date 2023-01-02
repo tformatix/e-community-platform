@@ -38,11 +38,9 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
         }
         LoadingState.State.SUCCESS -> {
             // view model operation succeeded
-            viewModel.backToIdle() // bring the view model back to the idle state
         }
         LoadingState.State.FAILED -> {
             // view model operation failed
-            viewModel.backToIdle() // bring the view model back to the idle state
         }
         else -> {}
     }

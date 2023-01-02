@@ -24,7 +24,7 @@ class RemoteExceptionRepository(private val mContext: Context) {
      * @param _exception some exception from the remote backend
      * @return a RemoteException object to the given exception
      */
-    fun exceptionToRemoteException(_exception: Exception): RemoteException {
+    fun exceptionToRemoteException(_exception: Throwable): RemoteException {
         when (_exception) {
             is ClientException -> {
                 if (_exception.statusCode == 403)
@@ -53,7 +53,7 @@ class RemoteExceptionRepository(private val mContext: Context) {
      * @param _exception some exception from the remote backend
      * @return a String to the given exception
      */
-    fun exceptionToString(_exception: Exception): String {
+    fun exceptionToString(_exception: Throwable): String {
         return remoteExceptionToString(exceptionToRemoteException(_exception))
     }
 

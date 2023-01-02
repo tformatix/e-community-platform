@@ -24,11 +24,6 @@ namespace e_community_cloud_lib.Database.Community {
         public int EstimatedActiveEnergyPlus { get; set; }
 
         // <summary>
-        /// actual energy A+ (consumption)
-        /// </summary>
-        public int? ActualActiveEnergyPlus { get; set; }
-
-        // <summary>
         /// deviation from estimated A+ (consumption)
         /// </summary>
         public int Deviation { get; set; }

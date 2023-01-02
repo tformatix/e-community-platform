@@ -26,12 +26,16 @@ import com.squareup.moshi.Json
 /**
  * 
  *
+ * @param smartMeterId 
  * @param activeEnergyPlus 
  * @param activeEnergyMinus 
  * @param flexibility 
  */
 
 data class ForecastModel (
+
+    @Json(name = "smartMeterId")
+    val smartMeterId: java.util.UUID? = null,
 
     @Json(name = "activeEnergyPlus")
     val activeEnergyPlus: kotlin.Int? = null,

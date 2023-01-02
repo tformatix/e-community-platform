@@ -106,12 +106,16 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST {
                 Log.Error("CloudRESTService::Refreshing Failed");
             }
             else {
+                var smartMeter = mDb.SmartMeter
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefaultAsync();
                 var meterData = await mDb.MeterDataHistory
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefaultAsync();
                 if (meterData != null) {
                     var monitoringPath = mSection.GetValue<string>("MeterDataMonitoring");
                     var monitoringModel = new MeterDataMonitoringModel() {
+                        SmartMeterId = (await smartMeter).Id,
                         ActiveEnergyMinus = meterData.ActiveEnergyMinus,
                         ActiveEnergyPlus = meterData.ActiveEnergyPlus,
                     };

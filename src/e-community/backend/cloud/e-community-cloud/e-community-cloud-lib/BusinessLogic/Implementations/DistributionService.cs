@@ -2,20 +2,15 @@
 using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
 using e_community_cloud_lib.Database;
 using e_community_cloud_lib.Database.Community;
-using e_community_cloud_lib.Database.General;
-using e_community_cloud_lib.Database.Local;
 using e_community_cloud_lib.Models.Distribution;
 using e_community_cloud_lib.NonEntities;
 using e_community_cloud_lib.Util;
+using e_community_cloud_lib.Util.BusinessLogic;
 using e_community_cloud_lib.Util.Enums;
-using e_community_cloud_lib.Util.Extensions;
 using Microsoft.EntityFrameworkCore;
-using MimeKit.Encodings;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.BusinessLogic.Implementations {
@@ -24,11 +19,13 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         private readonly ECommunityCloudContext mDb;
         private readonly IFCMService mFCMService;
         private readonly ILocalSignalRSenderService mLocalSignalRSenderService;
+        private readonly IReplacementValueService mReplacementValueService;
 
-        public DistributionService(ECommunityCloudContext _db, IFCMService _fcmService, ILocalSignalRSenderService _localSignalRSenderService) {
+        public DistributionService(ECommunityCloudContext _db, IFCMService _fcmService, ILocalSignalRSenderService _localSignalRSenderService, IReplacementValueService _replacementValueService) {
             mDb = _db;
             mFCMService = _fcmService;
             mLocalSignalRSenderService = _localSignalRSenderService;
+            mReplacementValueService = _replacementValueService;
         }
 
         public async Task StartDistribution() {
@@ -48,7 +45,8 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 .Select(x => new ECommunityDistribution() {
                     ECommunityId = x.ECommunityId,
                     Timestamp = timestamp,
-                    IsCurrent = true
+                    IsCurrent = true,
+                    WasDistributed = false
                 })
                 .ToList();
 
@@ -115,7 +113,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     .Where(x => !x.ForecastFromSmartMeter)
                     .ToList()
                     .ForEach(x => {
-                        var replacement = GetReplacementValue(x);
+                        var replacement = mReplacementValueService.GetReplacementValue(x);
                         if (replacement != null) {
                             x.EstimatedActiveEnergyPlus = replacement.EstimatedActiveEnergyPlus;
                             x.EstimatedActiveEnergyMinus = replacement.EstimatedActiveEnergyMinus;
@@ -124,33 +122,24 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     });
             }
 
+            var sumConsumption = _eCommunityDistribution.SmartMeterPortions
+                .Sum(x => x.EstimatedActiveEnergyPlus);
+            var energyDifference = sumFeedIn - sumConsumption;
+
+            if (energyDifference >= 0) {
+                // more feed in than consumption (surplus)
+                DistributeSurplus(_eCommunityDistribution.SmartMeterPortions, energyDifference);
+            }
+            else {
+                // more consumption than feed in (shortage)
+                DistributeShortage(_eCommunityDistribution.SmartMeterPortions, energyDifference, sumConsumption);
+            }
+
+            _eCommunityDistribution.WasDistributed = true;
+            await mDb.SaveChangesAsync();
             if (sumFeedIn > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) {
-                var sumConsumption = _eCommunityDistribution.SmartMeterPortions
-                    .Sum(x => x.EstimatedActiveEnergyPlus);
-                var energyDifference = sumFeedIn - sumConsumption;
-
-                if (energyDifference >= 0) {
-                    // more feed in than consumption (surplus)
-                    DistributeSurplus(_eCommunityDistribution.SmartMeterPortions, energyDifference);
-                }
-                else {
-                    // more consumption than feed in (shortage)
-                    DistributeShortage(_eCommunityDistribution.SmartMeterPortions, energyDifference, sumConsumption);
-                }
-
-                await mDb.SaveChangesAsync();
                 SendDistributionNotifications(_eCommunityDistribution.SmartMeterPortions, mFCMService.NewDistribution);
             }
-        }
-
-        private SmartMeterPortion GetReplacementValue(SmartMeterPortion _smartMeterPortion) {
-            return mDb.SmartMeterPortion
-                .OrderByDescending(x => x.ECommunityDistributionId)
-                .FirstOrDefault(x =>
-                    x.ECommunityDistributionId == _smartMeterPortion.ECommunityDistributionId &&
-                    x.SmartMeterId == _smartMeterPortion.SmartMeterId &&
-                    x.ForecastFromSmartMeter
-                );
         }
 
         private void DistributeSurplus(IList<SmartMeterPortion> _smartMeterPortions, int _energyDifference) {
@@ -297,18 +286,15 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 var sumFeedIn = distribution.SmartMeterPortions
                     .Sum(x => x.EstimatedActiveEnergyMinus);
 
+                distribution.IsCurrent = false;
                 if (sumFeedIn > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) {
-                    distribution.IsCurrent = false;
                     SendDistributionNotifications(distribution.SmartMeterPortions, mFCMService.FinalDistribution);
-                } else {
-                    mDb.ECommunityDistribution.Remove(distribution);
                 }
             }
             await mDb.SaveChangesAsync();
         }
 
         private void SendDistributionNotifications(IList<SmartMeterPortion> _smartMeterPortions, FCMAndroidData _fcmAndroidData) {
-
             _smartMeterPortions
                 .GroupBy(x => x.SmartMeter.MemberId)
                 .ToDictionary(x => x.Key, x => x.ToList())
@@ -323,6 +309,53 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     _fcmAndroidData.BodyArgs = new List<string>() { sumConsumption.ToString(), "Wh" };
                     mFCMService.SendPushNotificationMember(_fcmAndroidData, _pair.Key);
                 });
+        }
+
+        public async Task<SmartMeterPortion> GetCurrentPortion(Guid _smartMeterId) {
+            var distribution = await mDb.ECommunityDistribution
+                .OrderByDescending(x => x.Id)
+                .Include(x => x.SmartMeterPortions)
+                .FirstOrDefaultAsync(x => !x.IsCurrent);
+
+            if (DateTime.UtcNow.Subtract(distribution.Timestamp).TotalMinutes > 60) {
+                // time difference bigger than 1 hour
+                return null;
+            }
+
+            return distribution.SmartMeterPortions
+                .FirstOrDefault(x => x.SmartMeterId == _smartMeterId);
+        }
+
+        public async Task<NewDistribution> GetNewDistribution(Guid _memberId) {
+            var currentDistribution = await mDb.ECommunityDistribution
+                .Include(x => x.SmartMeterPortions)
+                .ThenInclude(x => x.SmartMeter)
+                .FirstOrDefaultAsync(x => x.IsCurrent && x.WasDistributed && x.SmartMeterPortions.Any(portion => portion.SmartMeter.MemberId == _memberId));
+
+            if (currentDistribution == null) {
+                return null;
+            }
+
+            var sumFeedIn = currentDistribution.SmartMeterPortions.Sum(x => x.EstimatedActiveEnergyMinus);
+            var missingSmartMeters = currentDistribution.SmartMeterPortions.Count(x => !x.ForecastFromSmartMeter);
+
+            var sumAssigned = 0;
+            foreach (var portion in currentDistribution.SmartMeterPortions) {
+                sumAssigned += (portion.EstimatedActiveEnergyPlus + portion.Deviation);
+            }
+            var unassigned = sumFeedIn - sumAssigned;
+            return new NewDistribution() {
+                MissingSmartMeterCount = missingSmartMeters,
+                UnassignedActiveEnergyMinus = (Math.Abs(unassigned) > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) ? unassigned : 0,
+                SmartMeterPortions = currentDistribution.SmartMeterPortions
+                    .Where(x => x.SmartMeter.MemberId == _memberId)
+                    .ToList(),
+            };
+        }
+
+        public Task MeterDataMonitoringArrived(MeterDataMonitoringModel _meterDataMonitoringModel) {
+            // TODO
+            return Task.CompletedTask;
         }
 
         private async Task<List<ECommunityDistribution>> GetCurrentDistributions() {

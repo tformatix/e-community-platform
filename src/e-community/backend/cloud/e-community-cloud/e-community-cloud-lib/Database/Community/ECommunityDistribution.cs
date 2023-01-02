@@ -26,6 +26,11 @@ namespace e_community_cloud_lib.Database.Community {
         public bool IsCurrent { get; set; }
 
         /// <summary>
+        /// was this distribution already distributed
+        /// </summary>
+        public bool WasDistributed { get; set; }
+
+        /// <summary>
         /// list of estimated energy portions for smart meters
         /// </summary>
         public IList<SmartMeterPortion> SmartMeterPortions { get; set; }

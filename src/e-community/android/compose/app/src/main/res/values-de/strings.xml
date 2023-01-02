@@ -151,5 +151,5 @@
     <string name="e_community_non_compliance_forecast">Prognose</string>
     <string name="e_community_non_compliance_current">derzeitiger voraussichtlicher Verbrauch</string>
     <string name="e_community_offline_icon_desc">Offline</string>
-    <string name="e_community_offline_title">Smart Meter "%1$s" offline!</string>
+    <string name="e_community_offline_title">Smart Meter %1$s offline!</string>
 </resources>

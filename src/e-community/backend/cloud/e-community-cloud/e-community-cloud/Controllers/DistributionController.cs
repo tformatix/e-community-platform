@@ -5,10 +5,12 @@ using e_community_cloud_lib.Util.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace e_community_cloud.Controllers
-{
+namespace e_community_cloud.Controllers {
     [ApiController]
     [Route("[controller]/[action]")]
     public class DistributionController : ControllerBase {
@@ -20,6 +22,7 @@ namespace e_community_cloud.Controllers
         }
 
         [ProducesResponseType(typeof(OkDto), 200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ErrorDto), 400)]
         [Authorize]
         [HttpPost]
@@ -33,6 +36,7 @@ namespace e_community_cloud.Controllers
         }
 
         [ProducesResponseType(typeof(OkDto), 200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ErrorDto), 400)]
         [Authorize]
         [HttpPost]
@@ -45,6 +49,38 @@ namespace e_community_cloud.Controllers
             return Ok(new OkDto());
         }
 
+        [ProducesResponseType(typeof(CurrentPortionDto), 200)]
+        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> CurrentPortion(Guid _smartMeterId) {
+            Log.Information($"Distribution/CurrentPortion/{_smartMeterId}");
+            return Ok((await mDistributionService.GetCurrentPortion(_smartMeterId)).CopyPropertiesTo(new CurrentPortionDto()));
+        }
+
+        [ProducesResponseType(typeof(NewDistributionDto), 200)]
+        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> NewDistribution() {
+            var memberId = (Guid)User.GetMemberId();
+            Log.Information($"Distribution/NewPortions/{memberId}");
+
+            var newDistribution = await mDistributionService.GetNewDistribution(memberId);
+            if (newDistribution != null) {
+                return Ok(new NewDistributionDto() {
+                    MissingSmartMeterCount = newDistribution.MissingSmartMeterCount,
+                    UnassignedActiveEnergyMinus = newDistribution.UnassignedActiveEnergyMinus,
+                    NewPortions = newDistribution.SmartMeterPortions
+                        .Select(x => x.CopyPropertiesTo(new NewPortionDto() {
+                            SmartMeterName = x.SmartMeter.Name
+                        }))
+                        .ToList()
+                });
+            }
+            return Ok(null);
+        }
+
         [ProducesResponseType(typeof(OkDto), 200)]
         [ProducesResponseType(typeof(ErrorDto), 400)]
         [Authorize]
@@ -53,7 +89,8 @@ namespace e_community_cloud.Controllers
             var memberId = User.GetMemberId();
             Log.Information($"Distribution/MeterDataMonitoring::{memberId}");
 
-            // TODO: Monitoring (2)
+            // Monitoring (2)
+            await mDistributionService.MeterDataMonitoringArrived(_meterDataMonitoringModel);
 
             return Ok(new OkDto());
         }
