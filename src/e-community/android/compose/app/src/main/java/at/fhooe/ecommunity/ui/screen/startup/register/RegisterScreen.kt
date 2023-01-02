@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.extension.gesturesDisabled
-import at.fhooe.ecommunity.model.LoadingState
+import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 import at.fhooe.ecommunity.util.Validator
@@ -60,12 +60,12 @@ fun RegisterScreen(_viewModel: RegisterViewModel, _navController: NavHostControl
     var isLoading = false // indicator whether the view model state is RUNNING (loading) and the gestures of the underlying layout should be disabled
 
     when (viewModelState.mState) {
-        LoadingState.State.RUNNING -> {
+        LegacyLoadingState.State.RUNNING -> {
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LoadingState.State.SUCCESS -> {
+        LegacyLoadingState.State.SUCCESS -> {
             // view model operation succeeded
             _viewModel.backToIdle() // bring the view model back to the idle state
             Toast.makeText(_viewModel.mApplication, _viewModel.mApplication.getString(R.string.register_toast_success), Toast.LENGTH_LONG)
@@ -73,7 +73,7 @@ fun RegisterScreen(_viewModel: RegisterViewModel, _navController: NavHostControl
             _navController.popBackStack() // remove this screen from the backstack
             _navController.navigate("${Screen.Login.route}?email=${emailState.value.text}&password=${passwordState.value.text}") // go to login
         }
-        LoadingState.State.FAILED -> {
+        LegacyLoadingState.State.FAILED -> {
             // view model operation failed
             _viewModel.backToIdle() // bring the view model back to the idle state
             viewModelState.mException?.let {

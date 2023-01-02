@@ -4,19 +4,15 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
-import at.fhooe.ecommunity.model.LoadingState
+import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 import at.fhooe.ecommunity.ui.screen.home.search.*
@@ -31,17 +27,17 @@ fun SearchProfileScreen(_memberId: String, _viewModel: SearchProfileViewModel, _
     var isLoading = false
 
     when(state.mState) {
-        LoadingState.State.SUCCESS -> {
+        LegacyLoadingState.State.SUCCESS -> {
             isLoading = false
             _viewModel.backToIdle()
         }
-        LoadingState.State.RUNNING -> {
+        LegacyLoadingState.State.RUNNING -> {
             Log.d(TAG, "loading")
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LoadingState.State.FAILED -> {
+        LegacyLoadingState.State.FAILED -> {
             //
         }
         else -> {}

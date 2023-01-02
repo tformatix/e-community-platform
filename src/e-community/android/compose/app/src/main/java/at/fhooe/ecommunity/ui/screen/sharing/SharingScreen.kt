@@ -5,8 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -14,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -23,9 +20,8 @@ import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.BlockchainAccountBalanceDto
-import at.fhooe.ecommunity.model.LoadingState
+import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.model.RemoteException
-import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.screen.home.*
 
 /**
@@ -55,14 +51,14 @@ fun SharingScreen(_viewModel: SharingViewModel, _navController: NavHostControlle
     }
 
     when(state.mState) {
-        LoadingState.State.SUCCESS -> {
+        LegacyLoadingState.State.SUCCESS -> {
             isLoading.value = false
             _viewModel.backToIdle()
         }
-        LoadingState.State.RUNNING -> {
+        LegacyLoadingState.State.RUNNING -> {
             isLoading.value = true
         }
-        LoadingState.State.FAILED -> {
+        LegacyLoadingState.State.FAILED -> {
             // view model operation failed
             _viewModel.backToIdle() // bring the view model back to the idle state
             Log.d(TAG, "error")

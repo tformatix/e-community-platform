@@ -3,6 +3,7 @@ package at.fhooe.ecommunity.ui.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.fhooe.ecommunity.ECommunityApplication
+import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.model.LoadingState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

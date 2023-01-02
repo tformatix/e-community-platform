@@ -8,8 +8,8 @@ import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.BlockchainApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.BlockchainAccountBalanceDto
 import at.fhooe.ecommunity.data.remote.repository.CloudSignalRRepository
-import at.fhooe.ecommunity.model.LoadingState
-import at.fhooe.ecommunity.ui.base.LoadingStateViewModel
+import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.ui.base.LegacyLoadingStateViewModel
 import com.google.gson.Gson
 import com.microsoft.signalr.Action1
 import kotlinx.coroutines.*
@@ -21,7 +21,7 @@ import org.json.JSONObject
  * interaction with
  * @see CloudSignalRRepository
  */
-class SharingViewModel(_application: ECommunityApplication) : LoadingStateViewModel(_application) {
+class SharingViewModel(_application: ECommunityApplication) : LegacyLoadingStateViewModel(_application) {
 
     // signal r repo
     private var mCloudSignalRRepository = CloudSignalRRepository()
@@ -42,7 +42,7 @@ class SharingViewModel(_application: ECommunityApplication) : LoadingStateViewMo
         }
         cloudRESTRepository.authorizedBackendCall(handler) { token ->
             CoroutineScope(Dispatchers.IO).launch {
-                mState.emit(LoadingState(LoadingState.State.RUNNING))
+                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
 
                 try {
                     val blockchainApi = BlockchainApi(Constants.HTTP_BASE_URL_CLOUD)
@@ -52,7 +52,7 @@ class SharingViewModel(_application: ECommunityApplication) : LoadingStateViewMo
                 }
                 catch (_e: Exception) {
                     Log.e(TAG, _e.toString())
-                    mState.emit(LoadingState(LoadingState.State.FAILED, mException = _e))
+                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _e))
                 }
             }
         }

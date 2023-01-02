@@ -2,26 +2,20 @@ package at.fhooe.ecommunity.ui.screen.home
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import at.fhooe.ecommunity.ECommunityApplication
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.SmartMeterApi
 import at.fhooe.ecommunity.data.remote.repository.CloudSignalRRepository
 import at.fhooe.ecommunity.data.remote.signalr.dto.MeterDataRTDto
-import at.fhooe.ecommunity.model.LoadingState
-import at.fhooe.ecommunity.ui.base.LoadingStateViewModel
+import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.ui.base.LegacyLoadingStateViewModel
 import at.fhooe.ecommunity.Constants
-import at.fhooe.ecommunity.MainActivity
 import com.google.gson.Gson
 import com.microsoft.signalr.Action1
 import com.microsoft.signalr.HubConnectionState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
@@ -32,7 +26,7 @@ import org.json.JSONObject
  * @see CloudSignalRRepository
  * @see CloudSignalRRepository
  */
-class HomeViewModel(_application: ECommunityApplication) : LoadingStateViewModel(_application) {
+class HomeViewModel(_application: ECommunityApplication) : LegacyLoadingStateViewModel(_application) {
 
     // signal r repo
     var mCloudSignalRRepository = CloudSignalRRepository()
@@ -78,7 +72,7 @@ class HomeViewModel(_application: ECommunityApplication) : LoadingStateViewModel
         }
         cloudRESTRepository.authorizedBackendCall(handler) { token ->
             CoroutineScope(Dispatchers.IO).launch {
-                mState.emit(LoadingState(LoadingState.State.RUNNING))
+                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
 
                 // start signal r
                 startSignalR(token, _meterDataRTDto)
@@ -90,15 +84,15 @@ class HomeViewModel(_application: ECommunityApplication) : LoadingStateViewModel
                         val start = smartMeterApi.smartMeterRequestRTDataGet()
 
                         Log.d(TAG, start.toString())
-                        mState.emit(LoadingState(LoadingState.State.SUCCESS))
+                        mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
                     }
                     catch (_e: Exception) {
                         Log.e(TAG, _e.toString())
-                        mState.emit(LoadingState(LoadingState.State.FAILED, mException = _e))
+                        mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _e))
                     }
                 }
                 else {
-                    mState.emit(LoadingState(LoadingState.State.SUCCESS))
+                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
                 }
             }
         }
@@ -116,17 +110,17 @@ class HomeViewModel(_application: ECommunityApplication) : LoadingStateViewModel
         cloudRESTRepository.authorizedBackendCall(handler) {
 
             CoroutineScope(Dispatchers.IO).launch {
-                mState.emit(LoadingState(LoadingState.State.RUNNING))
+                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
                 val smartMeterApi = SmartMeterApi(Constants.HTTP_BASE_URL_CLOUD)
 
                 try {
                     val stop = smartMeterApi.smartMeterStopRTDataGet()
 
-                    mState.emit(LoadingState(LoadingState.State.SUCCESS))
+                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
                 }
                 catch (_e: Exception) {
                     Log.e(TAG, _e.toString())
-                    mState.emit(LoadingState(LoadingState.State.FAILED, mException = _e))
+                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _e))
                 }
             }
         }
@@ -150,17 +144,17 @@ class HomeViewModel(_application: ECommunityApplication) : LoadingStateViewModel
         cloudRESTRepository.authorizedBackendCall(handler) {
 
             CoroutineScope(Dispatchers.IO).launch {
-                mState.emit(LoadingState(LoadingState.State.RUNNING))
+                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
                 val smartMeterApi = SmartMeterApi(Constants.HTTP_BASE_URL_CLOUD)
 
                 try {
                     val extend = smartMeterApi.smartMeterExtendRTDataGet()
 
-                    mState.emit(LoadingState(LoadingState.State.SUCCESS))
+                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
                 }
                 catch (_e: Exception) {
                     Log.e(TAG, _e.toString())
-                    mState.emit(LoadingState(LoadingState.State.FAILED, mException = _e))
+                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _e))
                 }
             }
         }

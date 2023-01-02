@@ -2,19 +2,13 @@ package at.fhooe.ecommunity.ui.screen.sharing.contract.add_upd_contract
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,22 +22,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
-import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MemberDto
-import at.fhooe.ecommunity.model.LoadingState
-import at.fhooe.ecommunity.navigation.Screen
+import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
-import at.fhooe.ecommunity.ui.screen.home.search.SearchLayout
-import at.fhooe.ecommunity.ui.screen.home.search.profile.SearchProfile
-import at.fhooe.ecommunity.ui.screen.home.search.profile.SearchProfileViewModel
-import at.fhooe.ecommunity.ui.screen.home.search.profile.TopBarSearchProfile
 import at.fhooe.ecommunity.ui.screen.sharing.SharingViewModel
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
-import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -57,17 +42,17 @@ fun SharingAddOrUpdContract(_memberId: String, _viewModel: SharingViewModel, _na
     var isLoading = false
 
     when(state.mState) {
-        LoadingState.State.SUCCESS -> {
+        LegacyLoadingState.State.SUCCESS -> {
             isLoading = false
             _viewModel.backToIdle()
         }
-        LoadingState.State.RUNNING -> {
+        LegacyLoadingState.State.RUNNING -> {
             Log.d(TAG, "loading")
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LoadingState.State.FAILED -> {
+        LegacyLoadingState.State.FAILED -> {
             //
         }
         else -> {}

@@ -34,7 +34,7 @@ import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalMemberDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalSmartMeterDto
 import at.fhooe.ecommunity.extension.gesturesDisabled
-import at.fhooe.ecommunity.model.LoadingState
+import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 
@@ -56,18 +56,18 @@ fun ProfileScreen(_viewModel: ProfileViewModel, _navController: NavHostControlle
     val smartMeters = _viewModel.mSmartMeters.collectAsState()
 
     when(state.mState) {
-        LoadingState.State.SUCCESS -> {
+        LegacyLoadingState.State.SUCCESS -> {
             isLoading = false
             //Profile(isLoading, member, smartMeters, _navController)
             _viewModel.backToIdle()
             Log.d(TAG, "success")
         }
-        LoadingState.State.RUNNING -> {
+        LegacyLoadingState.State.RUNNING -> {
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LoadingState.State.FAILED -> {
+        LegacyLoadingState.State.FAILED -> {
             //
         }
         else -> {}

@@ -5,8 +5,8 @@ import at.fhooe.ecommunity.ECommunityApplication
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.AuthApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.RegisterMemberModel
-import at.fhooe.ecommunity.model.LoadingState
-import at.fhooe.ecommunity.ui.base.LoadingStateViewModel
+import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.ui.base.LegacyLoadingStateViewModel
 import at.fhooe.ecommunity.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,9 +16,9 @@ import java.util.*
 /**
  * view model for "RegisterScreen"
  * @param _application eCommunity application
- * @see LoadingStateViewModel
+ * @see LegacyLoadingStateViewModel
  */
-class RegisterViewModel(_application: ECommunityApplication) : LoadingStateViewModel(_application) {
+class RegisterViewModel(_application: ECommunityApplication) : LegacyLoadingStateViewModel(_application) {
     /**
      * initiates the cloud backend to create a new user account
      * @param _username name of the user
@@ -29,15 +29,15 @@ class RegisterViewModel(_application: ECommunityApplication) : LoadingStateViewM
         Log.d(TAG, "register($_email)")
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                mState.emit(LoadingState(LoadingState.State.RUNNING))
+                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
 
                 val authApi = AuthApi(Constants.HTTP_BASE_URL_CLOUD)
                 authApi.authRegisterPost(RegisterMemberModel(_email, _username, _password, Locale.getDefault().language))
 
-                mState.emit(LoadingState(LoadingState.State.SUCCESS))
+                mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
             } catch (_exc: Exception) {
                 // an error occurred
-                mState.emit(LoadingState(LoadingState.State.FAILED, mException = _exc))
+                mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _exc))
             }
         }
     }

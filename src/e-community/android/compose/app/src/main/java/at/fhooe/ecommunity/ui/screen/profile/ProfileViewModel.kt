@@ -2,19 +2,16 @@ package at.fhooe.ecommunity.ui.screen.profile
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.platform.LocalContext
 import at.fhooe.ecommunity.ECommunityApplication
-import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.MemberApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.SmartMeterApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalMemberDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalSmartMeterDto
-import at.fhooe.ecommunity.model.LoadingState
-import at.fhooe.ecommunity.ui.base.LoadingStateViewModel
+import at.fhooe.ecommunity.model.LegacyLoadingState
+import at.fhooe.ecommunity.ui.base.LegacyLoadingStateViewModel
 import at.fhooe.ecommunity.Constants
 import at.fhooe.ecommunity.util.EncryptedPreferences
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +21,7 @@ import kotlinx.coroutines.launch
  * viewModel for Home Screen
  * @param _application application object
  */
-class ProfileViewModel(_application: ECommunityApplication) : LoadingStateViewModel(_application) {
+class ProfileViewModel(_application: ECommunityApplication) : LegacyLoadingStateViewModel(_application) {
     // list of smart meters
     val mSmartMeters = MutableStateFlow(List(init = { MinimalSmartMeterDto() }, size = 0))
 
@@ -33,7 +30,7 @@ class ProfileViewModel(_application: ECommunityApplication) : LoadingStateViewMo
 
         cloudRESTRepository.authorizedBackendCall(null) { token ->
             CoroutineScope(Dispatchers.IO).launch {
-                mState.emit(LoadingState(LoadingState.State.RUNNING))
+                mState.emit(LegacyLoadingState(LegacyLoadingState.State.RUNNING))
 
                 val memberApi = MemberApi(Constants.HTTP_BASE_URL_CLOUD)
                 val smartMeterApi = SmartMeterApi(Constants.HTTP_BASE_URL_CLOUD)
@@ -45,11 +42,11 @@ class ProfileViewModel(_application: ECommunityApplication) : LoadingStateViewMo
                     _member.value = member
                     mSmartMeters.value = smartMeters
 
-                    mState.emit(LoadingState(LoadingState.State.SUCCESS))
+                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.SUCCESS))
                 }
                 catch (_e: Exception) {
                     Log.e(TAG, _e.toString())
-                    mState.emit(LoadingState(LoadingState.State.FAILED, mException = _e))
+                    mState.emit(LegacyLoadingState(LegacyLoadingState.State.FAILED, mException = _e))
                 }
             }
         }

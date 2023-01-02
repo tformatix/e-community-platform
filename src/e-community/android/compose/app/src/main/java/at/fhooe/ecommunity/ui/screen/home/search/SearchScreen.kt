@@ -25,13 +25,12 @@ import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import at.fhooe.ecommunity.Constants
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ECommunityDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MemberDto
-import at.fhooe.ecommunity.model.LoadingState
+import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 
@@ -71,17 +70,17 @@ fun SearchScreen(_viewModel: SearchViewModel, _navController: NavHostController)
     var isLoading = false
 
     when(state.mState) {
-        LoadingState.State.SUCCESS -> {
+        LegacyLoadingState.State.SUCCESS -> {
             isLoading = false
             _viewModel.backToIdle()
         }
-        LoadingState.State.RUNNING -> {
+        LegacyLoadingState.State.RUNNING -> {
             Log.d(TAG, "loading")
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LoadingState.State.FAILED -> {
+        LegacyLoadingState.State.FAILED -> {
             //
         }
         else -> {}

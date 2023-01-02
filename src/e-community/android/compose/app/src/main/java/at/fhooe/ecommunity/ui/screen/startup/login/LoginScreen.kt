@@ -29,9 +29,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.MainActivity
 import at.fhooe.ecommunity.R
-import at.fhooe.ecommunity.StartUpActivity
 import at.fhooe.ecommunity.extension.gesturesDisabled
-import at.fhooe.ecommunity.model.LoadingState
+import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.model.RemoteException
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
@@ -57,12 +56,12 @@ fun LoginScreen(_viewModel: LoginViewModel, _navController: NavHostController, _
     var isResendConfirmationEmailVisible = false // should the resend confirmation email button be visible
 
     when (viewModelState.mState) {
-        LoadingState.State.RUNNING -> {
+        LegacyLoadingState.State.RUNNING -> {
             // view model operation is loading
             LoadingIndicator() // show loading indicator
             isLoading = true
         }
-        LoadingState.State.SUCCESS -> {
+        LegacyLoadingState.State.SUCCESS -> {
             // view model operation succeeded
             when (viewModelState.mId) {
                 LoginViewModel.LoadingStateId.LOGIN.ordinal -> {
@@ -86,7 +85,7 @@ fun LoginScreen(_viewModel: LoginViewModel, _navController: NavHostController, _
                 }
             }
         }
-        LoadingState.State.FAILED -> {
+        LegacyLoadingState.State.FAILED -> {
             // view model operation failed
             _viewModel.backToIdle() // bring the view model back to the idle state
             viewModelState.mException?.let {

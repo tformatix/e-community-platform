@@ -2,22 +2,15 @@ package at.fhooe.ecommunity
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import at.fhooe.ecommunity.model.LoadingState
+import at.fhooe.ecommunity.model.LegacyLoadingState
 import at.fhooe.ecommunity.ui.screen.startup.login.LoginViewModel
-import at.fhooe.ecommunity.util.Validator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
-import kotlin.math.log
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -32,6 +25,6 @@ class AuthTest {
         val application = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as ECommunityApplication
         val loginViewModel = LoginViewModel(application)
 
-        val results = mutableListOf<LoadingState>()
+        val results = mutableListOf<LegacyLoadingState>()
     }
 }
