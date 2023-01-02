@@ -114,4 +114,7 @@ dependencies {
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:31.1.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // date & time picker
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.9.0"
 }

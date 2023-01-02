@@ -43,7 +43,7 @@ sealed class Screen(val route: String, val name: String, val icon: Int? = null, 
     )
 
     fun getRouteWithArguments(): String{
-        if(arguments != null){
+        if(arguments != null) {
             var argRoute = "$route?"
             arguments.forEach { argument ->
                 argRoute = "$argRoute${argument.name}={${argument.name}}&"
@@ -62,4 +62,14 @@ sealed class Screen(val route: String, val name: String, val icon: Int? = null, 
     /* Search */
     object Search: Screen("home/search", "Search", null)
     object SearchFilter: Screen("home/search/filter", "SearchFilter", null)
+    object SearchProfile: Screen("/home/search/profile", "SearchProfile", null,
+        arguments = listOf(
+            navArgument("memberId"){ defaultValue = "" }
+    ))
+
+    /* Sharing */
+    object SharingAddOrUpdContract: Screen("sharing/add_or_upd_contract", "add_or_upd_contract", null,
+        arguments = listOf(
+            navArgument("memberId"){ defaultValue = "" }
+    ))
 }
