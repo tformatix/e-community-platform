@@ -28,7 +28,6 @@ namespace e_community_cloud_lib.Database
         public DbSet<ECommunity> ECommunity { get; set; }
         public DbSet<ECommunityMembership> ECommunityMembership { get; set; }
         public DbSet<ECommunityDistribution> ECommunityDistribution { get; set; }
-        public DbSet<SmartMeterPortion> SmartMeterPortion { get; set; }
         public DbSet<ECommunityType> ECommunityType { get; set; }
 
 
@@ -45,6 +44,9 @@ namespace e_community_cloud_lib.Database
         public DbSet<MeterDataProfile> MeterDataProfile { get; set; }
         public DbSet<PVSystem> PVSystem { get; set; }
         public DbSet<SmartMeter> SmartMeter { get; set; }
+        public DbSet<SmartMeterPortion> SmartMeterPortion { get; set; }
+        public DbSet<Monitoring> Monitoring { get; set; }
+        public DbSet<MeterDataMonitoring> MeterDataMonitoring { get; set; }
 
         // Price Rate
         public DbSet<Charge> Charge { get; set; }
@@ -62,6 +64,7 @@ namespace e_community_cloud_lib.Database
             _modelBuilder.Entity<Translation>().HasKey(o => new { o.EventCaseId, o.LanguageId });
             _modelBuilder.Entity<ECommunityMembership>().HasKey(o => new { o.ECommunityId, o.MemberId });
             _modelBuilder.Entity<SmartMeterPortion>().HasKey(o => new { o.ECommunityDistributionId, o.SmartMeterId });
+            _modelBuilder.Entity<MeterDataMonitoring>().HasKey(o => new { o.MonitoringId, o.SmartMeterId });
             _modelBuilder.Entity<MemberFCMToken>().HasKey(o => new { o.MemberId, o.Token });
             _modelBuilder.Entity<GridPriceRateCharge>().HasKey(o => new { o.GridPriceRateId, o.ChargeId });
 

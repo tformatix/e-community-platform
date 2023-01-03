@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_community_cloud_lib.Database;
 
@@ -11,9 +12,10 @@ using e_community_cloud_lib.Database;
 namespace e_community_cloud_lib.Migrations
 {
     [DbContext(typeof(ECommunityCloudContext))]
-    partial class ECommunityContextModelSnapshot : ModelSnapshot
+    [Migration("20230103153958_TempRemovedMeterDataMonitoring")]
+    partial class TempRemovedMeterDataMonitoring
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,30 +336,6 @@ namespace e_community_cloud_lib.Migrations
                     b.ToTable("EventCase");
                 });
 
-            modelBuilder.Entity("e_community_cloud_lib.Database.Local.MeterDataMonitoring", b =>
-                {
-                    b.Property<int>("MonitoringId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SmartMeterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Acknowledged")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("ActiveEnergyMinus")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ActiveEnergyPlus")
-                        .HasColumnType("int");
-
-                    b.HasKey("MonitoringId", "SmartMeterId");
-
-                    b.HasIndex("SmartMeterId");
-
-                    b.ToTable("MeterDataMonitoring");
-                });
-
             modelBuilder.Entity("e_community_cloud_lib.Database.Local.MeterDataProfile", b =>
                 {
                     b.Property<Guid>("Id")
@@ -413,25 +391,6 @@ namespace e_community_cloud_lib.Migrations
                     b.HasIndex("SmartMeterId");
 
                     b.ToTable("MeterDataProfile");
-                });
-
-            modelBuilder.Entity("e_community_cloud_lib.Database.Local.Monitoring", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("IsCurrent")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Monitoring");
                 });
 
             modelBuilder.Entity("e_community_cloud_lib.Database.Local.PVSystem", b =>
@@ -513,12 +472,6 @@ namespace e_community_cloud_lib.Migrations
 
                     b.Property<bool>("Acknowledged")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("ActualActiveEnergyMinus")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ActualActiveEnergyPlus")
-                        .HasColumnType("int");
 
                     b.Property<int>("Deviation")
                         .HasColumnType("int");
@@ -898,25 +851,6 @@ namespace e_community_cloud_lib.Migrations
                     b.Navigation("SmartMeter");
                 });
 
-            modelBuilder.Entity("e_community_cloud_lib.Database.Local.MeterDataMonitoring", b =>
-                {
-                    b.HasOne("e_community_cloud_lib.Database.Local.Monitoring", "Monitoring")
-                        .WithMany("MeterDataMonitorings")
-                        .HasForeignKey("MonitoringId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("e_community_cloud_lib.Database.Local.SmartMeter", "SmartMeter")
-                        .WithMany("MeterDataMonitorings")
-                        .HasForeignKey("SmartMeterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Monitoring");
-
-                    b.Navigation("SmartMeter");
-                });
-
             modelBuilder.Entity("e_community_cloud_lib.Database.Local.MeterDataProfile", b =>
                 {
                     b.HasOne("e_community_cloud_lib.Database.Local.EventCase", "EventCase")
@@ -1081,16 +1015,9 @@ namespace e_community_cloud_lib.Migrations
                     b.Navigation("Translation");
                 });
 
-            modelBuilder.Entity("e_community_cloud_lib.Database.Local.Monitoring", b =>
-                {
-                    b.Navigation("MeterDataMonitorings");
-                });
-
             modelBuilder.Entity("e_community_cloud_lib.Database.Local.SmartMeter", b =>
                 {
                     b.Navigation("BatterySystems");
-
-                    b.Navigation("MeterDataMonitorings");
 
                     b.Navigation("MeterDataProfiles");
 

@@ -3,6 +3,7 @@ using e_community_local_lib.CloudData;
 using e_community_local_lib.CloudData.Local;
 using e_community_local_lib.Database;
 using e_community_local_lib.Database.General;
+using e_community_local_lib.Database.Meter;
 using e_community_local_lib.Models;
 using e_community_local_lib.Util.BusinessLogic;
 using Microsoft.EntityFrameworkCore;
@@ -109,9 +110,9 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST {
                 var smartMeter = mDb.SmartMeter
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefaultAsync();
-                var meterData = await mDb.MeterDataHistory
-                    .OrderByDescending(x => x.Id)
-                    .FirstOrDefaultAsync();
+
+                var meterData = await GetMeterData();
+
                 if (meterData != null) {
                     var monitoringPath = mSection.GetValue<string>("MeterDataMonitoring");
                     var monitoringModel = new MeterDataMonitoringModel() {
@@ -128,6 +129,18 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST {
                     }
                 }
             }
+        }
+
+        private async Task<MeterDataRealTime> GetMeterData(int count = 0) {
+            var meterData = await mDb.MeterDataRealTime
+                .OrderByDescending(x => x.Id)
+                .FirstOrDefaultAsync();
+            if ( meterData == null && count < 10) {
+                // wait max. 10 seconds
+                await Task.Delay(1000);
+                meterData = await GetMeterData(++count);
+            }
+            return meterData;
         }
     }
 }

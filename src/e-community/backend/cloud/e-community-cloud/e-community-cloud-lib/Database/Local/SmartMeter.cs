@@ -1,5 +1,4 @@
-﻿using e_community_cloud_lib.Database.Community;
-using e_community_cloud_lib.Database.General;
+﻿using e_community_cloud_lib.Database.General;
 using e_community_cloud_lib.Database.PriceRate;
 using e_community_cloud_lib.Util.BaseClasses;
 using System;
@@ -94,5 +93,7 @@ namespace e_community_cloud_lib.Database.Local
         /// list of estimated energy portions for smart meter
         /// </summary>
         public IList<SmartMeterPortion> SmartMeterPortions { get; set; }
+
+        public IList<MeterDataMonitoring> MeterDataMonitorings{ get; set; }
     }
 }

@@ -25,7 +25,8 @@ namespace e_community_cloud.BackgroundServices {
 
                 using (var scope = mServiceScopeFactory.CreateScope()) {
                     var distributionService = scope.ServiceProvider.GetRequiredService<IDistributionService>();
-                    // TODO: Monitoring (1)
+                    // Monitoring (1)
+                    await distributionService.StartMonitoring();
 
                     switch (minute + delayMinutes) {
                         case 60:

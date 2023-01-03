@@ -1,12 +1,14 @@
-﻿using e_community_cloud_lib.Database.Local;
+﻿using e_community_cloud_lib.Database.Community;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_community_cloud_lib.Database.Community {
-    public class SmartMeterPortion {
+namespace e_community_cloud_lib.Database.Local
+{
+    public class SmartMeterPortion
+    {
         public int ECommunityDistributionId { get; set; }
         public ECommunityDistribution ECommunityDistribution { get; set; }
 
@@ -42,5 +44,15 @@ namespace e_community_cloud_lib.Database.Community {
         /// forecast from smart meter
         /// </summary>
         public bool ForecastFromSmartMeter { get; set; }
+
+        // <summary>
+        /// actual energy A- (feed in)
+        /// </summary>
+        public int? ActualActiveEnergyMinus { get; set; }
+
+        // <summary>
+        /// actual energy A+ (consumption)
+        /// </summary>
+        public int? ActualActiveEnergyPlus { get; set; }
     }
 }

@@ -29,7 +29,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         private var instance : ECommunityViewModel? = null
 
         fun getInstance(_application: ECommunityApplication): ECommunityViewModel {
-            if (instance == null)  // NOT thread safe!
+            if (instance == null)
                 instance = ECommunityViewModel(_application)
             return instance!!
         }
@@ -90,7 +90,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(PORTION_ACK)) {
             emitState(LoadingState(LoadingState.State.RUNNING, PORTION_ACK))
             mDistributionApi.distributionHourlyPortionAckPost(PortionAckModel(_newPortion.smartMeterId, _flexibility))
-            newDistribution()
+            init()
             emitState(LoadingState(LoadingState.State.SUCCESS, PORTION_ACK))
         }
     }

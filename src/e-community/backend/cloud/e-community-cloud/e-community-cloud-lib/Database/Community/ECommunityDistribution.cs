@@ -1,11 +1,13 @@
-﻿using e_community_cloud_lib.Util.BaseClasses;
+﻿using e_community_cloud_lib.Database.Local;
+using e_community_cloud_lib.Util.BaseClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_community_cloud_lib.Database.Community {
+namespace e_community_cloud_lib.Database.Community
+{
     public class ECommunityDistribution {
         public int Id { get; set; }
 

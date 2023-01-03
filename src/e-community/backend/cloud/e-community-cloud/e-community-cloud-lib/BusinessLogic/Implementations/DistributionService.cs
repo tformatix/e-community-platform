@@ -2,6 +2,7 @@
 using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
 using e_community_cloud_lib.Database;
 using e_community_cloud_lib.Database.Community;
+using e_community_cloud_lib.Database.Local;
 using e_community_cloud_lib.Models.Distribution;
 using e_community_cloud_lib.NonEntities;
 using e_community_cloud_lib.Util;
@@ -13,7 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace e_community_cloud_lib.BusinessLogic.Implementations {
+namespace e_community_cloud_lib.BusinessLogic.Implementations
+{
     public class DistributionService : IDistributionService {
 
         private readonly ECommunityCloudContext mDb;
@@ -30,8 +32,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
         public async Task StartDistribution() {
             var timestamp = DateTime.UtcNow.AddMinutes(2 * Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES);
-            timestamp.AddSeconds(-timestamp.Second);
-            timestamp.AddMilliseconds(-timestamp.Millisecond);
 
             var eCommunityMemberships = await mDb.ECommunityMembership
                 .Include(x => x.ECommunity)
@@ -358,9 +358,66 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             };
         }
 
-        public Task MeterDataMonitoringArrived(MeterDataMonitoringModel _meterDataMonitoringModel) {
-            // TODO
-            return Task.CompletedTask;
+        public async Task StartMonitoring() {
+            var timestamp = DateTime.UtcNow.AddMinutes(Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES);
+
+            var currentMonitoring = await GetCurrentMonitoring();
+            if (currentMonitoring != null) {
+                currentMonitoring.IsCurrent = false;
+
+                currentMonitoring.MeterDataMonitorings
+                    .Where(x => x.ActiveEnergyMinus == null)
+                    .ToList()
+                    .ForEach(x => {
+                        // offline
+                        // TODO
+                    });
+
+                await mDb.SaveChangesAsync();
+            }
+
+            var monitoring = new Monitoring() {
+                IsCurrent = true,
+                Timestamp = timestamp
+            };
+            mDb.Monitoring.Add(monitoring);
+            await mDb.SaveChangesAsync();
+
+            var eCommunityMemberships = await mDb.ECommunityMembership
+                .Include(x => x.Member)
+                .ThenInclude(x => x.SmartMeters)
+                .Where(x => Constants.ACTIVE_MEMBER_PERMISSIONS.Contains(x.ECommunityPermission))
+                .ToListAsync();
+
+            foreach (var membership in eCommunityMemberships) {
+                mDb.MeterDataMonitoring.AddRange(eCommunityMemberships
+                    .SelectMany(x => x.Member.SmartMeters)
+                    .Select(x => new MeterDataMonitoring() {
+                        SmartMeterId = x.Id,
+                        MonitoringId = monitoring.Id,
+                        ActiveEnergyMinus = null,
+                        ActiveEnergyPlus = null,
+                        Acknowledged = false
+                    })
+                );
+            }
+            await mDb.SaveChangesAsync();
+
+            mLocalSignalRSenderService.RequestMeterDataMonitoring();
+        }
+
+        public async Task MeterDataMonitoringArrived(MeterDataMonitoringModel _meterDataMonitoringModel) {
+            var currentMonitoring = await GetCurrentMonitoring();
+
+            var meterDataMontoring = currentMonitoring.MeterDataMonitorings
+                .FirstOrDefault(x => x.SmartMeterId == _meterDataMonitoringModel.SmartMeterId);
+
+            if (meterDataMontoring == null) {
+                meterDataMontoring.ActiveEnergyMinus = _meterDataMonitoringModel.ActiveEnergyMinus;
+                meterDataMontoring.ActiveEnergyPlus = _meterDataMonitoringModel.ActiveEnergyPlus;
+
+                await mDb.SaveChangesAsync();
+            }
         }
 
         private async Task<List<ECommunityDistribution>> GetCurrentDistributions() {
@@ -370,5 +427,13 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 .ThenInclude(x => x.SmartMeter)
                 .ToListAsync();
         }
+
+        private async Task<Monitoring> GetCurrentMonitoring() {
+            return await mDb.Monitoring
+                .Include(x => x.MeterDataMonitorings)
+                .ThenInclude(x => x.SmartMeter)
+                .FirstOrDefaultAsync(x => x.IsCurrent);
+        }
+
     }
 }
