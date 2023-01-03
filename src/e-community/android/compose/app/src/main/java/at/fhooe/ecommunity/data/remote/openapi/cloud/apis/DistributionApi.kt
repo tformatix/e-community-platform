@@ -29,6 +29,7 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MeterDataMonitoringM
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.NewDistributionDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.OkDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.PortionAckModel
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ProblemDetails
 
 import com.squareup.moshi.Json
 

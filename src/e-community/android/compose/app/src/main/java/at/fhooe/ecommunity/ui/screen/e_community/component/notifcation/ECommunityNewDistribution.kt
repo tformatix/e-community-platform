@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.RemoveCircleOutline
 import androidx.compose.runtime.*
+import androidx.compose.runtime.internal.enableLiveLiterals
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,7 +41,7 @@ fun ECommunityNewDistribution(
     val formatter = Formatter(LocalContext.current)
 
     newDistribution.newPortions?.forEach { portion ->
-        var flexibility by remember { mutableStateOf((portion.flexiblity ?: 0).toString()) }
+        var flexibility by remember { mutableStateOf((portion.flexibility ?: 0).toString()) }
         val flexibilityInt = flexibility.toIntOrNull()
         val isFlexibilityError = flexibilityInt == null
 
@@ -155,7 +156,7 @@ fun ECommunityNewDistribution(
                             fontSize = 20.sp,
                             textAlign = TextAlign.Center,
                             color = if (isFlexibilityError) colorResource(id = R.color.value_bad) else Color.Black
-                        )
+                        ),
                     )
                     IconButton(
                         onClick = {
@@ -171,13 +172,15 @@ fun ECommunityNewDistribution(
                 }
             }
             // tiles
+            val consumption = portion.estimatedActiveEnergyPlus ?: 0
+            val assigned = (portion.estimatedActiveEnergyPlus ?: 0) + (portion.deviation ?: 0)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
                 ECommunityTile(
                     title = stringResource(R.string.e_community_new_distribution_estimated_consumption),
-                    content = formatter.formatSmartMeterValue(portion.estimatedActiveEnergyPlus ?: 0, true),
+                    content = formatter.formatSmartMeterValue(consumption, true),
                     background = Color.White,
                     modifier = Modifier
                         .weight(1f)
@@ -186,10 +189,9 @@ fun ECommunityNewDistribution(
                 ECommunityTile(
                     title = stringResource(R.string.e_community_new_distribution_assigned),
                     content = formatter.formatSmartMeterValue(
-                        (portion.estimatedActiveEnergyPlus ?: 0) + (portion.deviation ?: 0),
+                        assigned,
                         true
                     ),
-                    color = colorResource(id = R.color.value_good),
                     background = Color.White,
                     modifier = Modifier
                         .weight(1f)

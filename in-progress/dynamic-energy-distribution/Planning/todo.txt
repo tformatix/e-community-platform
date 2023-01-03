@@ -1,3 +1,18 @@
+short term TODO
+- how to request data from backend
+- in-app notification -> show NewDistribution
+- accept
+- portionack (only not ack), frontend also look at ack!
+
+long term TODO
+- Monitoring
+	- When is a good forecast?
+	- What is the reference value for the forecast deviation?
+- Tabs (more smart meters)
+- Chart
+
+- Good Min Threshold?
+
 REST
 /Performance/{smartMeterId}/{mode}
 /Current/{smartMeterId}
@@ -8,33 +23,12 @@ REST
 - GoodForecasts
 - ForecastDeviation
 
-/Current
-- Forecast
-- Deviation
-
 /Monitoring
 - NonCompliances[]
 	- SmartMeterId
 	- SmartMeterName
 	- Forecast (null = offline)
 	- ProjectedConsumption
-	
-/New
-- Distributions[]
-	- SmartMeterId
-	- SmartMeterName
-	- EstimatedConsumption
-	- AssignedConsumption
-	- Flexibility
-	- UnassignedEnergy
-	- MissingSmartMeterCount
-
-ECommunityDashboard
-- Type (portion, assigned portion, non-compliance, offline)
-- CurrentDistribution
-- NewDistribution?
-- OfflineSmartMeter?
-- Non-Compliance?
 
 Monitoring
 - Id (int)
@@ -43,17 +37,5 @@ Monitoring
 - ActiveEnergyPlus
 - ActiveEnergyMinus
 - Acknowledged
-
-TODO
-- Dashboard Request (incl. open notifications)
-- APP
-- Monitoring
-- Tabs (more smart meters)
-- Chart
-
-- When is a good forecast?
-- What is the reference value for the forecast deviation?
-- Good Min Threshold
-
 
 Ersatzwerte, Lastprofil und Flexibiltät schlecht --> in BA schreiben

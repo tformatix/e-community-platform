@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
@@ -22,15 +23,14 @@ import at.fhooe.ecommunity.util.Formatter
 fun ECommunityDistribution(currentPortion: CurrentPortionDto?) {
     val formatter = Formatter(LocalContext.current)
 
-    val forecastString: String
-    val flexibilityString: String
-    val assignedString: String
-    if (currentPortion == null) {
-        forecastString = "-"
-        flexibilityString = ""
-        assignedString = "-"
-    } else {
-        forecastString = formatter.formatSmartMeterValue(currentPortion.estimatedActiveEnergyPlus ?: 0, true)
+    var forecastString = "-"
+    var flexibilityString = ""
+    var assignedString = "-"
+    var assignedColor = Color.Black
+
+    if (currentPortion != null) {
+        val consumption = currentPortion.estimatedActiveEnergyPlus ?: 0
+        forecastString = formatter.formatSmartMeterValue(consumption, true)
 
         val flexibility = currentPortion.flexibility ?: 0
         flexibilityString =
@@ -38,11 +38,18 @@ fun ECommunityDistribution(currentPortion: CurrentPortionDto?) {
             else if (flexibility < 0) "(-${formatter.formatSmartMeterValue(flexibility, true)})"
             else ""
 
+        val assigned = consumption + (currentPortion.deviation ?: 0)
         assignedString = formatter.formatSmartMeterValue(
-            (currentPortion.estimatedActiveEnergyPlus ?: 0) + (currentPortion.deviation ?: 0),
+            assigned,
             true
         )
+
+        val consumptionWithFlexibility = consumption + flexibility
+        assignedColor =
+            if (assigned >= consumptionWithFlexibility) colorResource(id = R.color.value_good)
+            else colorResource(id = R.color.value_bad)
     }
+
     Text(
         text = stringResource(R.string.e_community_distribution_title),
         fontWeight = FontWeight.Bold,
@@ -66,7 +73,7 @@ fun ECommunityDistribution(currentPortion: CurrentPortionDto?) {
         ECommunityTile(
             title = stringResource(R.string.e_community_distribution_assigned),
             content = assignedString,
-            color = colorResource(id = R.color.value_bad),
+            color = assignedColor,
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 4.dp)

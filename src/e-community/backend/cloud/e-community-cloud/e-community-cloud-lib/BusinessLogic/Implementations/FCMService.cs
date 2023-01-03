@@ -21,11 +21,13 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         }
 
         public FCMAndroidData NewDistribution => new() {
-             TitleKey = "notification_new_distribution_title",
-             BodyKey = "notification_new_distribution_body",
+            Id = "ecommunity_new_distribution",
+            TitleKey = "notification_new_distribution_title",
+            BodyKey = "notification_new_distribution_body",
         };
 
         public FCMAndroidData FinalDistribution => new() {
+            Id = "ecommunity_final_distribution",
             TitleKey = "notification_final_distribution_title",
             BodyKey = "notification_final_distribution_body",
         };
@@ -66,9 +68,9 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                         BodyLocKey = _fcmAndroidData.BodyKey,
                         BodyLocArgs = _fcmAndroidData.BodyArgs,
                     },
-                    //Data = new Dictionary<string, string>(){
-                    //    { "badge", _badge }
-                    //}
+                    Data = new Dictionary<string, string>(){
+                        { "id", _fcmAndroidData.Id }
+                    }
                 },
                 Tokens = _fcmTokens
                     .Select(x => x.Token)

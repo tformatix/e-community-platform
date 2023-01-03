@@ -34,8 +34,8 @@ class FCMService : FirebaseMessagingService() {
             _remoteMessage.notification?.bodyLocalizationArgs
         )
 
-        it.putExtra(Constants.BROADCAST_RECEIVER_EXTRA_MESSAGE, "$title: $body")
-        it.putExtra(Constants.BROADCAST_RECEIVER_EXTRA_BADGE, _remoteMessage.data["badge"])
+        it.putExtra(Constants.BROADCAST_RECEIVER_NOTIFICATION_EXTRA_MESSAGE, "$title: $body")
+        it.putExtra(Constants.BROADCAST_RECEIVER_NOTIFICATION_EXTRA_ID, _remoteMessage.data["id"])
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(it)
     }

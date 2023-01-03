@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
 
         mMessageReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                Toast.makeText(this@MainActivity, intent?.getStringExtra("EXTRA_MESSAGE"), Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, intent?.getStringExtra("NOTIFICATION_EXTRA_MESSAGE"), Toast.LENGTH_LONG).show()
             }
         }
 
@@ -198,7 +198,7 @@ fun MainScreen() {
 private fun MainScreenNavigationConfigurations(
     navController: NavHostController,
     selectedScreen: MutableState<String>,
-    ) {
+) {
     // start with eCommunity screen
     val startDestination = Screen.ECommunity.route
     val application = ((LocalContext.current as MainActivity).application as ECommunityApplication)
@@ -209,7 +209,7 @@ private fun MainScreenNavigationConfigurations(
             HomeScreen(HomeViewModel(application), navController)
         }
         composable(Screen.ECommunity.route) {
-            ECommunityScreen(ECommunityViewModel(application), navController)
+            ECommunityScreen(ECommunityViewModel.getInstance(application), navController)
         }
         composable(Screen.Sharing.route) {
             SharingScreen(SharingViewModel(application), navController)
@@ -253,13 +253,13 @@ private fun MainScreenNavigationConfigurations(
         }
 
         Screen.SharingAddOrUpdContract.arguments?.let { arguments ->
-            composable(Screen.SharingAddOrUpdContract.getRouteWithArguments(), arguments = arguments) {
-                backStack ->
+            composable(Screen.SharingAddOrUpdContract.getRouteWithArguments(), arguments = arguments) { backStack ->
                 backStack.arguments?.getString(arguments[0].name)?.let {
                     SharingAddOrUpdContract(
                         it,
                         SharingViewModel(application),
-                        navController)
+                        navController
+                    )
                 }
             }
         }
@@ -281,11 +281,16 @@ private fun AppBottomNavigation(navController: NavHostController, bottomNavItems
         bottomNavItems.forEach { screen ->
             BottomNavigationItem(
                 icon = {
-                    screen.icon?.let { painterResource(id = it) }?.let {
-                        Icon(
-                            painter = it,
-                            contentDescription = "Icons",
-                        )
+                    BadgedBox(
+                        badge = {
+                            if(screen.badge) Badge()
+                        }) {
+                        screen.icon?.let { painterResource(id = it) }?.let {
+                            Icon(
+                                painter = it,
+                                contentDescription = "Icons",
+                            )
+                        }
                     }
                 },
                 label = { Text(screen.name) },

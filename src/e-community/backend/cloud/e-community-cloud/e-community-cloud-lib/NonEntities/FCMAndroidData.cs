@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.NonEntities {
     public class FCMAndroidData {
+        public string Id { get; set; }
         public string TitleKey { get; set; }
         public List<string> TitleArgs { get; set; }
         public string BodyKey { get; set; }

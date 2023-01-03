@@ -15,13 +15,17 @@ import kotlinx.coroutines.launch
  * @param mApplication eCommunity application
  * @see ViewModel
  */
-abstract class LoadingStateViewModel(
-    val mApplication: ECommunityApplication,
-) : ViewModel() {
+abstract class LoadingStateViewModel(val mApplication: ECommunityApplication) : ViewModel() {
     /**
      * current state of the view model
      */
-    var mState = MutableStateFlow(LoadingState(LoadingState.State.IDLE))
+    var mState = LoadingState(LoadingState.State.IDLE)
+        private set
+    private var mListener: ((_loadingState: LoadingState) -> Unit)? = null
+
+    fun registerListener(_listener: (_loadingState: LoadingState) -> Unit) {
+        mListener = _listener
+    }
 
     /**
      * default exception handler for remote operations
@@ -39,11 +43,12 @@ abstract class LoadingStateViewModel(
      * @param _loadingState new loading state
      */
     protected fun emitState(_loadingState: LoadingState) {
+        mState = _loadingState
         CoroutineScope(Dispatchers.Main).launch {
-            mState.emit(_loadingState)
+            mListener?.let { it(_loadingState) }
         }
-        if (mState.value.mState == LoadingState.State.SUCCESS || mState.value.mState == LoadingState.State.FAILED) {
-            viewModelScope.launch { mState.emit(LoadingState(LoadingState.State.IDLE)) }
+        if (mState.mState == LoadingState.State.SUCCESS || mState.mState == LoadingState.State.FAILED) {
+            mState = LoadingState(LoadingState.State.IDLE)
         }
     }
 }

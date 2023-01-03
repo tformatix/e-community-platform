@@ -6,6 +6,6 @@ namespace e_community_cloud.Dtos {
         public string SmartMeterName { get; set; }
         public int EstimatedActiveEnergyPlus { get; set; }
         public int Deviation { get; set; }
-        public int Flexiblity { get; set; }
+        public int Flexibility { get; set; }
     }
 }

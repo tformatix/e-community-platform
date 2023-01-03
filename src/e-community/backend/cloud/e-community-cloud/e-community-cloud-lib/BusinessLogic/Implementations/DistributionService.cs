@@ -122,6 +122,10 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     });
             }
 
+            foreach (var smartMeterPortion in _eCommunityDistribution.SmartMeterPortions) {
+                smartMeterPortion.Deviation = 0;
+            }
+
             var sumConsumption = _eCommunityDistribution.SmartMeterPortions
                 .Sum(x => x.EstimatedActiveEnergyPlus);
             var energyDifference = sumFeedIn - sumConsumption;
@@ -155,9 +159,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                         if (smartMeterPortion.Flexibility > 0) {
                             smartMeterPortion.Deviation = _energyDifference * smartMeterPortion.Flexibility / sumFlexibilityPlus;
                         }
-                        else {
-                            smartMeterPortion.Deviation = 0;
-                        }
                     }
                 }
                 else {
@@ -165,9 +166,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     foreach (var smartMeterPortion in _smartMeterPortions) {
                         if (smartMeterPortion.Flexibility > 0) {
                             smartMeterPortion.Deviation = smartMeterPortion.Flexibility;
-                        }
-                        else {
-                            smartMeterPortion.Deviation = 0;
                         }
                     }
                 }
@@ -186,9 +184,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     foreach (var smartMeterPortion in _smartMeterPortions) {
                         if (smartMeterPortion.Flexibility < 0) {
                             smartMeterPortion.Deviation = -_energyDifference * smartMeterPortion.Flexibility / sumFlexibilityMinus;
-                        }
-                        else {
-                            smartMeterPortion.Deviation = 0;
                         }
                     }
                 }
@@ -270,12 +265,16 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
             if (smartMeterPortion != null) {
                 smartMeterPortion.Acknowledged = true;
-                var prevFlexibility = smartMeterPortion.Flexibility;
-                smartMeterPortion.Flexibility = _portionAckModel.Flexibility;
-                await mDb.SaveChangesAsync();
-
-                if (prevFlexibility != _portionAckModel.Flexibility) {
+                if (smartMeterPortion.Flexibility != _portionAckModel.Flexibility) {
                     // flexibility changed --> new distribution
+                    if (_portionAckModel.Flexibility < -smartMeterPortion.EstimatedActiveEnergyPlus) {
+                        // flexibility smaller than estimated consumption (not possible)
+                        smartMeterPortion.Flexibility = -smartMeterPortion.EstimatedActiveEnergyPlus;
+                    }
+                    else {
+                        smartMeterPortion.Flexibility = _portionAckModel.Flexibility;
+                    }
+                    await mDb.SaveChangesAsync();
                     await Distribute(currentDistributions.FirstOrDefault(x => x.Id == smartMeterPortion.ECommunityDistributionId));
                 }
             }
@@ -332,13 +331,14 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 .ThenInclude(x => x.SmartMeter)
                 .FirstOrDefaultAsync(x => x.IsCurrent && x.WasDistributed && x.SmartMeterPortions.Any(portion => portion.SmartMeter.MemberId == _memberId));
 
+
             if (currentDistribution == null) {
                 return null;
             }
 
             var sumFeedIn = currentDistribution.SmartMeterPortions.Sum(x => x.EstimatedActiveEnergyMinus);
 
-            if(sumFeedIn <= Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) {
+            if (sumFeedIn <= Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) {
                 return null;
             }
 
@@ -351,7 +351,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             var unassigned = sumFeedIn - sumAssigned;
             return new NewDistribution() {
                 MissingSmartMeterCount = missingSmartMeters,
-                UnassignedActiveEnergyMinus = (unassigned > 0) ? unassigned : 0,
+                UnassignedActiveEnergyMinus = (unassigned > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) ? unassigned : 0,
                 SmartMeterPortions = currentDistribution.SmartMeterPortions
                     .Where(x => x.SmartMeter.MemberId == _memberId)
                     .ToList(),

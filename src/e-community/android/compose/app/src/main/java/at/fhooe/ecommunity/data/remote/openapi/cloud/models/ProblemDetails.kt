@@ -26,29 +26,29 @@ import com.squareup.moshi.Json
 /**
  * 
  *
- * @param smartMeterId 
- * @param smartMeterName 
- * @param estimatedActiveEnergyPlus 
- * @param deviation 
- * @param flexibility 
+ * @param type 
+ * @param title 
+ * @param status 
+ * @param detail 
+ * @param instance 
  */
 
-data class NewPortionDto (
+data class ProblemDetails (
 
-    @Json(name = "smartMeterId")
-    val smartMeterId: java.util.UUID? = null,
+    @Json(name = "type")
+    val type: kotlin.String? = null,
 
-    @Json(name = "smartMeterName")
-    val smartMeterName: kotlin.String? = null,
+    @Json(name = "title")
+    val title: kotlin.String? = null,
 
-    @Json(name = "estimatedActiveEnergyPlus")
-    val estimatedActiveEnergyPlus: kotlin.Int? = null,
+    @Json(name = "status")
+    val status: kotlin.Int? = null,
 
-    @Json(name = "deviation")
-    val deviation: kotlin.Int? = null,
+    @Json(name = "detail")
+    val detail: kotlin.String? = null,
 
-    @Json(name = "flexibility")
-    val flexibility: kotlin.Int? = null
+    @Json(name = "instance")
+    val instance: kotlin.String? = null
 
-)
+) : kotlin.collections.HashMap<String, kotlin.Any>()
 

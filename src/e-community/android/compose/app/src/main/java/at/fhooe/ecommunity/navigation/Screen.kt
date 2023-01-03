@@ -11,7 +11,7 @@ import at.fhooe.ecommunity.R
  * @param icon icon for bottom nav
  * @param arguments optional arguments from one screen to another
  */
-sealed class Screen(val route: String, val name: String, val icon: Int? = null, val arguments: List<NamedNavArgument>? = null) {
+sealed class Screen(val route: String, val name: String, val icon: Int? = null, val badge: Boolean = false, val arguments: List<NamedNavArgument>? = null) {
 
     /* Bottom */
     object Home : Screen("home", "Home", R.drawable.ic_home)
