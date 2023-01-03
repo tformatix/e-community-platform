@@ -143,6 +143,12 @@
     <string name="sharing_contracts_pending">Pending</string>
     <string name="sharing_contracts_closed">Closed</string>
     <string name="sharing_contract_name">Contract\'s name</string>
+    <string name="sharing_contract_timespan_energy_data">Timespan of the Energy Data</string>
+    <string name="sharing_contract_validity_of_contract">Validity of Contract</string>
+    <string name="sharing_contract_price_per_1h">Price per 1h</string>
+    <string name="sharing_contract_currency_ethereum_short" translatable="false">ETH</string>
+    <string name="sharing_contract_summary">Total Summary</string>
+    <string name="sharing_contract_submit">Submit</string>
 
     <!--COMMUNITY SCREEN-->
     <string name="e_community_top_bar_group_icon_desc">Group Icon</string>
