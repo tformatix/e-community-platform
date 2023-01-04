@@ -5,8 +5,10 @@ using e_community_cloud_lib.Database.Community;
 using e_community_cloud_lib.Database.General;
 using e_community_cloud_lib.Database.Local;
 using e_community_cloud_lib.Models.Distribution;
+using e_community_cloud_lib.NonEntities;
 using e_community_cloud_lib.Util;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Encodings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,9 +55,13 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                         ActiveEnergyPlus = null,
                         ProjectedActiveEnergyPlus = null,
                         NonCompliance = false,
-                        Acknowledged = false
                     })
                 );
+
+            await mDb.SmartMeter.ForEachAsync(x => {
+                x.IsNonComplianceMuted = false;
+            });
+
             await mDb.SaveChangesAsync();
 
             mLocalSignalRSenderService.RequestMeterDataMonitoring();
@@ -142,19 +148,23 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     var projected = (int)(energy * multiplier);
                     meterDataMontoring.ProjectedActiveEnergyPlus = projected;
 
-                    var currentPortion = await mDistributionService.GetCurrentSmartMeterPortion(_meterDataMonitoringModel.SmartMeterId, true);
+                    var currentPortion = await mDistributionService.GetCurrentPortion(_meterDataMonitoringModel.SmartMeterId, true);
                     if (currentPortion != null) {
-                        if (!IsGoodForecast(currentPortion.EstimatedActiveEnergyPlus, currentPortion.Flexibility, projected)) {
+                        int forecast = currentPortion.EstimatedActiveEnergyPlus + currentPortion.Flexibility;
+                        if (!IsGoodForecast(forecast, projected)) {
                             // bad forecast (non compliance of forecast)
                             meterDataMontoring.NonCompliance = true;
 
-                            var fcmAndroidData = mFCMService.NonCompliance;
-                            fcmAndroidData.BodyArgs = new List<string>() {
-                                currentPortion.SmartMeter.Name,
-                                (projected - currentPortion.EstimatedActiveEnergyPlus).ToString(),
-                                "Wh"
-                            };
-                            await mFCMService.SendPushNotificationMember(fcmAndroidData, currentPortion.SmartMeter.MemberId);
+                            if (!currentPortion.SmartMeter.IsNonComplianceMuted && currentPortion.SumFeedIn > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) {
+                                // only send notification if not muted and if feed-in over threshold
+                                var fcmAndroidData = mFCMService.NonCompliance;
+                                fcmAndroidData.BodyArgs = new List<string>() {
+                                    currentPortion.SmartMeter.Name,
+                                    (projected - forecast).ToString(),
+                                    "Wh"
+                                };
+                                await mFCMService.SendPushNotificationMember(fcmAndroidData, currentPortion.SmartMeter.MemberId);
+                            }
                         }
                     }
                 }
@@ -163,25 +173,74 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
         }
 
-        private bool IsGoodForecast(int _forecast, int _flexibility, int _actual) {
-            var min = (_forecast + _flexibility) * (1 - Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
-            var max = (_forecast + _flexibility) * (1 + Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
+        public async Task<Performance> GetPerformance(Guid _smartMeterId, int _durationDays) {
+            var performance = new Performance() {
+                GoodForecastCount = 0,
+                WrongForecasted = 0
+            };
+
+            var notBefore = DateTime.UtcNow
+                .AddDays(-_durationDays);
+
+            await mDb.SmartMeterPortion
+                .Include(x => x.ECommunityDistribution)
+                .Where(x => x.SmartMeterId == _smartMeterId && x.ECommunityDistribution.Timestamp > notBefore)
+                .ForEachAsync(x => {
+                    if (x.ActualActiveEnergyPlus != null) {
+                        var forecast = x.EstimatedActiveEnergyPlus + x.Flexibility;
+                        var actual = (int)x.ActualActiveEnergyPlus;
+                        if (IsGoodForecast(forecast, actual)) {
+                            performance.GoodForecastCount++;
+                        }
+
+                        performance.ForecastCount++;
+                        performance.WrongForecasted += Math.Abs(forecast - actual);
+                    }
+                });
+
+            return performance;
+        }
+
+        public async Task<List<MeterDataMonitoring>> GetRelevantMeterDataMonitorings(Guid _memberId) {
+            var monitoring = await mDb.Monitoring
+                .OrderByDescending(x => x.Id)
+                .Include(x => x.MeterDataMonitorings)
+                .ThenInclude(x => x.SmartMeter)
+                .FirstOrDefaultAsync(x => !x.IsCalculating);
+
+            return monitoring.MeterDataMonitorings
+                .Where(x => x.SmartMeter.MemberId == _memberId && (x.NonCompliance || x.ActiveEnergyPlus == null ))
+                .ToList();
+        }
+
+        public async Task MuteCurrentHour(Guid _smartMeterId) {
+            var smartMeter = await mDb.SmartMeter
+                .FirstOrDefaultAsync(x => x.Id == _smartMeterId);
+
+            if (smartMeter != null) {
+                smartMeter.IsNonComplianceMuted = true;
+                await mDb.SaveChangesAsync();
+            }
+        }
+
+        private bool IsGoodForecast(int _forecast, int _actual) {
+            var min = _forecast * (1 - Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
+            var max = _forecast * (1 + Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
 
             return _actual >= min && _actual <= max;
         }
 
         private async Task<List<ECommunityDistribution>> GetCurrentDistributions() {
             var nonCalulating = await mDb.ECommunityDistribution
-                .OrderByDescending(x => x.Id)
                 .Include(x => x.SmartMeterPortions)
                 .ThenInclude(x => x.SmartMeter)
                 .Where(x => !x.IsCalculating)
                 .ToListAsync();
 
-            var maxId = nonCalulating.Max(x => x.Id);
+            var maxTimestamp = nonCalulating.Max(x => x.Timestamp);
 
             return nonCalulating
-                .Where(x => x.Id == maxId)
+                .Where(x => x.Timestamp == maxTimestamp)
                 .ToList();
         }
 

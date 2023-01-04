@@ -19,9 +19,7 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces {
 
         Task FinalizeDistribution();
 
-        Task<CurrentPortion> GetCurrentPortion(Guid _smartMeterId);
-
-        Task<SmartMeterPortion> GetCurrentSmartMeterPortion(Guid _smartMeterId, bool IncludeSmartMeter);
+        Task<CurrentPortion> GetCurrentPortion(Guid _smartMeterId, bool IncludeSmartMeter = false);
 
         Task<NewDistribution> GetNewDistribution(Guid _memberId);
 

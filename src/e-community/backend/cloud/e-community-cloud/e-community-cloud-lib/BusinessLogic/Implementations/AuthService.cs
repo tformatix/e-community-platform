@@ -349,5 +349,14 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations
             }
             return member;
         }
+
+        public async Task EnsureSmartMeter(Guid _memberId, Guid _smartMeterId) {
+            var smartMeter = await mDb.SmartMeter
+                .FirstOrDefaultAsync(x => x.Id == _smartMeterId && x.MemberId == _memberId);
+
+            if(smartMeter== null) {
+                throw (new ServiceException(ServiceException.Type.SMART_METER_NOT_TO_USER));
+            }
+        }
     }
 }

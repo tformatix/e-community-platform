@@ -24,6 +24,11 @@ namespace e_community_cloud_lib.Database.Local
         public string Description { get; set; }
 
         /// <summary>
+        /// are non compliance messages muted
+        /// </summary>
+        public bool IsNonComplianceMuted { get; set; }
+
+        /// <summary>
         /// marks the main raspberry (only one weather calculation per household)
         /// </summary>
         public bool IsMain { get; set; }

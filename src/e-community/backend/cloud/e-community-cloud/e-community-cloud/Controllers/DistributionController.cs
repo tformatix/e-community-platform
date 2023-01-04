@@ -17,33 +17,24 @@ namespace e_community_cloud.Controllers {
     public class DistributionController : ControllerBase {
 
         private readonly IDistributionService mDistributionService;
+        private readonly IAuthService mAuthService;
 
-        public DistributionController(IDistributionService _distributionService) {
+        public DistributionController(IDistributionService _distributionService, IAuthService _authService) {
             mDistributionService = _distributionService;
+            mAuthService = _authService;
         }
 
         [ProducesResponseType(typeof(OkDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> HourlyForecast([FromBody] ForecastModel _forecastModel) {
-            Log.Information($"Distribution/HourlyForecast");
+        public async Task<IActionResult> HourlyForecast([FromBody] ForecastModel _forecastModel) { 
+            var memberId = (Guid)User.GetMemberId();
+            Log.Information($"Distribution/HourlyForecast({memberId})");
 
             // forecast arrived
+            await mAuthService.EnsureSmartMeter(memberId, _forecastModel.SmartMeterId);
             await mDistributionService.ForecastArrived(_forecastModel);
-
-            return Ok(new OkDto());
-        }
-
-        [ProducesResponseType(typeof(OkDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> HourlyPortionAck([FromBody] PortionAckModel _portionAckModel) {
-            Log.Information($"Distribution/HourlyPortionAck");
-
-            // member acknowledged portion (change or accept)
-            await mDistributionService.PortionAck(_portionAckModel);
 
             return Ok(new OkDto());
         }
@@ -53,7 +44,10 @@ namespace e_community_cloud.Controllers {
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> CurrentPortion(Guid _smartMeterId) {
-            Log.Information($"Distribution/CurrentPortion/{_smartMeterId}");
+            var memberId = (Guid)User.GetMemberId();
+            Log.Information($"Distribution/CurrentPortion/{memberId}/{_smartMeterId}");
+            await mAuthService.EnsureSmartMeter(memberId, _smartMeterId);
+
             var currentPortion = await mDistributionService.GetCurrentPortion(_smartMeterId);
             if(currentPortion != null) {
                 return Ok(currentPortion.CopyPropertiesTo(new CurrentPortionDto()));
@@ -84,6 +78,21 @@ namespace e_community_cloud.Controllers {
                 });
             }
             return NotFound();
+        }
+
+        [ProducesResponseType(typeof(OkDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> HourlyPortionAck([FromBody] PortionAckModel _portionAckModel) {
+            var memberId = (Guid)User.GetMemberId();
+            Log.Information($"Distribution/HourlyPortionAck({memberId})");
+
+            // member acknowledged portion (change or accept)
+            await mAuthService.EnsureSmartMeter(memberId, _portionAckModel.SmartMeterId);
+            await mDistributionService.PortionAck(_portionAckModel);
+
+            return Ok(new OkDto());
         }
     }
 }

@@ -66,5 +66,13 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces
         /// <param name="_changePasswordModel">new password and current password</param>
         /// <returns></returns>
         Task ChangePassword(Guid _currentMemberId, ChangePasswordModel _changePasswordModel);
+
+        /// <summary>
+        /// does smart meter belong to member
+        /// </summary>
+        /// <param name="_memberId">member id</param>
+        /// <param name="_smartMeterId">smart meter id</param>
+        /// <returns></returns>
+        Task EnsureSmartMeter(Guid _memberId, Guid _smartMeterId);
     }
 }

@@ -307,19 +307,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 });
         }
 
-        public async Task<CurrentPortion> GetCurrentPortion(Guid _smartMeterId) {
-            var smartMeterPortion = await GetCurrentSmartMeterPortion(_smartMeterId, false);
-
-            if (smartMeterPortion != null) {
-                return smartMeterPortion.CopyPropertiesTo(new CurrentPortion() {
-                    MissingSmartMeterCount = GetMissingSmartMeterCount(smartMeterPortion.ECommunityDistribution),
-                    UnassignedActiveEnergyMinus = GetUnassignedActiveEnergyMinus(smartMeterPortion.ECommunityDistribution),
-                });
-            }
-            return null;
-        }
-
-        public async Task<SmartMeterPortion> GetCurrentSmartMeterPortion(Guid _smartMeterId, bool IncludeSmartMeter) {
+        public async Task<CurrentPortion> GetCurrentPortion(Guid _smartMeterId, bool IncludeSmartMeter) {
             var distribution = (IncludeSmartMeter)
                 ? await mDb.ECommunityDistribution
                     .OrderByDescending(x => x.Id)
@@ -336,9 +324,21 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 // empty or time difference bigger than 1 hour
                 return null;
             }
-
-            return distribution.SmartMeterPortions
+            
+            var smartMeterPortion = distribution.SmartMeterPortions
                 .FirstOrDefault(x => x.SmartMeterId == _smartMeterId);
+
+            var sumFeedIn = GetSumFeedIn(smartMeterPortion.ECommunityDistribution);
+
+            if (smartMeterPortion != null) {
+                return smartMeterPortion.CopyPropertiesTo(new CurrentPortion() {
+                    MissingSmartMeterCount = GetMissingSmartMeterCount(smartMeterPortion.ECommunityDistribution),
+                    UnassignedActiveEnergyMinus = GetUnassignedActiveEnergyMinus(smartMeterPortion.ECommunityDistribution, sumFeedIn),
+                    SumFeedIn = sumFeedIn,
+                    SmartMeter = smartMeterPortion.SmartMeter
+                });
+            }
+            return null;
         }
 
         public async Task<NewDistribution> GetNewDistribution(Guid _memberId) {
@@ -354,21 +354,23 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
             return new NewDistribution() {
                 MissingSmartMeterCount = GetMissingSmartMeterCount(calculatingDistribution),
-                UnassignedActiveEnergyMinus = GetUnassignedActiveEnergyMinus(calculatingDistribution),
+                UnassignedActiveEnergyMinus = GetUnassignedActiveEnergyMinus(calculatingDistribution, GetSumFeedIn(calculatingDistribution)),
                 SmartMeterPortions = calculatingDistribution.SmartMeterPortions
                     .Where(x => x.SmartMeter.MemberId == _memberId)
                     .ToList(),
             };
         }
 
-        private int GetUnassignedActiveEnergyMinus(ECommunityDistribution _distribution) {
-            var sumFeedIn = _distribution.SmartMeterPortions.Sum(x => x.EstimatedActiveEnergyMinus);
+        private int GetSumFeedIn(ECommunityDistribution _distribution) {
+            return _distribution.SmartMeterPortions.Sum(x => x.EstimatedActiveEnergyMinus);
+        }
 
+        private int GetUnassignedActiveEnergyMinus(ECommunityDistribution _distribution, int _sumFeedIn) {
             var sumAssigned = 0;
             foreach (var portion in _distribution.SmartMeterPortions) {
                 sumAssigned += (portion.EstimatedActiveEnergyPlus + portion.Deviation);
             }
-            var unassigned = sumFeedIn - sumAssigned;
+            var unassigned = _sumFeedIn - sumAssigned;
             return (unassigned > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) ? unassigned : 0;
         }
 

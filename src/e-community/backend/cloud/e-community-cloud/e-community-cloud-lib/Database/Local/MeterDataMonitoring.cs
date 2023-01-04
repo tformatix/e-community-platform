@@ -32,10 +32,5 @@ namespace e_community_cloud_lib.Database.Local
         /// non compliance of forecast
         /// </summary>
         public bool NonCompliance { get; set; }
-
-        /// <summary>
-        /// did user acknowledged non compliance
-        /// </summary>
-        public bool Acknowledged { get; set; }
     }
 }

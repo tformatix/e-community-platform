@@ -19,7 +19,8 @@ namespace e_community_cloud_lib.Util.BusinessLogic
             RESET_PASSWORD_FAILED,
             CHANGE_PASSWORD_FAILED,
             NO_SMART_METER_FOUND,
-            MEMBER_ID_NOT_RESOLVABLE
+            MEMBER_ID_NOT_RESOLVABLE,
+            SMART_METER_NOT_TO_USER,
         }
     }
 }

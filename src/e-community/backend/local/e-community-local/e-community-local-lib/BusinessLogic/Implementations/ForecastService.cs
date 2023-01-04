@@ -25,8 +25,8 @@ namespace e_community_local_lib.BusinessLogic.Implementations {
                 var descOrdered = mDb.MeterDataHistory
                     .OrderByDescending(x => x.Id);
 
-                var currentHour = descOrdered.FirstOrDefault();
-                var lastHour = descOrdered.Skip(4).FirstOrDefault();
+                var currentHour = await descOrdered.FirstOrDefaultAsync();
+                var lastHour = await descOrdered.Skip(4).FirstOrDefaultAsync();
 
                 return new() {
                     ActiveEnergyMinus = currentHour.ActiveEnergyMinus - lastHour.ActiveEnergyMinus,
