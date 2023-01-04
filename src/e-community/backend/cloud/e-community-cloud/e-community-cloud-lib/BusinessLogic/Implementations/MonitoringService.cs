@@ -82,9 +82,10 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     var previousTimestamp = calculatingMonitoring.Timestamp.AddHours(-1);
                     var monitoringHourBefore = await mDb.Monitoring
                         .Include(x => x.MeterDataMonitorings)
-                        .FirstOrDefaultAsync(x => x.Timestamp.Hour == previousTimestamp.Hour && x.Timestamp.Minute == previousTimestamp.Minute);
+                        .OrderBy(x => x.Id)
+                        .FirstOrDefaultAsync();
 
-                    if (monitoringHourBefore != null) {
+                    if (monitoringHourBefore != null && monitoringHourBefore.Timestamp.Hour == previousTimestamp.Hour && monitoringHourBefore.Timestamp.Minute == previousTimestamp.Minute) {
                         // monitoring entry before an hour available
 
                         var currentDistributions = await GetCurrentDistributions();

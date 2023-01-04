@@ -25,7 +25,9 @@ namespace e_community_cloud.BackgroundServices {
 
                 using var scope = mServiceScopeFactory.CreateScope();
                 var monitoringService = scope.ServiceProvider.GetRequiredService<IMonitoringService>();
+
                 var currentMinute = minute + delayMinutes;
+                currentMinute = currentMinute < 60 ? currentMinute : 0;
 
                 var timestamp = DateTime.UtcNow;
                 timestamp = timestamp
@@ -46,7 +48,7 @@ namespace e_community_cloud.BackgroundServices {
                         // 5 minutes before full hour (e.g. 11:55): distribute energy
                         await GetDistributionService(scope).Distribute();
                         break;
-                    case 60:
+                    case 0:
                         // full hour (e.g. 12:00): inform members about their portions
                         await GetDistributionService(scope).FinalizeDistribution();
                         break;
