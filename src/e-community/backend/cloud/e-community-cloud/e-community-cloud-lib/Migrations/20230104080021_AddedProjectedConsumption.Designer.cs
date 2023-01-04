@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_community_cloud_lib.Database;
 
@@ -11,9 +12,10 @@ using e_community_cloud_lib.Database;
 namespace e_community_cloud_lib.Migrations
 {
     [DbContext(typeof(ECommunityCloudContext))]
-    partial class ECommunityContextModelSnapshot : ModelSnapshot
+    [Migration("20230104080021_AddedProjectedConsumption")]
+    partial class AddedProjectedConsumption
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,7 +82,7 @@ namespace e_community_cloud_lib.Migrations
                     b.Property<Guid>("ECommunityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsCalculating")
+                    b.Property<bool>("IsCurrent")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Timestamp")
@@ -280,25 +282,6 @@ namespace e_community_cloud_lib.Migrations
                     b.ToTable("MemberFCMToken");
                 });
 
-            modelBuilder.Entity("e_community_cloud_lib.Database.General.Monitoring", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("IsCalculating")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Monitoring");
-                });
-
             modelBuilder.Entity("e_community_cloud_lib.Database.General.Translation", b =>
                 {
                     b.Property<Guid>("EventCaseId")
@@ -370,9 +353,6 @@ namespace e_community_cloud_lib.Migrations
                     b.Property<int?>("ActiveEnergyPlus")
                         .HasColumnType("int");
 
-                    b.Property<bool>("NonCompliance")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("ProjectedActiveEnergyPlus")
                         .HasColumnType("int");
 
@@ -438,6 +418,25 @@ namespace e_community_cloud_lib.Migrations
                     b.HasIndex("SmartMeterId");
 
                     b.ToTable("MeterDataProfile");
+                });
+
+            modelBuilder.Entity("e_community_cloud_lib.Database.Local.Monitoring", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsCurrent")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Monitoring");
                 });
 
             modelBuilder.Entity("e_community_cloud_lib.Database.Local.PVSystem", b =>
@@ -906,7 +905,7 @@ namespace e_community_cloud_lib.Migrations
 
             modelBuilder.Entity("e_community_cloud_lib.Database.Local.MeterDataMonitoring", b =>
                 {
-                    b.HasOne("e_community_cloud_lib.Database.General.Monitoring", "Monitoring")
+                    b.HasOne("e_community_cloud_lib.Database.Local.Monitoring", "Monitoring")
                         .WithMany("MeterDataMonitorings")
                         .HasForeignKey("MonitoringId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1080,16 +1079,16 @@ namespace e_community_cloud_lib.Migrations
                     b.Navigation("SmartMeters");
                 });
 
-            modelBuilder.Entity("e_community_cloud_lib.Database.General.Monitoring", b =>
-                {
-                    b.Navigation("MeterDataMonitorings");
-                });
-
             modelBuilder.Entity("e_community_cloud_lib.Database.Local.EventCase", b =>
                 {
                     b.Navigation("MeterDataProfiles");
 
                     b.Navigation("Translation");
+                });
+
+            modelBuilder.Entity("e_community_cloud_lib.Database.Local.Monitoring", b =>
+                {
+                    b.Navigation("MeterDataMonitorings");
                 });
 
             modelBuilder.Entity("e_community_cloud_lib.Database.Local.SmartMeter", b =>

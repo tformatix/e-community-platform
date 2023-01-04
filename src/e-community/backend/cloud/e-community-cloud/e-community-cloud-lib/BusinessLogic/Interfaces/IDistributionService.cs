@@ -11,11 +11,9 @@ using System.Threading.Tasks;
 namespace e_community_cloud_lib.BusinessLogic.Interfaces
 {
     public interface IDistributionService { 
-        Task StartDistribution();
+        Task StartDistribution(DateTime _timestamp);
 
         Task ForecastArrived(ForecastModel _forecastModel);
-
-        Task StartMonitorSession();
 
         Task Distribute();
 
@@ -25,13 +23,9 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces
 
         Task FinalizeDistribution();
 
-        Task<SmartMeterPortion> GetCurrentPortion(Guid _smartMeterId);
+        Task<SmartMeterPortion> GetCurrentPortion(Guid _smartMeterId, bool IncludeSmartMeter = false);
 
         Task<NewDistribution> GetNewDistribution(Guid _memberId);
-
-        Task StartMonitoring();
-
-        Task MeterDataMonitoringArrived(MeterDataMonitoringModel _meterDataMonitoringModel);
 
     }
 }

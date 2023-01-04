@@ -23,9 +23,9 @@ namespace e_community_cloud_lib.Database.Community
         public DateTime Timestamp { get; set; }
 
         /// <summary>
-        /// is this distribution currently running
+        /// is this distribution currently calculated
         /// </summary>
-        public bool IsCurrent { get; set; }
+        public bool IsCalculating { get; set; }
 
         /// <summary>
         /// was this distribution already distributed

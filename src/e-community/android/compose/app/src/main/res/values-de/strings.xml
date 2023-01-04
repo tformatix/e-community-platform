@@ -30,6 +30,10 @@
     <string name="notification_new_distribution_body">%1$d %2$s für die nächste Stunde. Akzeptieren oder Ändern?</string>
     <string name="notification_final_distribution_title">Stündliche Stromaufteilung</string>
     <string name="notification_final_distribution_body">%1$d %2$s für die nächste Stunde.</string>
+    <string name="notification_offline_title">Smart Meter Offline</string>
+    <string name="notification_offline_body">%1$s ist offline!</string>
+    <string name="notification_non_compliance_title">Vorhersage wird wahrscheinlich nicht eingehalten!</string>
+    <string name="notification_non_compliance_body">Abweichung von Vorhersage ist wahrscheinlich %1$s %2$s.</string>
 
     <!-- MAIN TITLES -->
     <string name="title_activity_main">eCommunity</string>
@@ -150,7 +154,7 @@
     <string name="e_community_new_distribution_change_flexibility_plus_icon_desc">Plus</string>
     <string name="e_community_new_distribution_estimated_consumption">geschätzter Verbrauch</string>
     <string name="e_community_new_distribution_assigned">zugewiesen</string>
-    <string name="e_community_non_compliance_title">Prognose wurde nicht eingehalten!</string>
+    <string name="e_community_non_compliance_title">Vorhersage wird wahrscheinlich nicht eingehalten!</string>
     <string name="e_community_non_compliance_close_icon_desc">Schließen</string>
     <string name="e_community_non_compliance_forecast">Prognose</string>
     <string name="e_community_non_compliance_current">derzeitiger voraussichtlicher Verbrauch</string>

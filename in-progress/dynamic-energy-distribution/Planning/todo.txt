@@ -1,15 +1,20 @@
-short term TODO
-- how to request data from backend
-- in-app notification -> show NewDistribution
-- accept
-- portionack (only not ack), frontend also look at ack!
-
-long term TODO
+TODO
 - Monitoring
+	- 1. store actual into portion
+	- 2. offline?
+	- 3. non-compliance?
+	- 4. delete monitorings
+	
 	- When is a good forecast?
 	- What is the reference value for the forecast deviation?
-- Tabs (more smart meters)
-- Chart
+	
+- Android
+	- missing smart meter / open energy @ current portion
+	- Tabs (more smart meters)
+	- in-app notification -> show NewDistribution/Finalize
+	- Chart
+- Backend
+	- error handling (e.g. portion ack no distribution)
 
 - Good Min Threshold?
 
@@ -29,13 +34,5 @@ REST
 	- SmartMeterName
 	- Forecast (null = offline)
 	- ProjectedConsumption
-
-Monitoring
-- Id (int)
-- SmartMeterId
-- Timestamp
-- ActiveEnergyPlus
-- ActiveEnergyMinus
-- Acknowledged
 
 Ersatzwerte, Lastprofil und Flexibiltät schlecht --> in BA schreiben

@@ -36,6 +36,7 @@ namespace e_community_cloud_lib.Database
         public DbSet<LegalForm> LegalForm { get; set; }
         public DbSet<Member> Member { get; set; }
         public DbSet<MemberFCMToken> MemberFCMToken { get; set; }
+        public DbSet<Monitoring> Monitoring { get; set; }
         public DbSet<Translation> Translation { get; set; }
 
         // Local
@@ -45,7 +46,6 @@ namespace e_community_cloud_lib.Database
         public DbSet<PVSystem> PVSystem { get; set; }
         public DbSet<SmartMeter> SmartMeter { get; set; }
         public DbSet<SmartMeterPortion> SmartMeterPortion { get; set; }
-        public DbSet<Monitoring> Monitoring { get; set; }
         public DbSet<MeterDataMonitoring> MeterDataMonitoring { get; set; }
 
         // Price Rate

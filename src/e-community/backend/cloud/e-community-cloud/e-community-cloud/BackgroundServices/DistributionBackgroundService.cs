@@ -23,27 +23,39 @@ namespace e_community_cloud.BackgroundServices {
                 int delayMinutes = Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES - (minute % Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES);
                 await Task.Delay(delayMinutes * 60000); // DISTRIBUTION_MONITOR_INTERVAL_MINUTES = 5 --> e.g. 12:00, 12:05, 12:10, ...
 
-                using (var scope = mServiceScopeFactory.CreateScope()) {
-                    var distributionService = scope.ServiceProvider.GetRequiredService<IDistributionService>();
-                    // Monitoring (1)
-                    await distributionService.StartMonitoring();
+                using var scope = mServiceScopeFactory.CreateScope();
+                var monitoringService = scope.ServiceProvider.GetRequiredService<IMonitoringService>();
+                var currentMinute = minute + delayMinutes;
 
-                    switch (minute + delayMinutes) {
-                        case 60:
-                            // (7) inform members about their portions
-                            await distributionService.FinalizeDistribution();
-                            break;
-                        case 60 - 2 * Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES:
-                            // (1) request forecasts and init database
-                            await distributionService.StartDistribution();
-                            break;
-                        case 60 - Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES:
-                            // (3) distribute energy
-                            await distributionService.Distribute();
-                            break;
-                    }
+                var timestamp = DateTime.UtcNow;
+                timestamp = timestamp
+                    .AddMinutes(-timestamp.Minute)
+                    .AddMinutes(currentMinute)
+                    .AddSeconds(-timestamp.Second)
+                    .AddMilliseconds(-timestamp.Millisecond);
+
+                // request meter data for monitoring and init database
+                await monitoringService.StartMonitoring(timestamp);
+
+                switch (currentMinute) {
+                    case 60 - 2 * Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES:
+                        // 10 minutes before full hour (e.g. 11:50): request forecasts and init database for distribution
+                        await GetDistributionService(scope).StartDistribution(timestamp);
+                        break;
+                    case 60 - Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES:
+                        // 5 minutes before full hour (e.g. 11:55): distribute energy
+                        await GetDistributionService(scope).Distribute();
+                        break;
+                    case 60:
+                        // full hour (e.g. 12:00): inform members about their portions
+                        await GetDistributionService(scope).FinalizeDistribution();
+                        break;
                 }
             }
+        }
+
+        private IDistributionService GetDistributionService(IServiceScope _scope) {
+            return _scope.ServiceProvider.GetRequiredService<IDistributionService>();
         }
     }
 }

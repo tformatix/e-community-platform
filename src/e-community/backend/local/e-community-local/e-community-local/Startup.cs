@@ -72,6 +72,7 @@ namespace e_community_local
             _services.AddScoped<IPairingService, PairingService>();
             _services.AddScoped<ILocalChangesService, LocalChangesService>();
             _services.AddScoped<IForecastService, ForecastService>();
+            _services.AddScoped<IMeterDataService, MeterDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

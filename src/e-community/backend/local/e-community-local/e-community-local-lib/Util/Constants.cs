@@ -31,5 +31,7 @@ namespace e_community_local_lib.Util
         public const string GET_ACCOUNT_BALANCE = "Util/Extensions/Python/goquorum.py account-balance";
 
         public const int RT_EXTEND_MILLISECONDS = 360000; // 6 minutes
+
+        public const int MAX_MONITORING_RT_ATTEMPTS_SECONDS = 10;
     }
 }

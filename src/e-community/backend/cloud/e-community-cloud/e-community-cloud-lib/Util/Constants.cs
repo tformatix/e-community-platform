@@ -15,7 +15,9 @@ namespace e_community_cloud_lib.Util
 
         public const int DISTRIBUTION_MONITOR_INTERVAL_MINUTES = 5;
 
-        public const int DISTRIBUTION_MINIMUM_ENERGY_WH = 100;
+        public const int DISTRIBUTION_MINIMUM_ENERGY_WH = 100; // feed in from which the user is informed
+
+        public const double DISTRIBUTION_GOOD_FORECAST_PERCENT = 0.1; // +/- 10% deviation from forecast -> good
 
         public static readonly ECommunityPermission[] ACTIVE_MEMBER_PERMISSIONS = new ECommunityPermission[] { ECommunityPermission.Admin, ECommunityPermission.Member };
     }

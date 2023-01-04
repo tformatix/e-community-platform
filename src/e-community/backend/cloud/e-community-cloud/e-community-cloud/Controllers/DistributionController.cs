@@ -29,7 +29,7 @@ namespace e_community_cloud.Controllers {
         public async Task<IActionResult> HourlyForecast([FromBody] ForecastModel _forecastModel) {
             Log.Information($"Distribution/HourlyForecast");
 
-            // (2) forecast arrived
+            // forecast arrived
             await mDistributionService.ForecastArrived(_forecastModel);
 
             return Ok(new OkDto());
@@ -42,7 +42,7 @@ namespace e_community_cloud.Controllers {
         public async Task<IActionResult> HourlyPortionAck([FromBody] PortionAckModel _portionAckModel) {
             Log.Information($"Distribution/HourlyPortionAck");
 
-            // (4)/(5)/(6) member acknowledged portion (change or accept)
+            // member acknowledged portion (change or accept)
             await mDistributionService.PortionAck(_portionAckModel);
 
             return Ok(new OkDto());
@@ -84,20 +84,6 @@ namespace e_community_cloud.Controllers {
                 });
             }
             return NotFound();
-        }
-
-        [ProducesResponseType(typeof(OkDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> MeterDataMonitoring([FromBody] MeterDataMonitoringModel _meterDataMonitoringModel) {
-            var memberId = User.GetMemberId();
-            Log.Information($"Distribution/MeterDataMonitoring::{memberId}");
-
-            // Monitoring (2)
-            await mDistributionService.MeterDataMonitoringArrived(_meterDataMonitoringModel);
-
-            return Ok(new OkDto());
         }
     }
 }

@@ -99,7 +99,7 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST {
             }
         }
 
-        public async Task SendMeterDataMonitoring() {
+        public async Task SendMeterDataMonitoring(MeterDataMonitoringModel _meterDataMonitoringModel) {
             Log.Information("CloudRESTService::Send meter data for monitoring");
 
             var login = await RefreshFromDb();
@@ -107,40 +107,14 @@ namespace e_community_local_lib.BusinessLogic.Implementations.REST {
                 Log.Error("CloudRESTService::Refreshing Failed");
             }
             else {
-                var smartMeter = mDb.SmartMeter
-                    .OrderByDescending(x => x.Id)
-                    .FirstOrDefaultAsync();
+                var monitoringPath = mSection.GetValue<string>("MeterDataMonitoring");
+                using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{mBasePath}/{monitoringPath}")) {
+                    requestMessage.Content = new StringContent(JsonConvert.SerializeObject(_meterDataMonitoringModel), Encoding.UTF8, "application/json");
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
 
-                var meterData = await GetMeterData();
-
-                if (meterData != null) {
-                    var monitoringPath = mSection.GetValue<string>("MeterDataMonitoring");
-                    var monitoringModel = new MeterDataMonitoringModel() {
-                        SmartMeterId = (await smartMeter).Id,
-                        ActiveEnergyMinus = meterData.ActiveEnergyMinus,
-                        ActiveEnergyPlus = meterData.ActiveEnergyPlus,
-                    };
-
-                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{mBasePath}/{monitoringPath}")) {
-                        requestMessage.Content = new StringContent(JsonConvert.SerializeObject(monitoringModel), Encoding.UTF8, "application/json");
-                        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
-
-                        var response = await mHttpClient.SendAsync(requestMessage);
-                    }
+                    var response = await mHttpClient.SendAsync(requestMessage);
                 }
             }
-        }
-
-        private async Task<MeterDataRealTime> GetMeterData(int count = 0) {
-            var meterData = await mDb.MeterDataRealTime
-                .OrderByDescending(x => x.Id)
-                .FirstOrDefaultAsync();
-            if ( meterData == null && count < 10) {
-                // wait max. 10 seconds
-                await Task.Delay(1000);
-                meterData = await GetMeterData(++count);
-            }
-            return meterData;
         }
     }
 }

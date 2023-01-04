@@ -13,6 +13,8 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces
     {
         FCMAndroidData NewDistribution { get; }
         FCMAndroidData FinalDistribution { get; }
+        FCMAndroidData Offline { get; }
+        FCMAndroidData NonCompliance { get; }
 
         /// <summary>
         /// updates firebase cloud messaging registration token

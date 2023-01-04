@@ -5,6 +5,7 @@ using e_community_cloud_lib.Models.Distribution;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System;
 using System.Threading.Tasks;
 
 namespace e_community_cloud.Controllers {
@@ -12,9 +13,11 @@ namespace e_community_cloud.Controllers {
     [Route("[controller]/[action]")]
     public class TestingController : ControllerBase {
         private readonly IDistributionService mDistributionService;
+        private readonly IMonitoringService mMonitoringService;
 
-        public TestingController(IDistributionService _distributionService) {
+        public TestingController(IDistributionService _distributionService, IMonitoringService _monitoringService) {
             mDistributionService = _distributionService;
+            mMonitoringService = _monitoringService;
         }
 
         [ProducesResponseType(typeof(OkDto), 200)]
@@ -23,7 +26,7 @@ namespace e_community_cloud.Controllers {
         [HttpPost]
         public async Task<IActionResult> StartDistribution() {
             Log.Information($"Testing/StartDistribution");
-            await mDistributionService.StartDistribution();
+            await mDistributionService.StartDistribution(DateTime.UtcNow);
             return Ok(new OkDto());
         }
 
@@ -44,6 +47,22 @@ namespace e_community_cloud.Controllers {
         public async Task<IActionResult> FinalizeDistribution() {
             Log.Information($"Testing/StartDistribution");
             await mDistributionService.FinalizeDistribution();
+            return Ok(new OkDto());
+        }
+
+        [ProducesResponseType(typeof(OkDto), 200)]
+        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> StartMonitoring(bool IsFiveAfter) {
+            Log.Information($"Testing/StartMonitoring");
+            var timestamp = DateTime.UtcNow;
+            if (IsFiveAfter) {
+                timestamp = timestamp
+                    .AddMinutes(-timestamp.Minute)
+                    .AddMinutes(5);
+            }
+            await mMonitoringService.StartMonitoring(timestamp);
             return Ok(new OkDto());
         }
     }

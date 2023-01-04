@@ -32,6 +32,18 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             BodyKey = "notification_final_distribution_body",
         };
 
+        public FCMAndroidData Offline => new() {
+            Id = "ecommunity_offline",
+            TitleKey = "notification_offline_title",
+            BodyKey = "notification_offline_body",
+        };
+
+        public FCMAndroidData NonCompliance => new() {
+            Id = "ecommunity_non_compliance",
+            TitleKey = "notification_non_compliance_title",
+            BodyKey = "notification_non_compliance_body",
+        };
+
         public async Task RegisterFCMToken(Guid _memberId, string _token) {
             var fcmToken = mDb.MemberFCMToken
                 .FirstOrDefault(x => x.Token == _token);

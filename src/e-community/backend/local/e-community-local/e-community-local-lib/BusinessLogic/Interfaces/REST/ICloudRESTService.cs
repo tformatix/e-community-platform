@@ -38,7 +38,8 @@ namespace e_community_local_lib.BusinessLogic.Interfaces.REST
 
         /// <summary>
         /// sends meter data for monitoring
+        /// <param name="_meterDataMonitoringModel">meter data</param>
         /// </summary>
-        Task SendMeterDataMonitoring();
+        Task SendMeterDataMonitoring(MeterDataMonitoringModel _meterDataMonitoringModel);
     }
 }

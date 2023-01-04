@@ -36,7 +36,7 @@ namespace e_community_cloud_lib.Database.Local
         public int Flexibility { get; set; }
 
         /// <summary>
-        /// did user acknowledged estimated consumption
+        /// did user acknowledged flexibility
         /// </summary>
         public bool Acknowledged { get; set; }
 

@@ -146,7 +146,11 @@ namespace e_community_local_lib.Endpoints {
 
             using (var scope = mServiceScopeFactory.CreateScope()) {
                 var cloudRESTService = scope.ServiceProvider.GetRequiredService<ICloudRESTService>();
-                await cloudRESTService.SendMeterDataMonitoring();
+                var meterDataService = scope.ServiceProvider.GetRequiredService<IMeterDataService>();
+                var meterData = await meterDataService.GetMeterDataMonitoring();
+                if (meterData != null) {
+                    await cloudRESTService.SendMeterDataMonitoring(meterData);
+                }
             }
         }
     }
