@@ -45,6 +45,11 @@ fun ECommunityNewDistribution(
         val flexibilityInt = flexibility.toIntOrNull()
         val isFlexibilityError = flexibilityInt == null
 
+        val consumption = portion.estimatedActiveEnergyPlus ?: 0
+        val assignedColor =
+            if (consumption + (portion.deviation ?: 0) >= consumption + (portion.flexibility ?: 0)) colorResource(id = R.color.value_good)
+            else colorResource(id = R.color.value_bad)
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -67,11 +72,13 @@ fun ECommunityNewDistribution(
                 ) {
                     Text(
                         text = stringResource(R.string.e_community_new_distribution_title),
+                        color = Color.Black,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = portion.smartMeterName ?: "",
+                        color = Color.Black,
                         fontSize = 10.sp,
                     )
                 }
@@ -144,6 +151,7 @@ fun ECommunityNewDistribution(
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.RemoveCircleOutline,
+                            tint = Color.Black,
                             contentDescription = stringResource(R.string.e_community_new_distribution_change_flexibility_minus_icon_desc)
                         )
                     }
@@ -166,6 +174,7 @@ fun ECommunityNewDistribution(
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.AddCircleOutline,
+                            tint = Color.Black,
                             contentDescription = stringResource(R.string.e_community_new_distribution_change_flexibility_plus_icon_desc)
                         )
                     }
@@ -192,6 +201,7 @@ fun ECommunityNewDistribution(
                         assigned,
                         true
                     ),
+                    color = assignedColor,
                     background = Color.White,
                     modifier = Modifier
                         .weight(1f)

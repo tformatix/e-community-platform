@@ -32,7 +32,7 @@ namespace e_community_cloud.BackgroundServices {
                     .AddMinutes(-timestamp.Minute)
                     .AddMinutes(currentMinute)
                     .AddSeconds(-timestamp.Second)
-                    .AddMilliseconds(-timestamp.Millisecond);
+                    .AddTicks(-(timestamp.Ticks % 10000000));
 
                 // request meter data for monitoring and init database
                 await monitoringService.StartMonitoring(timestamp);

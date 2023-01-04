@@ -131,24 +131,25 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     .Where(x => x.SmartMeterId == _meterDataMonitoringModel.SmartMeterId)
                     .OrderBy(x => x.MonitoringId)
                     .Include(x => x.Monitoring)
-                    .FirstOrDefaultAsync(); // automatically first because of deletion of unnecessary values
+                    .FirstOrDefaultAsync(x => !x.Monitoring.IsCalculating); // automatically first because of deletion of unnecessary values
 
                 if (meterDataFullHour != null && meterDataFullHour.ActiveEnergyPlus != null) {
                     var timeDifference = calculatingMonitoring.Timestamp - meterDataFullHour.Monitoring.Timestamp;
                     var energy = _meterDataMonitoringModel.ActiveEnergyPlus - meterDataFullHour.ActiveEnergyPlus;
 
                     var multiplier = 60.0 / (double)timeDifference.TotalMinutes;
-                    var projected = (int)(_meterDataMonitoringModel.ActiveEnergyPlus * multiplier);
+                    var projected = (int)(energy * multiplier);
                     meterDataMontoring.ProjectedActiveEnergyPlus = projected;
 
-                    var currentPortion = await mDistributionService.GetCurrentPortion(_meterDataMonitoringModel.SmartMeterId, true);
+                    var currentPortion = await mDistributionService.GetCurrentSmartMeterPortion(_meterDataMonitoringModel.SmartMeterId, true);
                     if (currentPortion != null) {
-                        if (!IsGoodForecast(currentPortion.EstimatedActiveEnergyPlus, projected)) {
+                        if (!IsGoodForecast(currentPortion.EstimatedActiveEnergyPlus, currentPortion.Flexibility, projected)) {
                             // bad forecast (non compliance of forecast)
                             meterDataMontoring.NonCompliance = true;
 
                             var fcmAndroidData = mFCMService.NonCompliance;
                             fcmAndroidData.BodyArgs = new List<string>() {
+                                currentPortion.SmartMeter.Name,
                                 (projected - currentPortion.EstimatedActiveEnergyPlus).ToString(),
                                 "Wh"
                             };
@@ -161,9 +162,9 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
         }
 
-        private bool IsGoodForecast(int _forecast, int _actual) {
-            var min = _forecast * (1 - Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
-            var max = _forecast * (1 + Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
+        private bool IsGoodForecast(int _forecast, int _flexibility, int _actual) {
+            var min = (_forecast + _flexibility) * (1 - Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
+            var max = (_forecast + _flexibility) * (1 + Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
 
             return _actual >= min && _actual <= max;
         }

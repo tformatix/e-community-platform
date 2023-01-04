@@ -1,5 +1,11 @@
-﻿namespace e_community_cloud.Dtos {
-    public class CurrentPortionDto {
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace e_community_cloud_lib.NonEntities {
+    public class CurrentPortion {
         public int EstimatedActiveEnergyPlus { get; set; }
         public int Flexibility { get; set; }
         public int Deviation { get; set; }

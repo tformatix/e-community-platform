@@ -249,4 +249,79 @@ class TestingApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath
         )
     }
 
+    /**
+    * 
+    * 
+    * @param isFiveAfter  (optional)
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun testingStartMonitoringPost(isFiveAfter: kotlin.Boolean?) : OkDto {
+        val localVarResponse = testingStartMonitoringPostWithHttpInfo(isFiveAfter = isFiveAfter)
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as OkDto
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+    * 
+    * 
+    * @param isFiveAfter  (optional)
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun testingStartMonitoringPostWithHttpInfo(isFiveAfter: kotlin.Boolean?) : ApiResponse<OkDto?> {
+        val localVariableConfig = testingStartMonitoringPostRequestConfig(isFiveAfter = isFiveAfter)
+
+        return request<Unit, OkDto>(
+            localVariableConfig
+        )
+    }
+
+    /**
+    * To obtain the request config of the operation testingStartMonitoringPost
+    *
+    * @param isFiveAfter  (optional)
+    * @return RequestConfig
+    */
+    fun testingStartMonitoringPostRequestConfig(isFiveAfter: kotlin.Boolean?) : RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
+            .apply {
+                if (isFiveAfter != null) {
+                    put("IsFiveAfter", listOf(isFiveAfter.toString()))
+                }
+            }
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.POST,
+            path = "/Testing/StartMonitoring",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            body = localVariableBody
+        )
+    }
+
 }

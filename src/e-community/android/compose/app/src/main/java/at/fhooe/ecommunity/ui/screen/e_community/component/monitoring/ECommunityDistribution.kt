@@ -54,12 +54,30 @@ fun ECommunityDistribution(currentPortion: CurrentPortionDto?) {
         text = stringResource(R.string.e_community_distribution_title),
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
-        modifier = Modifier
-            .padding(bottom = 4.dp)
     )
+    if (currentPortion?.unassignedActiveEnergyMinus != null && currentPortion.unassignedActiveEnergyMinus > 0) {
+        // more energy available
+        Text(
+            text = stringResource(
+                R.string.e_community_new_distribution_more_energy,
+                formatter.formatSmartMeterValue(currentPortion.unassignedActiveEnergyMinus, true)
+            ),
+            color = colorResource(id = R.color.value_good),
+            fontSize = 10.sp
+        )
+    }
+    if (currentPortion?.missingSmartMeterCount != null && currentPortion.missingSmartMeterCount > 0) {
+        // forecasts are missing
+        Text(
+            text = stringResource(R.string.e_community_new_distribution_forecasts_missing, currentPortion.missingSmartMeterCount),
+            color = colorResource(id = R.color.value_bad),
+            fontSize = 10.sp
+        )
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 4.dp)
             .padding(horizontal = dimensionResource(id = R.dimen.activity_vertical_margin))
     ) {
         ECommunityTile(

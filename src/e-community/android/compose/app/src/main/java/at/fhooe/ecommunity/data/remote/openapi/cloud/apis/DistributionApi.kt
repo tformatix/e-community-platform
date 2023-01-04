@@ -25,7 +25,6 @@ import java.io.IOException
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.CurrentPortionDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ErrorDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ForecastModel
-import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MeterDataMonitoringModel
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.NewDistributionDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.OkDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.PortionAckModel
@@ -265,77 +264,6 @@ class DistributionApi(basePath: kotlin.String = defaultBasePath) : ApiClient(bas
         return RequestConfig(
             method = RequestMethod.POST,
             path = "/Distribution/HourlyPortionAck",
-            query = localVariableQuery,
-            headers = localVariableHeaders,
-            body = localVariableBody
-        )
-    }
-
-    /**
-    * 
-    * 
-    * @param meterDataMonitoringModel  (optional)
-    * @return OkDto
-    * @throws IllegalStateException If the request is not correctly configured
-    * @throws IOException Rethrows the OkHttp execute method exception
-    * @throws UnsupportedOperationException If the API returns an informational or redirection response
-    * @throws ClientException If the API returns a client error response
-    * @throws ServerException If the API returns a server error response
-    */
-    @Suppress("UNCHECKED_CAST")
-    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun distributionMeterDataMonitoringPost(meterDataMonitoringModel: MeterDataMonitoringModel?) : OkDto {
-        val localVarResponse = distributionMeterDataMonitoringPostWithHttpInfo(meterDataMonitoringModel = meterDataMonitoringModel)
-
-        return when (localVarResponse.responseType) {
-            ResponseType.Success -> (localVarResponse as Success<*>).data as OkDto
-            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
-            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
-            ResponseType.ClientError -> {
-                val localVarError = localVarResponse as ClientError<*>
-                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
-            }
-            ResponseType.ServerError -> {
-                val localVarError = localVarResponse as ServerError<*>
-                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
-            }
-        }
-    }
-
-    /**
-    * 
-    * 
-    * @param meterDataMonitoringModel  (optional)
-    * @return ApiResponse<OkDto?>
-    * @throws IllegalStateException If the request is not correctly configured
-    * @throws IOException Rethrows the OkHttp execute method exception
-    */
-    @Suppress("UNCHECKED_CAST")
-    @Throws(IllegalStateException::class, IOException::class)
-    fun distributionMeterDataMonitoringPostWithHttpInfo(meterDataMonitoringModel: MeterDataMonitoringModel?) : ApiResponse<OkDto?> {
-        val localVariableConfig = distributionMeterDataMonitoringPostRequestConfig(meterDataMonitoringModel = meterDataMonitoringModel)
-
-        return request<MeterDataMonitoringModel, OkDto>(
-            localVariableConfig
-        )
-    }
-
-    /**
-    * To obtain the request config of the operation distributionMeterDataMonitoringPost
-    *
-    * @param meterDataMonitoringModel  (optional)
-    * @return RequestConfig
-    */
-    fun distributionMeterDataMonitoringPostRequestConfig(meterDataMonitoringModel: MeterDataMonitoringModel?) : RequestConfig<MeterDataMonitoringModel> {
-        val localVariableBody = meterDataMonitoringModel
-        val localVariableQuery: MultiValueMap = mutableMapOf()
-        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
-        localVariableHeaders["Content-Type"] = "application/json"
-        localVariableHeaders["Accept"] = "application/json"
-
-        return RequestConfig(
-            method = RequestMethod.POST,
-            path = "/Distribution/MeterDataMonitoring",
             query = localVariableQuery,
             headers = localVariableHeaders,
             body = localVariableBody

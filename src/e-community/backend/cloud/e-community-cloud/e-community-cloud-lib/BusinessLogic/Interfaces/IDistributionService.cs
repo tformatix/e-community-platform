@@ -3,13 +3,9 @@ using e_community_cloud_lib.Database.Local;
 using e_community_cloud_lib.Models.Distribution;
 using e_community_cloud_lib.NonEntities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace e_community_cloud_lib.BusinessLogic.Interfaces
-{
+namespace e_community_cloud_lib.BusinessLogic.Interfaces {
     public interface IDistributionService { 
         Task StartDistribution(DateTime _timestamp);
 
@@ -23,7 +19,9 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces
 
         Task FinalizeDistribution();
 
-        Task<SmartMeterPortion> GetCurrentPortion(Guid _smartMeterId, bool IncludeSmartMeter = false);
+        Task<CurrentPortion> GetCurrentPortion(Guid _smartMeterId);
+
+        Task<SmartMeterPortion> GetCurrentSmartMeterPortion(Guid _smartMeterId, bool IncludeSmartMeter);
 
         Task<NewDistribution> GetNewDistribution(Guid _memberId);
 
