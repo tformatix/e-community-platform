@@ -11,21 +11,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import at.fhooe.ecommunity.R
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MonitoringStatusDto
 import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityDivider
-import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityTile
 
 @Composable
-fun ECommunityOffline() {
+fun ECommunityOffline(monitoringStatus: MonitoringStatusDto) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,

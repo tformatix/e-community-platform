@@ -149,9 +149,13 @@
     <string name="e_community_distribution_title">Stündliche Verteilung</string>
     <string name="e_community_distribution_forecast">Prognose</string>
     <string name="e_community_distribution_assigned">zugewiesen</string>
+    <string name="e_community_istribution_more_energy">Wahrscheinlich %1$d Energie noch verfügbar.</string>
+    <string name="e_community_distribution_less_energy">Wahrscheinlich fehlen %1$s an Energie.</string>
+    <string name="e_community_distribution_forecasts_missing">Fehlende Prognosen von %1$d Smart Meters - Die Berechnung kann falsch sein!</string>
     <string name="e_community_new_distribution_title">Neue Stunde - neue Energieverteilung!</string>
     <string name="e_community_new_distribution_accept_icon_desc">Akzeptieren</string>
     <string name="e_community_new_distribution_more_energy">Wahrscheinlich %1$d Energie noch verfügbar - Flexibilität erhöhen?</string>
+    <string name="e_community_new_distribution_less_energy">Wahrscheinlich fehlen %1$s an Energie - Flexibilität senken?</string>
     <string name="e_community_new_distribution_forecasts_missing">Fehlende Prognosen von %1$d Smart Meters - Die Berechnung kann falsch sein!</string>
     <string name="e_community_new_distribution_change_flexibility">Flexibilität ändern (Wh)</string>
     <string name="e_community_new_distribution_change_flexibility_error">Flexibilität muss eine Zahl sein!</string>
@@ -160,7 +164,8 @@
     <string name="e_community_new_distribution_estimated_consumption">geschätzter Verbrauch</string>
     <string name="e_community_new_distribution_assigned">zugewiesen</string>
     <string name="e_community_non_compliance_title">Vorhersage wird wahrscheinlich nicht eingehalten!</string>
-    <string name="e_community_non_compliance_close_icon_desc">Schließen</string>
+    <string name="e_community_non_compliance_mute_icon_desc">Stumm schalten</string>
+    <string name="e_community_non_compliance_mute">Diese Benachrichtigungen für die aktuelle Stunde stumm schalten:</string>
     <string name="e_community_non_compliance_forecast">Prognose</string>
     <string name="e_community_non_compliance_current">derzeitiger voraussichtlicher Verbrauch</string>
     <string name="e_community_offline_icon_desc">Offline</string>

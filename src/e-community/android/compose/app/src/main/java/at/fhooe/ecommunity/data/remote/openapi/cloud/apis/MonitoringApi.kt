@@ -24,7 +24,9 @@ import java.io.IOException
 
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ErrorDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MeterDataMonitoringModel
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MonitoringStatusDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.OkDto
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.PerformanceDto
 
 import com.squareup.moshi.Json
 
@@ -114,6 +116,229 @@ class MonitoringApi(basePath: kotlin.String = defaultBasePath) : ApiClient(baseP
         return RequestConfig(
             method = RequestMethod.POST,
             path = "/Monitoring/MeterDataMonitoring",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            body = localVariableBody
+        )
+    }
+
+    /**
+    * 
+    * 
+    * @return kotlin.collections.List<MonitoringStatusDto>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun monitoringMonitoringStatusGet() : kotlin.collections.List<MonitoringStatusDto> {
+        val localVarResponse = monitoringMonitoringStatusGetWithHttpInfo()
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as kotlin.collections.List<MonitoringStatusDto>
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+    * 
+    * 
+    * @return ApiResponse<kotlin.collections.List<MonitoringStatusDto>?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun monitoringMonitoringStatusGetWithHttpInfo() : ApiResponse<kotlin.collections.List<MonitoringStatusDto>?> {
+        val localVariableConfig = monitoringMonitoringStatusGetRequestConfig()
+
+        return request<Unit, kotlin.collections.List<MonitoringStatusDto>>(
+            localVariableConfig
+        )
+    }
+
+    /**
+    * To obtain the request config of the operation monitoringMonitoringStatusGet
+    *
+    * @return RequestConfig
+    */
+    fun monitoringMonitoringStatusGetRequestConfig() : RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/Monitoring/MonitoringStatus",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            body = localVariableBody
+        )
+    }
+
+    /**
+    * 
+    * 
+    * @param smartMeterId  (optional)
+    * @return OkDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun monitoringMuteCurrentHourGet(smartMeterId: java.util.UUID?) : OkDto {
+        val localVarResponse = monitoringMuteCurrentHourGetWithHttpInfo(smartMeterId = smartMeterId)
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as OkDto
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+    * 
+    * 
+    * @param smartMeterId  (optional)
+    * @return ApiResponse<OkDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun monitoringMuteCurrentHourGetWithHttpInfo(smartMeterId: java.util.UUID?) : ApiResponse<OkDto?> {
+        val localVariableConfig = monitoringMuteCurrentHourGetRequestConfig(smartMeterId = smartMeterId)
+
+        return request<Unit, OkDto>(
+            localVariableConfig
+        )
+    }
+
+    /**
+    * To obtain the request config of the operation monitoringMuteCurrentHourGet
+    *
+    * @param smartMeterId  (optional)
+    * @return RequestConfig
+    */
+    fun monitoringMuteCurrentHourGetRequestConfig(smartMeterId: java.util.UUID?) : RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
+            .apply {
+                if (smartMeterId != null) {
+                    put("_smartMeterId", listOf(smartMeterId.toString()))
+                }
+            }
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/Monitoring/MuteCurrentHour",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            body = localVariableBody
+        )
+    }
+
+    /**
+    * 
+    * 
+    * @param smartMeterId  (optional)
+    * @param durationDays  (optional)
+    * @return PerformanceDto
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun monitoringPerformanceGet(smartMeterId: java.util.UUID?, durationDays: kotlin.Int?) : PerformanceDto {
+        val localVarResponse = monitoringPerformanceGetWithHttpInfo(smartMeterId = smartMeterId, durationDays = durationDays)
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as PerformanceDto
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+    * 
+    * 
+    * @param smartMeterId  (optional)
+    * @param durationDays  (optional)
+    * @return ApiResponse<PerformanceDto?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun monitoringPerformanceGetWithHttpInfo(smartMeterId: java.util.UUID?, durationDays: kotlin.Int?) : ApiResponse<PerformanceDto?> {
+        val localVariableConfig = monitoringPerformanceGetRequestConfig(smartMeterId = smartMeterId, durationDays = durationDays)
+
+        return request<Unit, PerformanceDto>(
+            localVariableConfig
+        )
+    }
+
+    /**
+    * To obtain the request config of the operation monitoringPerformanceGet
+    *
+    * @param smartMeterId  (optional)
+    * @param durationDays  (optional)
+    * @return RequestConfig
+    */
+    fun monitoringPerformanceGetRequestConfig(smartMeterId: java.util.UUID?, durationDays: kotlin.Int?) : RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
+            .apply {
+                if (smartMeterId != null) {
+                    put("_smartMeterId", listOf(smartMeterId.toString()))
+                }
+                if (durationDays != null) {
+                    put("_durationDays", listOf(durationDays.toString()))
+                }
+            }
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/Monitoring/Performance",
             query = localVariableQuery,
             headers = localVariableHeaders,
             body = localVariableBody

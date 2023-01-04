@@ -17,6 +17,6 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces {
 
         Task<List<MeterDataMonitoring>> GetRelevantMeterDataMonitorings(Guid _memberId);
 
-        Task MuteCurrentHour(Guid _smartMeterId);
+        Task ToggleMuteCurrentHour(Guid _smartMeterId);
     }
 }

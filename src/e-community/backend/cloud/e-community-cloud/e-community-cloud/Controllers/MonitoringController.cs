@@ -70,7 +70,8 @@ namespace e_community_cloud.Controllers {
             return Ok(
                 meterDataMonitorings
                     .Select(x => x.CopyPropertiesTo(new MonitoringStatusDto() {
-                        SmartMeterName = x.SmartMeter.Name
+                        SmartMeterName = x.SmartMeter.Name,
+                        IsNonComplianceMuted = x.SmartMeter.IsNonComplianceMuted
                     }))
                     .ToList()
             );
@@ -80,13 +81,13 @@ namespace e_community_cloud.Controllers {
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> MuteCurrentHour(Guid _smartMeterId) {
+        public async Task<IActionResult> ToggleMuteCurrentHour(Guid _smartMeterId) {
             var memberId = (Guid)User.GetMemberId();
             Log.Information($"Monitoring/MeterDataMonitoring");
 
             // meter data for monitoring arrived
             await mAuthService.EnsureSmartMeter(memberId, _smartMeterId);
-            await mMonitoringService.MuteCurrentHour(_smartMeterId);
+            await mMonitoringService.ToggleMuteCurrentHour(_smartMeterId);
 
             return Ok(new OkDto());
         }

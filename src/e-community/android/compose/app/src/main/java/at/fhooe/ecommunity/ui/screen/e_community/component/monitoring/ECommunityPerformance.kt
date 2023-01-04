@@ -1,18 +1,11 @@
 package at.fhooe.ecommunity.ui.screen.e_community.component.monitoring
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -20,11 +13,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import at.fhooe.ecommunity.R
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.PerformanceDto
 import at.fhooe.ecommunity.ui.component.DropDown
 import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityTile
+import at.fhooe.ecommunity.util.Formatter
 
 @Composable
-fun ECommunityPerformance() {
+fun ECommunityPerformance(performance: PerformanceDto?) {
+    val formatter = Formatter(LocalContext.current)
     val selectItems = listOf(
         stringResource(R.string.e_community_performance_day),
         stringResource(R.string.e_community_performance_week),
@@ -32,6 +28,14 @@ fun ECommunityPerformance() {
         stringResource(R.string.e_community_performance_year),
         stringResource(R.string.e_community_performance_total)
     )
+
+    var goodForecastsString = "-/-"
+    var forecastDeviationString = "-"
+
+    if(performance != null){
+        goodForecastsString = "${performance.goodForecastCount}/${performance.forecastCount}"
+        forecastDeviationString = formatter.formatSmartMeterValue(performance.wrongForecasted ?: 0, true)
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,7 +67,7 @@ fun ECommunityPerformance() {
         Row {
             ECommunityTile(
                 title = stringResource(R.string.e_community_performance_good_forecasts),
-                content = "3",
+                content = goodForecastsString,
                 color = colorResource(id = R.color.value_good),
                 modifier = Modifier
                     .weight(1f)
@@ -71,7 +75,7 @@ fun ECommunityPerformance() {
             )
             ECommunityTile(
                 title = stringResource(R.string.e_community_performance_forecast_deviation),
-                content = "0.5 kWh",
+                content = forecastDeviationString,
                 color = colorResource(id = R.color.value_bad),
                 modifier = Modifier
                     .weight(1f)

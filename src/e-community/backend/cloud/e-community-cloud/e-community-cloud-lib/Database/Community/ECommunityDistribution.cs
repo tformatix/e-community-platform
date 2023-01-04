@@ -33,6 +33,11 @@ namespace e_community_cloud_lib.Database.Community
         public bool WasDistributed { get; set; }
 
         /// <summary>
+        /// is this distribution relevant (enough feed-in)
+        /// </summary>
+        public bool IsRelevant { get; set; }
+
+        /// <summary>
         /// list of estimated energy portions for smart meters
         /// </summary>
         public IList<SmartMeterPortion> SmartMeterPortions { get; set; }

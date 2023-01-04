@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_community_cloud_lib.Database;
 
@@ -11,9 +12,10 @@ using e_community_cloud_lib.Database;
 namespace e_community_cloud_lib.Migrations
 {
     [DbContext(typeof(ECommunityCloudContext))]
-    partial class ECommunityContextModelSnapshot : ModelSnapshot
+    [Migration("20230104161525_ProjectedActiveEnergyMinusAdded")]
+    partial class ProjectedActiveEnergyMinusAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,9 +83,6 @@ namespace e_community_cloud_lib.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsCalculating")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRelevant")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Timestamp")

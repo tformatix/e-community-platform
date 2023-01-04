@@ -10,9 +10,9 @@ namespace e_community_cloud_lib.NonEntities {
         public int EstimatedActiveEnergyPlus { get; set; }
         public int Flexibility { get; set; }
         public int Deviation { get; set; }
-        public int SumFeedIn { get; set; }
         public int UnassignedActiveEnergyMinus { get; set; }
         public int MissingSmartMeterCount { get; set; }
-        public SmartMeter? SmartMeter { get; set; }
+        public bool IsRelevant { get; set; }
+        public SmartMeter SmartMeter { get; set; }
     }
 }

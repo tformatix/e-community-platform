@@ -13,6 +13,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MonitoringStatusDto
 import at.fhooe.ecommunity.extension.gesturesDisabled
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.model.RemoteException
@@ -23,17 +24,19 @@ import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityTopBar
 import at.fhooe.ecommunity.ui.screen.e_community.component.monitoring.ECommunityDistribution
 import at.fhooe.ecommunity.ui.screen.e_community.component.monitoring.ECommunityPerformance
 import at.fhooe.ecommunity.ui.screen.e_community.component.notifcation.ECommunityNewDistribution
-import at.fhooe.ecommunity.ui.screen.home.checkConnection
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import at.fhooe.ecommunity.ui.screen.e_community.component.notifcation.ECommunityNonCompliance
+import at.fhooe.ecommunity.ui.screen.e_community.component.notifcation.ECommunityOffline
 import java.util.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostController) {
     val runningOperations by remember { viewModel.mRunningOperations }
+    val performance by remember { viewModel.mPerformance }
     val currentPortion by remember { viewModel.mCurrentPortion }
     val newDistribution by remember { viewModel.mNewDistribution }
+    val monitoringStatus = remember { viewModel.mMonitoringStatus }
+
 
     viewModel.registerListener { viewModelState ->
         when (viewModelState.mState) {
@@ -45,9 +48,7 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                 viewModel.mRunningOperations.value--
                 viewModelState.mException?.let {
                     val remoteException = viewModel.mApplication.remoteExceptionRepository.exceptionToRemoteException(it)
-                    if (!((viewModelState.mId == ECommunityViewModel.CURRENT || viewModelState.mId == ECommunityViewModel.NEW) &&
-                                remoteException.mType == RemoteException.Type.NOT_FOUND)
-                    ) {
+                    if (remoteException.mType != RemoteException.Type.NOT_FOUND) {
                         Toast.makeText(
                             viewModel.mApplication,
                             viewModel.mApplication.remoteExceptionRepository.remoteExceptionToString(remoteException),
@@ -80,7 +81,6 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                 .verticalScroll(rememberScrollState())
                 .padding(vertical = dimensionResource(id = R.dimen.activity_vertical_margin))
         ) {
-//            ECommunityOffline()
             newDistribution?.let { _newDistribution ->
                 ECommunityNewDistribution(
                     newDistribution = _newDistribution,
@@ -89,8 +89,16 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                     }
                 )
             }
-//            ECommunityNonCompliance()
-            ECommunityPerformance()
+            monitoringStatus.forEach{ monitoringStatus->
+                if(monitoringStatus.projectedActiveEnergyPlus == null){
+                    ECommunityOffline(monitoringStatus)
+                } else {
+                    ECommunityNonCompliance(monitoringStatus)
+                }
+            }
+
+            ECommunityNonCompliance(MonitoringStatusDto(smartMeterName = "xxx"))
+            ECommunityPerformance(performance)
             ECommunityDivider()
             ECommunityDistribution(currentPortion)
         }

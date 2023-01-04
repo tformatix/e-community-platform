@@ -7,15 +7,14 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddCircleOutline
-import androidx.compose.material.icons.outlined.Done
-import androidx.compose.material.icons.outlined.RemoveCircleOutline
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.internal.enableLiveLiterals
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
@@ -32,6 +31,7 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.models.NewPortionDto
 import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityDivider
 import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityTile
 import at.fhooe.ecommunity.util.Formatter
+import kotlin.math.abs
 
 @Composable
 fun ECommunityNewDistribution(
@@ -98,14 +98,23 @@ fun ECommunityNewDistribution(
                     )
                 }
             }
-            if (newDistribution.unassignedActiveEnergyMinus != null && newDistribution.unassignedActiveEnergyMinus > 0) {
-                // more energy available
+            if (newDistribution.unassignedActiveEnergyMinus != null && abs(newDistribution.unassignedActiveEnergyMinus) > 0) {
+                // more/less energy available
+                val textId : Int
+                val color: Color
+                if (newDistribution.unassignedActiveEnergyMinus > 0){
+                    textId = R.string.e_community_new_distribution_more_energy
+                    color = colorResource(id = R.color.value_good)
+                }else{
+                    textId = R.string.e_community_new_distribution_less_energy
+                    color = colorResource(id = R.color.value_bad)
+                }
                 Text(
                     text = stringResource(
-                        R.string.e_community_new_distribution_more_energy,
+                        textId,
                         formatter.formatSmartMeterValue(newDistribution.unassignedActiveEnergyMinus, true)
                     ),
-                    color = colorResource(id = R.color.value_good),
+                    color = color,
                     fontSize = 10.sp
                 )
             }

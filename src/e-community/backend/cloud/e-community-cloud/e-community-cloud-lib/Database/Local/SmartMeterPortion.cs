@@ -36,11 +36,6 @@ namespace e_community_cloud_lib.Database.Local
         public int Flexibility { get; set; }
 
         /// <summary>
-        /// did user acknowledged flexibility
-        /// </summary>
-        public bool Acknowledged { get; set; }
-
-        /// <summary>
         /// forecast from smart meter
         /// </summary>
         public bool ForecastFromSmartMeter { get; set; }
@@ -54,5 +49,10 @@ namespace e_community_cloud_lib.Database.Local
         /// actual energy A+ (consumption)
         /// </summary>
         public int? ActualActiveEnergyPlus { get; set; }
+
+        /// <summary>
+        /// did user acknowledged flexibility
+        /// </summary>
+        public bool Acknowledged { get; set; }
     }
 }

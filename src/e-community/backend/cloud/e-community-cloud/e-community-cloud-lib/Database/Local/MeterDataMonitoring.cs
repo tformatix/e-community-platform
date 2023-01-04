@@ -29,6 +29,11 @@ namespace e_community_cloud_lib.Database.Local
         public int? ProjectedActiveEnergyPlus { get; set; }
 
         /// <summary>
+        /// energy projected to 1 hour (e.g. 12:10 --> *6)
+        /// </summary>
+        public int? ProjectedActiveEnergyMinus { get; set; }
+
+        /// <summary>
         /// non compliance of forecast
         /// </summary>
         public bool NonCompliance { get; set; }

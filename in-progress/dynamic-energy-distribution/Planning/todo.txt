@@ -1,38 +1,17 @@
 TODO
-- Monitoring
-	- 1. store actual into portion
-	- 2. offline?
-	- 3. non-compliance?
-	- 4. delete monitorings
-	
-	- When is a good forecast?
-	- What is the reference value for the forecast deviation?
-	
+- When is a good forecast?
+	- from forecast to forecast +/- flexibility OR only forecast +/- flexibility
+- MonitoringStatus
+
 - Android
-	- missing smart meter / open energy @ current portion
+	- DropDown Performance
 	- Tabs (more smart meters)
 	- in-app notification -> show NewDistribution/Finalize
 	- Chart
 - Backend
+	- Notifications -> Wh, kWh, ...
 	- error handling (e.g. portion ack no distribution)
 
 - Good Min Threshold?
-
-REST
-/Performance/{smartMeterId}/{mode}
-/Current/{smartMeterId}
-/Monitoring
-/New
-
-/Performance
-- GoodForecasts
-- ForecastDeviation
-
-/Monitoring
-- NonCompliances[]
-	- SmartMeterId
-	- SmartMeterName
-	- Forecast (null = offline)
-	- ProjectedConsumption
 
 Ersatzwerte, Lastprofil und Flexibiltät schlecht --> in BA schreiben
