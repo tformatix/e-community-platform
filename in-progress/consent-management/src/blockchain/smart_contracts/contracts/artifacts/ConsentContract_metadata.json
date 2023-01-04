@@ -6,21 +6,111 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_contractID",
+						"type": "string"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
 			{
 				"anonymous": false,
-				"inputs": [],
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "proposer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "consenter",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "contractID",
+						"type": "string"
+					}
+				],
 				"name": "ApprovedContract",
 				"type": "event"
 			},
 			{
 				"anonymous": false,
-				"inputs": [],
-				"name": "ProposedContract",
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "proposer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "consenter",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "contractID",
+						"type": "string"
+					}
+				],
+				"name": "PaymentReceived",
 				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "balance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "contractID",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "deposit",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getState",
+				"outputs": [
+					{
+						"internalType": "enum ConsentContract.STATE",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			},
 			{
 				"inputs": [],
@@ -48,7 +138,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "_contractValidInDays",
+						"name": "_validityOfContract",
 						"type": "uint256"
 					},
 					{
@@ -70,6 +160,13 @@
 			{
 				"inputs": [],
 				"name": "signContract",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdraw",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -103,11 +200,11 @@
 	},
 	"sources": {
 		"Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContract.sol": {
-			"keccak256": "0x47fbf982b9477a9f169c281f6b7467698f4ae7955ae8520d4feeb868d71aede1",
+			"keccak256": "0xcf9742c527323480ed11bd9212cc53c59515a77626bbbe93bbfee57a6d36e8fc",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://676d56b8236f82d00745864d52f928c17396935937361e8446758c2b518576fb",
-				"dweb:/ipfs/QmfFeA18xezjSvws9bzeQm6w6ygWE2NLxWK6KbcLkyy1VY"
+				"bzz-raw://ef30e2423d9c88e333585e2388b2fd81a37671e0f51c1ea9d1c546116f591ae7",
+				"dweb:/ipfs/Qmbpp6GoCTB3Csxd8NoK5DqsTPPfB8yTdStxQGdbrijpwE"
 			]
 		}
 	},
