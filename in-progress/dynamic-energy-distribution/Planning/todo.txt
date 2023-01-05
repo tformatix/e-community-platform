@@ -4,10 +4,14 @@ TODO
 - MonitoringStatus
 
 - Android
+	- Non-Compliance Text
 	- DropDown Performance
+	- Mute
 	- Tabs (more smart meters)
-	- in-app notification -> show NewDistribution/Finalize
-	- Chart
+	- in-app notification -> show NewDistribution/Finalize/NonCompliance/Offline
+		- Singleton ViewModel
+	- Chart + TopBar
+		- RT SignalR
 - Backend
 	- Notifications -> Wh, kWh, ...
 	- error handling (e.g. portion ack no distribution)

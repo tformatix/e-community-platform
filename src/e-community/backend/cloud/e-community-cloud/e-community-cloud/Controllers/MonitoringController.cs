@@ -63,16 +63,23 @@ namespace e_community_cloud.Controllers {
         [HttpGet]
         public async Task<IActionResult> MonitoringStatus() {
             var memberId = (Guid)User.GetMemberId();
-            Log.Information($"Monitoring/Status/{memberId}");
+            Log.Information($"Monitoring/MonitoringStatus/{memberId}");
 
-            var meterDataMonitorings = await mMonitoringService.GetRelevantMeterDataMonitorings(memberId);
+            var monitoringStatuses = await mMonitoringService.GetMonitoringStatuses(memberId);
+
+            if(monitoringStatuses == null) {
+                return NotFound();
+            }
 
             return Ok(
-                meterDataMonitorings
-                    .Select(x => x.CopyPropertiesTo(new MonitoringStatusDto() {
-                        SmartMeterName = x.SmartMeter.Name,
-                        IsNonComplianceMuted = x.SmartMeter.IsNonComplianceMuted
-                    }))
+                monitoringStatuses
+                    .Select(x => new MonitoringStatusDto() {
+                        SmartMeterId = x.SmartMeterPortion.SmartMeterId,
+                        SmartMeterName = x.SmartMeterPortion.SmartMeter.Name,
+                        Forecast = x.Forecast,
+                        IsNonComplianceMuted = x.SmartMeterPortion.SmartMeter.IsNonComplianceMuted,
+                        ProjectedActiveEnergyPlus = x.MeterDataMonitoring.ProjectedActiveEnergyPlus
+                    })
                     .ToList()
             );
         }
@@ -83,7 +90,7 @@ namespace e_community_cloud.Controllers {
         [HttpGet]
         public async Task<IActionResult> ToggleMuteCurrentHour(Guid _smartMeterId) {
             var memberId = (Guid)User.GetMemberId();
-            Log.Information($"Monitoring/MeterDataMonitoring");
+            Log.Information($"Monitoring/ToggleMuteCurrentHour/{_smartMeterId}");
 
             // meter data for monitoring arrived
             await mAuthService.EnsureSmartMeter(memberId, _smartMeterId);

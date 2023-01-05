@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -38,11 +39,12 @@ fun ECommunityOffline(monitoringStatus: MonitoringStatusDto) {
             contentDescription = stringResource(R.string.e_community_offline_icon_desc),
             tint = colorResource(id = R.color.value_bad),
             modifier = Modifier
-                .padding(end = 4.dp)
+                .padding(end = 8.dp)
         )
         Text(
-            text = stringResource(R.string.e_community_offline_title, "Fischer's House 1"),
+            text = stringResource(R.string.e_community_offline_title, monitoringStatus.smartMeterName ?: ""),
             fontSize = 12.sp,
+            color = Color.Black,
             fontWeight = FontWeight.Bold,
         )
     }

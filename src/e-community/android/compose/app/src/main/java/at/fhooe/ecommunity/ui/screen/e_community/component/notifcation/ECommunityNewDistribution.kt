@@ -47,7 +47,7 @@ fun ECommunityNewDistribution(
 
         val consumption = portion.estimatedActiveEnergyPlus ?: 0
         val assignedColor =
-            if (consumption + (portion.deviation ?: 0) >= consumption + (portion.flexibility ?: 0)) colorResource(id = R.color.value_good)
+            if (abs(portion.deviation ?: 0) <= abs(portion.flexibility ?: 0)) colorResource(id = R.color.value_good)
             else colorResource(id = R.color.value_bad)
 
         Column(

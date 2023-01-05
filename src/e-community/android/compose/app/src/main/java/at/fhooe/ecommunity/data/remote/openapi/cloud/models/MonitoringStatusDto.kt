@@ -29,7 +29,7 @@ import com.squareup.moshi.Json
  * @param smartMeterId 
  * @param smartMeterName 
  * @param isNonComplianceMuted 
- * @param estimatedActiveEnergyPlus 
+ * @param forecast 
  * @param projectedActiveEnergyPlus 
  */
 
@@ -44,8 +44,8 @@ data class MonitoringStatusDto (
     @Json(name = "isNonComplianceMuted")
     val isNonComplianceMuted: kotlin.Boolean? = null,
 
-    @Json(name = "estimatedActiveEnergyPlus")
-    val estimatedActiveEnergyPlus: kotlin.Int? = null,
+    @Json(name = "forecast")
+    val forecast: kotlin.Int? = null,
 
     @Json(name = "projectedActiveEnergyPlus")
     val projectedActiveEnergyPlus: kotlin.Int? = null

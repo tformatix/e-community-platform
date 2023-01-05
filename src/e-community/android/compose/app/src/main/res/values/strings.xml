@@ -187,7 +187,8 @@
     <string name="e_community_new_distribution_assigned">assigned</string>
     <string name="e_community_non_compliance_title">Forecast is unlikely to be met!</string>
     <string name="e_community_non_compliance_mute_icon_desc">Mute</string>
-    <string name="e_community_non_compliance_mute">Mute these notifications for the current hour:</string>
+    <string name="e_community_non_compliance_mute">mute for current hour:</string>
+    <string name="e_community_non_compliance_unmute">unmute for current hour:</string>
     <string name="e_community_non_compliance_forecast">forecast</string>
     <string name="e_community_non_compliance_current">current projected consumption</string>
     <string name="e_community_offline_icon_desc">Offline</string>

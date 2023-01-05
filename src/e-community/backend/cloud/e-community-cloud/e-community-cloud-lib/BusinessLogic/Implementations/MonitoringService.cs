@@ -12,6 +12,7 @@ using MimeKit.Encodings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -73,55 +74,83 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             if (calculatingMonitoring != null) {
                 calculatingMonitoring.IsCalculating = false;
 
-                calculatingMonitoring.MeterDataMonitorings
-                    .Where(x => x.ActiveEnergyMinus == null)
-                    .ToList()
-                    .ForEach(async x => {
-                        // offline -> send notification
-                        var fcmAndroidData = mFCMService.Offline;
-                        fcmAndroidData.BodyArgs = new List<string>() { x.SmartMeter.Name };
-                        await mFCMService.SendPushNotificationMember(fcmAndroidData, x.SmartMeter.MemberId);
-                    });
-
                 if (_timestamp.Minute == Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES) {
                     // 5 minutes after full hour (e.g. 12:05): store actual energy into portions and delete all monitoring data except current
+                    await FivePastFullHour(calculatingMonitoring);
+                }
+                await CheckMonitoring(calculatingMonitoring, _timestamp);
 
-                    var previousTimestamp = calculatingMonitoring.Timestamp.AddHours(-1);
-                    var monitoringHourBefore = await mDb.Monitoring
-                        .Include(x => x.MeterDataMonitorings)
-                        .OrderBy(x => x.Id)
-                        .FirstOrDefaultAsync();
+                await mDb.SaveChangesAsync();
+            }
+        }
 
-                    if (monitoringHourBefore != null && monitoringHourBefore.Timestamp.Hour == previousTimestamp.Hour && monitoringHourBefore.Timestamp.Minute == previousTimestamp.Minute) {
-                        // monitoring entry before an hour available
+        private async Task FivePastFullHour(Monitoring _monitoring) {
+            var previousTimestamp = _monitoring.Timestamp.AddHours(-1);
+            var monitoringHourBefore = await mDb.Monitoring
+                .Include(x => x.MeterDataMonitorings)
+                .OrderBy(x => x.Id)
+                .FirstOrDefaultAsync();
 
-                        var currentDistributions = await GetCurrentDistributions();
-                        foreach (var distribution in currentDistributions) {
-                            foreach (var portion in distribution.SmartMeterPortions) {
-                                var currentMeterData = calculatingMonitoring.MeterDataMonitorings
-                                    .FirstOrDefault(x => x.SmartMeterId == portion.SmartMeterId);
-                                var meterDataHourBefore = monitoringHourBefore.MeterDataMonitorings
-                                    .FirstOrDefault(x => x.SmartMeterId == portion.SmartMeterId);
+            if (monitoringHourBefore != null && monitoringHourBefore.Timestamp.Hour == previousTimestamp.Hour && monitoringHourBefore.Timestamp.Minute == previousTimestamp.Minute) {
+                // monitoring entry before an hour available
 
-                                if (calculatingMonitoring != null && meterDataHourBefore != null &&
-                                    currentMeterData.ActiveEnergyPlus != null && meterDataHourBefore.ActiveEnergyPlus != null &&
-                                    currentMeterData.ActiveEnergyMinus != null && meterDataHourBefore.ActiveEnergyMinus != null
-                                ) {
-                                    portion.ActualActiveEnergyPlus = currentMeterData.ActiveEnergyPlus - meterDataHourBefore.ActiveEnergyPlus;
-                                    portion.ActualActiveEnergyMinus = currentMeterData.ActiveEnergyMinus - meterDataHourBefore.ActiveEnergyMinus;
-                                }
+                var currentDistributions = await GetCurrentDistributions();
+                foreach (var distribution in currentDistributions) {
+                    foreach (var portion in distribution.SmartMeterPortions) {
+                        var currentMeterData = _monitoring.MeterDataMonitorings
+                            .FirstOrDefault(x => x.SmartMeterId == portion.SmartMeterId);
+                        var meterDataHourBefore = monitoringHourBefore.MeterDataMonitorings
+                            .FirstOrDefault(x => x.SmartMeterId == portion.SmartMeterId);
+
+                        if (_monitoring != null && meterDataHourBefore != null &&
+                            currentMeterData.ActiveEnergyPlus != null && meterDataHourBefore.ActiveEnergyPlus != null &&
+                            currentMeterData.ActiveEnergyMinus != null && meterDataHourBefore.ActiveEnergyMinus != null
+                        ) {
+                            portion.ActualActiveEnergyPlus = currentMeterData.ActiveEnergyPlus - meterDataHourBefore.ActiveEnergyPlus;
+                            portion.ActualActiveEnergyMinus = currentMeterData.ActiveEnergyMinus - meterDataHourBefore.ActiveEnergyMinus;
+                        }
+                    }
+                }
+            }
+
+            mDb.Monitoring.RemoveRange(
+                mDb.Monitoring
+                    .Where(x => x.Id != _monitoring.Id)
+            );
+        }
+
+        private async Task CheckMonitoring(Monitoring _monitoring, DateTime _timestamp) {
+            foreach (var meterDataMonitoring in _monitoring.MeterDataMonitorings) {
+                if (meterDataMonitoring.ProjectedActiveEnergyPlus == null) {
+                    // offline -> send notification
+                    var fcmAndroidData = mFCMService.Offline;
+                    fcmAndroidData.BodyArgs = new List<string>() { meterDataMonitoring.SmartMeter.Name };
+                    await mFCMService.SendPushNotificationMember(fcmAndroidData, meterDataMonitoring.SmartMeter.MemberId);
+                }
+                else if (_timestamp.Minute > 0 && _timestamp.Minute < (60 - 2 * Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES)) {
+                    // online -> check forecast deviation (only between 12:05 and 12:45)
+                    var currentPortion = await mDistributionService.GetCurrentPortion(meterDataMonitoring.SmartMeterId, true);
+
+                    if (currentPortion != null && currentPortion.IsRelevant) {
+                        int forecast = GetForecastValue(currentPortion.EstimatedActiveEnergyPlus, currentPortion.Flexibility, currentPortion.Deviation);
+
+                        if (!IsGoodForecast(forecast, (int)meterDataMonitoring.ProjectedActiveEnergyPlus)) {
+                            // bad forecast (non compliance of forecast)
+                            meterDataMonitoring.NonCompliance = true;
+
+                            if (!currentPortion.SmartMeter.IsNonComplianceMuted) {
+                                // only send notification if not muted and if feed-in over threshold
+                                var fcmAndroidData = mFCMService.NonCompliance;
+                                fcmAndroidData.BodyArgs = new List<string>() {
+                                    currentPortion.SmartMeter.Name,
+                                    (meterDataMonitoring.ProjectedActiveEnergyPlus - forecast).ToString(),
+                                    "Wh"
+                                };
+                                await mFCMService.SendPushNotificationMember(fcmAndroidData, currentPortion.SmartMeter.MemberId);
                             }
                         }
                     }
-
-                    mDb.Monitoring.RemoveRange(
-                        mDb.Monitoring
-                            .Where(x => x.Id != calculatingMonitoring.Id)
-                    );
                 }
-
-
-                await mDb.SaveChangesAsync();
             }
         }
 
@@ -136,38 +165,22 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 meterDataMontoring.ActiveEnergyPlus = _meterDataMonitoringModel.ActiveEnergyPlus;
 
                 var meterDataFullHour = await mDb.MeterDataMonitoring
-                    .Where(x => x.SmartMeterId == _meterDataMonitoringModel.SmartMeterId)
-                    .OrderBy(x => x.MonitoringId)
-                    .Include(x => x.Monitoring)
-                    .FirstOrDefaultAsync(x => !x.Monitoring.IsCalculating); // automatically first because of deletion of unnecessary values
+                        .Where(x => x.SmartMeterId == meterDataMontoring.SmartMeterId)
+                        .OrderBy(x => x.MonitoringId)
+                        .Include(x => x.Monitoring)
+                        .FirstOrDefaultAsync(x => !x.Monitoring.IsCalculating); // automatically first because of deletion of unnecessary values
 
                 if (meterDataFullHour != null && meterDataFullHour.ActiveEnergyPlus != null) {
-                    var timeDifference = calculatingMonitoring.Timestamp - meterDataFullHour.Monitoring.Timestamp;
+                    var timeDifference = meterDataMontoring.Monitoring.Timestamp - meterDataFullHour.Monitoring.Timestamp;
 
                     var multiplier = 60.0 / (double)timeDifference.TotalMinutes;
-                    var projectedPlus = (int)((_meterDataMonitoringModel.ActiveEnergyPlus - meterDataFullHour.ActiveEnergyPlus) * multiplier);
-                    var projectedMinus = (int)((_meterDataMonitoringModel.ActiveEnergyMinus - meterDataFullHour.ActiveEnergyMinus) * multiplier);
+                    var projectedPlus = (int)((meterDataMontoring.ActiveEnergyPlus - meterDataFullHour.ActiveEnergyPlus) * multiplier);
+                    var projectedMinus = (int)((meterDataMontoring.ActiveEnergyMinus - meterDataFullHour.ActiveEnergyMinus) * multiplier);
 
                     meterDataMontoring.ProjectedActiveEnergyPlus = projectedPlus;
                     meterDataMontoring.ProjectedActiveEnergyMinus = projectedMinus;
-
-                    var currentPortion = await mDistributionService.GetCurrentPortion(_meterDataMonitoringModel.SmartMeterId, true);
-                    if (currentPortion != null) {
-                        int forecast = currentPortion.EstimatedActiveEnergyPlus + currentPortion.Flexibility;
-                        if (!IsGoodForecast(forecast, projectedPlus) && !currentPortion.SmartMeter.IsNonComplianceMuted && currentPortion.IsRelevant) {
-                            // bad forecast (non compliance of forecast)
-                            // only send notification if not muted and if feed-in over threshold
-                            meterDataMontoring.NonCompliance = true;
-                            var fcmAndroidData = mFCMService.NonCompliance;
-                            fcmAndroidData.BodyArgs = new List<string>() {
-                                    currentPortion.SmartMeter.Name,
-                                    (projectedPlus - forecast).ToString(),
-                                    "Wh"
-                                };
-                            await mFCMService.SendPushNotificationMember(fcmAndroidData, currentPortion.SmartMeter.MemberId);
-                        }
-                    }
                 }
+
                 await mDb.SaveChangesAsync();
             }
         }
@@ -188,7 +201,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 .ForEachAsync(x => {
                     if (x.ActualActiveEnergyPlus != null) {
                         if (x.ECommunityDistribution.IsRelevant) {
-                            var forecast = x.EstimatedActiveEnergyPlus + x.Flexibility;
+                            var forecast = GetForecastValue(x.EstimatedActiveEnergyPlus, x.Flexibility, x.Deviation);
                             var actual = (int)x.ActualActiveEnergyPlus;
                             if (IsGoodForecast(forecast, actual)) {
                                 performance.GoodForecastCount++;
@@ -203,15 +216,48 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             return performance;
         }
 
-        public async Task<List<MeterDataMonitoring>> GetRelevantMeterDataMonitorings(Guid _memberId) {
+        public async Task<List<MonitoringStatus>> GetMonitoringStatuses(Guid _memberId) {
             var monitoring = await mDb.Monitoring
                 .OrderByDescending(x => x.Id)
                 .Include(x => x.MeterDataMonitorings)
                 .ThenInclude(x => x.SmartMeter)
                 .FirstOrDefaultAsync(x => !x.IsCalculating);
 
-            return monitoring.MeterDataMonitorings
+            if (monitoring == null) {
+                return null;
+            }
+
+            var meterDataMonitoring = monitoring.MeterDataMonitorings
                 .Where(x => x.SmartMeter.MemberId == _memberId && (x.NonCompliance || x.ProjectedActiveEnergyPlus == null))
+                .ToList();
+
+            if (meterDataMonitoring.Count == 0) {
+                return null;
+            }
+
+            var distribution = await mDb.ECommunityDistribution
+                .Include(x => x.SmartMeterPortions)
+                .ThenInclude(x => x.SmartMeter)
+                .OrderByDescending(x => x.Id)
+                .FirstOrDefaultAsync(x => x.IsRelevant && !x.IsCalculating && x.SmartMeterPortions.Any(portion => portion.SmartMeter.MemberId == _memberId));
+
+            if (distribution == null) {
+                return null;
+            }
+
+            return meterDataMonitoring
+                .Select(x => {
+                    var portion = distribution.SmartMeterPortions
+                        .FirstOrDefault(p => p.SmartMeterId == x.SmartMeterId);
+                    if (portion != null) {
+                        return new MonitoringStatus() {
+                            MeterDataMonitoring = x,
+                            SmartMeterPortion = portion,
+                            Forecast = GetForecastValue(portion.EstimatedActiveEnergyPlus, portion.Flexibility, portion.Deviation)
+                        };
+                    }
+                    return null;
+                })
                 .ToList();
         }
 
@@ -225,11 +271,26 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
         }
 
-        private bool IsGoodForecast(int _forecast, int _actual) {
+        private static bool IsGoodForecast(int _forecast, int _actual) {
             var min = _forecast * (1 - Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
             var max = _forecast * (1 + Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
 
             return _actual >= min && _actual <= max;
+        }
+
+        private static int GetForecastValue(int _estimated, int _flexibility, int _deviation) {
+            var forecast = _estimated;
+            if (Math.Abs(_deviation) > Math.Abs(_flexibility)) {
+                // |deviation| > |flexibility| --> not optimizable with flexibility
+                // should comply flexibility
+                forecast += _flexibility;
+            }
+            else {
+                // |deviation| <= |flexibility| --> deviation in flexibility range
+                // should comply deviation
+                forecast += _deviation;
+            }
+            return forecast;
         }
 
         private async Task<List<ECommunityDistribution>> GetCurrentDistributions() {

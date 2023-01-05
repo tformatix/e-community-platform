@@ -93,11 +93,14 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                 if(monitoringStatus.projectedActiveEnergyPlus == null){
                     ECommunityOffline(monitoringStatus)
                 } else {
-                    ECommunityNonCompliance(monitoringStatus)
+                    ECommunityNonCompliance(
+                        monitoringStatus = monitoringStatus,
+                        onToggleMute = {
+                            viewModel.toggleMute(it)
+                        }
+                    )
                 }
             }
-
-            ECommunityNonCompliance(MonitoringStatusDto(smartMeterName = "xxx"))
             ECommunityPerformance(performance)
             ECommunityDivider()
             ECommunityDistribution(currentPortion)

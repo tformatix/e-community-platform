@@ -124,7 +124,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         }
     }
 
-    fun muteCurrentHourMonitoring(_smartMeterId: UUID) {
+    fun toggleMute(_smartMeterId: UUID) {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::muteCurrentHourMonitoring($_smartMeterId)")
 
         mRunningOperations.value++
@@ -132,7 +132,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(PORTION_ACK)) {
             emitState(LoadingState(LoadingState.State.RUNNING, PORTION_ACK))
 
-            mMonitoringApi.monitoringMuteCurrentHourGet(_smartMeterId)
+            mMonitoringApi.monitoringToggleMuteCurrentHourGet(_smartMeterId)
             init()
 
             emitState(LoadingState(LoadingState.State.SUCCESS, PORTION_ACK))

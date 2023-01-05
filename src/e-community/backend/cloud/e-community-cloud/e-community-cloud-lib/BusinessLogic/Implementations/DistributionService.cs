@@ -343,10 +343,10 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             var calculatingDistribution = await mDb.ECommunityDistribution
                 .Include(x => x.SmartMeterPortions)
                 .ThenInclude(x => x.SmartMeter)
-                .FirstOrDefaultAsync(x => x.IsCalculating && x.WasDistributed && x.SmartMeterPortions.Any(portion => portion.SmartMeter.MemberId == _memberId));
+                .FirstOrDefaultAsync(x => x.IsRelevant && x.IsCalculating && x.WasDistributed && x.SmartMeterPortions.Any(portion => portion.SmartMeter.MemberId == _memberId));
 
 
-            if (calculatingDistribution == null || !calculatingDistribution.IsRelevant) {
+            if (calculatingDistribution == null) {
                 return null;
             }
 

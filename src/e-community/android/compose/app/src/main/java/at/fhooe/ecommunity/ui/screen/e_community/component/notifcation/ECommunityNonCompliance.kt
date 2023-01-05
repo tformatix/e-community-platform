@@ -28,9 +28,10 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MonitoringStatusDto
 import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityDivider
 import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityTile
 import at.fhooe.ecommunity.util.Formatter
+import java.util.UUID
 
 @Composable
-fun ECommunityNonCompliance(monitoringStatus: MonitoringStatusDto) {
+fun ECommunityNonCompliance(monitoringStatus: MonitoringStatusDto, onToggleMute: (smartMeterId: UUID) -> Unit) {
     val formatter = Formatter(LocalContext.current)
 
     Column(
@@ -61,10 +62,9 @@ fun ECommunityNonCompliance(monitoringStatus: MonitoringStatusDto) {
             ECommunityTile(
                 title = stringResource(R.string.e_community_non_compliance_forecast),
                 content = formatter.formatSmartMeterValue(
-                    monitoringStatus.estimatedActiveEnergyPlus ?: 0,
+                    monitoringStatus.forecast ?: 0,
                     true
                 ),
-                subContent = "(+0.3 kWh)",
                 background = Color.White,
                 modifier = Modifier
                     .weight(1f)
@@ -89,20 +89,25 @@ fun ECommunityNonCompliance(monitoringStatus: MonitoringStatusDto) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .clickable {
-                    // TODO
+                    monitoringStatus.smartMeterId?.let {
+                        onToggleMute(it)
+                    }
                 },
         ) {
             val icon : ImageVector
             val tint: Color
+            val textId: Int
             if (monitoringStatus.isNonComplianceMuted == true){
-                icon = Icons.Outlined.NotificationsOff
-                tint = colorResource(id = R.color.value_bad)
-            }else{
                 icon = Icons.Outlined.Notifications
                 tint = colorResource(id = R.color.value_good)
+                textId = R.string.e_community_non_compliance_unmute
+            }else{
+                icon = Icons.Outlined.NotificationsOff
+                tint = colorResource(id = R.color.value_bad)
+                textId = R.string.e_community_non_compliance_mute
             }
             Text(
-                text = stringResource(id = R.string.e_community_non_compliance_mute),
+                text = stringResource(id = textId),
                 fontSize = 10.sp,
                 color = Color.Black,
             )

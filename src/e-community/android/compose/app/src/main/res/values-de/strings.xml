@@ -149,7 +149,7 @@
     <string name="e_community_distribution_title">Stündliche Verteilung</string>
     <string name="e_community_distribution_forecast">Prognose</string>
     <string name="e_community_distribution_assigned">zugewiesen</string>
-    <string name="e_community_istribution_more_energy">Wahrscheinlich %1$d Energie noch verfügbar.</string>
+    <string name="e_community_distribution_more_energy">Wahrscheinlich %1$d Energie noch verfügbar.</string>
     <string name="e_community_distribution_less_energy">Wahrscheinlich fehlen %1$s an Energie.</string>
     <string name="e_community_distribution_forecasts_missing">Fehlende Prognosen von %1$d Smart Meters - Die Berechnung kann falsch sein!</string>
     <string name="e_community_new_distribution_title">Neue Stunde - neue Energieverteilung!</string>
@@ -165,7 +165,8 @@
     <string name="e_community_new_distribution_assigned">zugewiesen</string>
     <string name="e_community_non_compliance_title">Vorhersage wird wahrscheinlich nicht eingehalten!</string>
     <string name="e_community_non_compliance_mute_icon_desc">Stumm schalten</string>
-    <string name="e_community_non_compliance_mute">Diese Benachrichtigungen für die aktuelle Stunde stumm schalten:</string>
+    <string name="e_community_non_compliance_mute">für aktuelle Stunde stumm schalten:</string>
+    <string name="e_community_non_compliance_unmute">für aktuelle Stunde laut schalten:</string>
     <string name="e_community_non_compliance_forecast">Prognose</string>
     <string name="e_community_non_compliance_current">derzeitiger voraussichtlicher Verbrauch</string>
     <string name="e_community_offline_icon_desc">Offline</string>
