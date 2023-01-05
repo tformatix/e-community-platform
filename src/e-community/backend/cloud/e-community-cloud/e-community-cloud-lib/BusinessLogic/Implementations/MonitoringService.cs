@@ -147,6 +147,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                                     deviation.ToString(),
                                     "Wh"
                                 };
+
                                 await mFCMService.SendPushNotificationMember(fcmAndroidData, currentPortion.SmartMeter.MemberId);
                             }
                         }

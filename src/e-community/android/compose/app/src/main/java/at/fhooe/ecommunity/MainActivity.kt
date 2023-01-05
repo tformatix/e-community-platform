@@ -14,14 +14,12 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,8 +48,6 @@ import at.fhooe.ecommunity.ui.screen.profile.pairing.*
 import at.fhooe.ecommunity.ui.screen.sharing.SharingScreen
 import at.fhooe.ecommunity.ui.screen.sharing.SharingViewModel
 import at.fhooe.ecommunity.ui.screen.sharing.contract.add_upd_contract.SharingAddOrUpdContract
-import at.fhooe.ecommunity.ui.screen.startup.login.LoginScreen
-import at.fhooe.ecommunity.ui.screen.startup.login.LoginViewModel
 import at.fhooe.ecommunity.ui.theme.ECommunityTheme
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -80,7 +76,7 @@ class MainActivity : ComponentActivity() {
                 if (intent?.getStringExtra(Constants.BROADCAST_RECEIVER_NOTIFICATION_EXTRA_ID) == Constants.NOTIFICATION_ID_E_COMMUNITY) {
                     // message for eCommunity screen
                     val eCommunityViewModel = ECommunityViewModel.getInstance(mApplication)
-                    if (eCommunityViewModel.isListenerRegistered()) eCommunityViewModel.init(false)
+                    if (eCommunityViewModel.isListenerRegistered()) eCommunityViewModel.initLoad()
                 }
 
             }

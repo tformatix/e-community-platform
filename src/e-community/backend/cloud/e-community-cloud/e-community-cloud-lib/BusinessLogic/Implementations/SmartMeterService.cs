@@ -27,6 +27,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations
         public async Task<List<SmartMeter>> GetSmartMeters(Guid _memberId) {
             return await mDb.SmartMeter
                 .Where(x => x.MemberId == _memberId)
+                .OrderBy(x => x.Name)
                 .ToListAsync();
         }
 

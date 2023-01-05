@@ -10,12 +10,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.extension.gesturesDisabled
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.model.RemoteException
+import at.fhooe.ecommunity.ui.component.DropDown
 import at.fhooe.ecommunity.ui.component.LifecycleListener
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityDivider
@@ -33,6 +35,7 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
     val runningOperations by remember { viewModel.mRunningOperations }
 
     val eCommunity by remember { viewModel.mECommunity }
+    val selectedSmartMeter by remember { viewModel.mSelectedSmartMeterIdx }
     val smartMeters = remember { viewModel.mSmartMeters }
 
     val performance by remember { viewModel.mPerformance }
@@ -67,7 +70,7 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                         else -> {}
                     }
                 }
-                viewModel.init()
+                viewModel.initLoad()
             }
             Lifecycle.Event.ON_PAUSE -> {
                 viewModel.unregisterListener()
@@ -109,10 +112,22 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                     )
                 }
             }
+            if(smartMeters.size > 1) {
+                // select smart meter
+                DropDown(
+                    items = smartMeters.map { it.name ?: "" },
+                    fontSize = 14.sp,
+                    onSelected = { idx, _ ->
+                        viewModel.mSelectedSmartMeterIdx.value = idx
+                        viewModel.loadSmartMeterDependent()
+                    }
+                )
+                ECommunityDivider()
+            }
             ECommunityPerformance(
                 performance = performance,
                 onDurationDaysChanged = {
-                    viewModel.loadPerformance(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387"), it) // TODO
+                    viewModel.loadPerformance(it)
                 }
             )
             ECommunityDivider()

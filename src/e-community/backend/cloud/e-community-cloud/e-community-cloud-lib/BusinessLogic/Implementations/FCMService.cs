@@ -73,6 +73,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             var fcmTokens = mDb.MemberFCMToken
                 .Where(x => x.MemberId == _memberId && x.ValidUntil > DateTime.UtcNow)
                 .ToList();
+            await mDb.SaveChangesAsync();
 
             return await SendPushNotificationMulticast(_fcmAndroidData, fcmTokens);
         }

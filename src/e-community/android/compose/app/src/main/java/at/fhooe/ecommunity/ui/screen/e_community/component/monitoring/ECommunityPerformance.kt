@@ -60,6 +60,7 @@ fun ECommunityPerformance(performance: PerformanceDto?, onDurationDaysChanged: (
                 onSelected = { _, item ->
                     selectItems[item]?.let { onDurationDaysChanged(it) }
                 },
+                fontSize = 12.sp,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
             )

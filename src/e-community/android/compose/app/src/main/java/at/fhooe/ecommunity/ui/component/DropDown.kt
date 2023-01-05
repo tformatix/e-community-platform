@@ -15,53 +15,56 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import at.fhooe.ecommunity.R
 
 @Composable
-fun DropDown(items: List<String>, onSelected: (idx: Int, item: String) -> Unit, modifier: Modifier = Modifier) {
+fun DropDown(items: List<String>, onSelected: (idx: Int, item: String) -> Unit, fontSize: TextUnit, modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
 
-    Box(
-        modifier = modifier
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .clickable(onClick = { expanded = true })
+    if(items.size > 0) {
+        Box(
+            modifier = modifier
         ) {
-            Text(
-                text = items[selectedIndex],
-                fontSize = 12.sp,
-            )
-            Icon(
-                imageVector = Icons.Outlined.ArrowDropDown,
-                contentDescription = "drop down"
-            )
-        }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            items.forEachIndexed { idx, item ->
-                val isSelected = idx == selectedIndex
-                DropdownMenuItem(
-                    onClick = {
-                        selectedIndex = idx
-                        expanded = false
-                        onSelected(idx, item)
-                    },
-                    modifier = Modifier
-                        .background(if (isSelected) colorResource(id = R.color.gray_light) else Color.Transparent)
-                ) {
-                    if(isSelected) {
-                        Text(
-                            text = item,
-                            color = Color.Black
-                        )
-                    }else {
-                        Text(text = item)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clickable(onClick = { expanded = true })
+            ) {
+                Text(
+                    text = items[selectedIndex],
+                    fontSize = fontSize,
+                )
+                Icon(
+                    imageVector = Icons.Outlined.ArrowDropDown,
+                    contentDescription = "drop down"
+                )
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                items.forEachIndexed { idx, item ->
+                    val isSelected = idx == selectedIndex
+                    DropdownMenuItem(
+                        onClick = {
+                            selectedIndex = idx
+                            expanded = false
+                            onSelected(idx, item)
+                        },
+                        modifier = Modifier
+                            .background(if (isSelected) colorResource(id = R.color.gray_light) else Color.Transparent)
+                    ) {
+                        if (isSelected) {
+                            Text(
+                                text = item,
+                                color = Color.Black
+                            )
+                        } else {
+                            Text(text = item)
+                        }
                     }
                 }
             }

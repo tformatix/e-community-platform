@@ -43,6 +43,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     var mRunningOperations = mutableStateOf(0)
 
     val mSmartMeters = mutableStateListOf<MinimalSmartMeterDto>()
+    val mSelectedSmartMeterIdx = mutableStateOf<Int>(0)
     val mECommunity = mutableStateOf<MinimalECommunityDto?>(null)
 
     val mPerformance = mutableStateOf<PerformanceDto?>(null)
@@ -51,15 +52,13 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     val mNewDistribution = mutableStateOf<NewDistributionDto?>(null)
     val mMonitoringStatus = mutableStateListOf<MonitoringStatusDto>()
 
-    fun init(_includeBase: Boolean = true) {
-        if(_includeBase) loadBaseData()
-        loadPerformance(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387"), Constants.DEFAULT_PERFORMANCE_DURATION_DAYS) // TODO
-        loadCurrentPortion(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387")) // TODO
+    fun initLoad() {
+        loadBaseData()
         loadNewDistribution()
         loadMonitoringStatus()
     }
 
-    fun loadBaseData () {
+    private fun loadBaseData () {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadBaseData()")
 
         mRunningOperations.value++
@@ -72,41 +71,52 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
             mECommunity.value = mECommunityApi.eCommunityGetMinimalECommunityGet()
             mSmartMeters.addAll(mSmartMeterApi.smartMeterGetMinimalSmartMetersGet())
 
+            loadSmartMeterDependent()
+
             emitState(LoadingState(LoadingState.State.SUCCESS, BASE_DATA))
         }
     }
 
-    fun loadPerformance(_smartMeterId: UUID, _durationDays: Int) {
-        Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadPerformance($_smartMeterId, $_durationDays)")
+    fun loadSmartMeterDependent(){
+        loadPerformance(Constants.DEFAULT_PERFORMANCE_DURATION_DAYS)
+        loadCurrentPortion()
+    }
 
-        mRunningOperations.value++
-        mPerformance.value = null
+    fun loadPerformance(_durationDays: Int) {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadPerformance($_durationDays)")
 
-        mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(PERFORMANCE)) {
-            emitState(LoadingState(LoadingState.State.RUNNING, PERFORMANCE))
+        if(mSmartMeters.size > 0) {
+            mRunningOperations.value++
+            mPerformance.value = null
 
-            mPerformance.value = mMonitoringApi.monitoringPerformanceGet(_smartMeterId, _durationDays)
+            mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(PERFORMANCE)) {
+                emitState(LoadingState(LoadingState.State.RUNNING, PERFORMANCE))
 
-            emitState(LoadingState(LoadingState.State.SUCCESS, PERFORMANCE))
+                mPerformance.value = mMonitoringApi.monitoringPerformanceGet(getSelectedSmartMeterId(), _durationDays)
+
+                emitState(LoadingState(LoadingState.State.SUCCESS, PERFORMANCE))
+            }
         }
     }
 
-    fun loadCurrentPortion(_smartMeterId: UUID) {
-        Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadCurrentPortion($_smartMeterId)")
+    private fun loadCurrentPortion() {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadCurrentPortion()")
 
-        mRunningOperations.value++
-        mCurrentPortion.value = null
+        if(mSmartMeters.size > 0) {
+            mRunningOperations.value++
+            mCurrentPortion.value = null
 
-        mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(CURRENT)) {
-            emitState(LoadingState(LoadingState.State.RUNNING, CURRENT))
+            mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(CURRENT)) {
+                emitState(LoadingState(LoadingState.State.RUNNING, CURRENT))
 
-            mCurrentPortion.value = mDistributionApi.distributionCurrentPortionGet(_smartMeterId)
+                mCurrentPortion.value = mDistributionApi.distributionCurrentPortionGet(getSelectedSmartMeterId())
 
-            emitState(LoadingState(LoadingState.State.SUCCESS, CURRENT))
+                emitState(LoadingState(LoadingState.State.SUCCESS, CURRENT))
+            }
         }
     }
 
-    fun loadNewDistribution() {
+    private fun loadNewDistribution() {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadNewDistribution()")
 
         mRunningOperations.value++
@@ -121,7 +131,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         }
     }
 
-    fun loadMonitoringStatus() {
+    private fun loadMonitoringStatus() {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadMonitoringStatus()")
         mRunningOperations.value++
         mMonitoringStatus.clear()
@@ -144,7 +154,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
             emitState(LoadingState(LoadingState.State.RUNNING, PORTION_ACK))
 
             mDistributionApi.distributionHourlyPortionAckPost(PortionAckModel(_newPortion.smartMeterId, _flexibility))
-            init()
+            initLoad()
 
             emitState(LoadingState(LoadingState.State.SUCCESS, PORTION_ACK))
         }
@@ -159,9 +169,13 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
             emitState(LoadingState(LoadingState.State.RUNNING, PORTION_ACK))
 
             mMonitoringApi.monitoringToggleMuteCurrentHourGet(_smartMeterId)
-            init()
+            initLoad()
 
             emitState(LoadingState(LoadingState.State.SUCCESS, PORTION_ACK))
         }
+    }
+
+    private fun getSelectedSmartMeterId() : UUID?{
+        return mSmartMeters.getOrNull(mSelectedSmartMeterIdx.value)?.id
     }
 }
