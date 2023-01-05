@@ -28,11 +28,6 @@ namespace e_community_cloud_lib.Endpoints.Interfaces
         Task StopRTData();
 
         /// <summary>
-        /// cloud sends buffered real time data to smart meter
-        /// </summary>
-        Task ReceiveRTData(BufferedMeterDataRTDto _meterData);
-
-        /// <summary>
         /// smart meter specific data should be updated locally
         /// </summary>
         /// <param name="_localSmartMeterDto">smart meter specific data</param>

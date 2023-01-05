@@ -10,6 +10,7 @@ import at.fhooe.ecommunity.data.remote.signalr.dto.MeterDataRTDto
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.base.LegacyLoadingStateViewModel
 import at.fhooe.ecommunity.Constants
+import at.fhooe.ecommunity.data.remote.signalr.dto.BufferedMeterDataRTDto
 import com.google.gson.Gson
 import com.microsoft.signalr.Action1
 import com.microsoft.signalr.HubConnectionState
@@ -35,7 +36,7 @@ class HomeViewModel(_application: ECommunityApplication) : LegacyLoadingStateVie
      * start signal r listener, with state of meterDataRto
      * HomeScreen gets notified when data changes
      */
-    private fun startSignalR(_accessToken: String, _meterDataRTDto: MutableState<MeterDataRTDto>) {
+    private fun startSignalR(_accessToken: String, _meterDataRTDto: MutableState<BufferedMeterDataRTDto>) {
         val connStr = Constants.HTTP_BASE_URL_CLOUD + Constants.SIGNALR_URL
 
         mCloudSignalRRepository = CloudSignalRRepository()
@@ -43,7 +44,7 @@ class HomeViewModel(_application: ECommunityApplication) : LegacyLoadingStateVie
         mCloudSignalRRepository.initialize(connStr, _accessToken, Constants.SIGNALR_METHOD,
             Action1 { data -> run {
                 val json = JSONObject(data.toMap()) // json object of server data
-                _meterDataRTDto.value = Gson().fromJson(json.toString(), MeterDataRTDto::class.java)
+                _meterDataRTDto.value = Gson().fromJson(json.toString(), BufferedMeterDataRTDto::class.java)
                 Log.d(TAG, _meterDataRTDto.value.toString())
             }
         })
@@ -64,7 +65,7 @@ class HomeViewModel(_application: ECommunityApplication) : LegacyLoadingStateVie
      * request RT data from cloud
      * @param _meterDataRTDto store state of the current RT meterData
      */
-    fun requestRTDataStart(_meterDataRTDto: MutableState<MeterDataRTDto>, _requestStart: Boolean = true) {
+    fun requestRTDataStart(_meterDataRTDto: MutableState<BufferedMeterDataRTDto>, _requestStart: Boolean = true) {
         val cloudRESTRepository = mApplication.cloudRESTRepository
 
         val handler = CoroutineExceptionHandler { _, exception ->

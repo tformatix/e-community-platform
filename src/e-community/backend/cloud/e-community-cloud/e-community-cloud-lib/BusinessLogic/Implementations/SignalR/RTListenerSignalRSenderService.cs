@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Serilog;
+using System.Text.Json;
 
 namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
     public class RTListenerSignalRSenderService : IRTListenerSignalRSenderService {
@@ -94,8 +95,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
 
         public void SendToMember(Guid _memberId, BufferedMeterDataRTDto _meterData) {
             mEndDeviceHubContext.Clients.Groups(_memberId.GetGroupName(GroupType.Member))
-               .ReceiveRTData(_meterData);
-            mLocalHubContext.Clients.Groups(_memberId.GetGroupName(GroupType.Member))
                .ReceiveRTData(_meterData);
         }
 

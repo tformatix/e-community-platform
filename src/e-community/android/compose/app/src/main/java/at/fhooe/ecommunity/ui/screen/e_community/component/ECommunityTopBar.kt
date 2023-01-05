@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,14 +24,18 @@ import androidx.compose.ui.unit.sp
 import at.fhooe.ecommunity.Constants
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalECommunityDto
+import at.fhooe.ecommunity.data.remote.signalr.dto.BufferedMeterDataRTDto
+import at.fhooe.ecommunity.util.Formatter
 
 @Composable
-fun ECommunityTopBar(eCommunity: MinimalECommunityDto?) {
+fun ECommunityTopBar(eCommunity: MinimalECommunityDto?, meterDataRT: BufferedMeterDataRTDto?) {
+    val formatter = Formatter(LocalContext.current)
+
     var memberString = ""
     val lastMemberIndex = eCommunity?.members?.size?.minus(1) ?: 0
     eCommunity?.members?.forEachIndexed { index, member ->
         var splitter = ""
-        if(index != lastMemberIndex) {
+        if (index != lastMemberIndex) {
             splitter = if (index == Constants.MAX_MEMBERS_TOP_BAR - 1) ", ..." else ", "
         }
         memberString = "$memberString${member.userName}$splitter"
@@ -74,46 +79,48 @@ fun ECommunityTopBar(eCommunity: MinimalECommunityDto?) {
                 )
             }
         }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.align(Alignment.CenterEnd)
-        ) {
-            Column {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.WbSunny,
-                        contentDescription = stringResource(R.string.e_community_top_bar_feed_in_icon_desc),
-                        tint = colorResource(id = R.color.value_good),
-                        modifier = Modifier
-                            .size(20.dp)
-                            .padding(end = 4.dp)
-                    )
-                    Text(
-                        text = "10.1 kW",
-                        color = colorResource(id = R.color.value_good),
-                        fontSize = 16.sp,
-                    )
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Power,
-                        contentDescription = stringResource(R.string.e_community_top_bar_consumption_icon_desc),
-                        tint = colorResource(id = R.color.value_bad),
-                        modifier = Modifier
-                            .size(20.dp)
-                            .padding(end = 4.dp)
-                    )
-                    Text(
-                        text = "15.3 kW",
-                        color = colorResource(id = R.color.value_bad),
-                        fontSize = 16.sp,
-                    )
+        if (meterDataRT != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+                Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.WbSunny,
+                            contentDescription = stringResource(R.string.e_community_top_bar_feed_in_icon_desc),
+                            tint = colorResource(id = R.color.value_good),
+                            modifier = Modifier
+                                .size(20.dp)
+                                .padding(end = 4.dp)
+                        )
+                        Text(
+                            text = formatter.formatSmartMeterValue(meterDataRT.eCommunityActivePowerMinus),
+                            color = colorResource(id = R.color.value_good),
+                            fontSize = 16.sp,
+                        )
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Power,
+                            contentDescription = stringResource(R.string.e_community_top_bar_consumption_icon_desc),
+                            tint = colorResource(id = R.color.value_bad),
+                            modifier = Modifier
+                                .size(20.dp)
+                                .padding(end = 4.dp)
+                        )
+                        Text(
+                            text = formatter.formatSmartMeterValue(meterDataRT.eCommunityActivePowerPlus),
+                            color = colorResource(id = R.color.value_bad),
+                            fontSize = 16.sp,
+                        )
+                    }
                 }
             }
 //            Icon(

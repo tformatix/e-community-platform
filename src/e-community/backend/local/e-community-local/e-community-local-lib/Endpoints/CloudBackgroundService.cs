@@ -109,12 +109,6 @@ namespace e_community_local_lib.Endpoints {
             return Task.CompletedTask;
         }
 
-        public Task ReceiveRTData(BufferedMeterDataRTDto _meterData) {
-            Log.Information("CloudBackgroundService::Received RT Data");
-            // TODO: do something with it
-            return Task.CompletedTask;
-        }
-
         public async Task UpdateSmartMeter(CloudSmartMeterDto _cloudSmartMeterDto) {
             Log.Information("CloudBackgroundService::UpdateSmartMeter");
             await mLocalChangesService.SmartMeterChanged(_cloudSmartMeterDto);

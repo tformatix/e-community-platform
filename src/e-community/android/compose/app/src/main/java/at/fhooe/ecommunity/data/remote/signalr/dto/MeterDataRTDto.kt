@@ -1,21 +1,17 @@
 package at.fhooe.ecommunity.data.remote.signalr.dto
 
+import java.util.*
+
 /**
- * real time meter data
- * @param timestamp date and time of measuring point
- * @param missingSmartMeterCount how many smart meters are missing overall
- * @param missingSmartMeterCountMember how many smart meters are missing from a member
- * @param eCommunityActivePowerPlus current power P+ of whole eCommunity
- * @param eCommunityActivePowerMinus current power P- of whole eCommunity
- * @param eCommunityReactivePowerPlus current power R+ of whole eCommunity
- * @param eCommunityReactivePowerMinus current power R- of whole eCommunity
+ * meter data
+ * @param activePowerPlus current power P+
+ * @param activePowerMinus current power P-
+ * @param reactivePowerPlus current power R+
+ * @param reactivePowerMinus current power R-
  */
-data class MeterDataRTDto(val timestamp: String,
-                          val missingSmartMeterCount: Int,
-                          val missingSmartMeterCountMember: Int,
-                          val eCommunityActivePowerPlus: Int,
-                          val eCommunityActivePowerMinus: Int,
-                          val eCommunityReactivePowerPlus: Int,
-                          val eCommunityReactivePowerMinus: Int,
-                          val meterDataMember: List<MeterDataDto<Int>>
-)
+data class MeterDataRTDto<T> (var smartMeterId: UUID,
+                              var memberId: UUID,
+                              var activePowerPlus: T,
+                              var activePowerMinus: T,
+                              var reactivePowerPlus: T,
+                              var reactivePowerMinus: T,)

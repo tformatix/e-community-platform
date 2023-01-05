@@ -1,8 +1,10 @@
 package at.fhooe.ecommunity.ui.screen.e_community
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import at.fhooe.ecommunity.Constants
 import at.fhooe.ecommunity.ECommunityApplication
 import at.fhooe.ecommunity.TAG
@@ -11,8 +13,18 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.ECommunityApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.MonitoringApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.SmartMeterApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.*
+import at.fhooe.ecommunity.data.remote.repository.CloudSignalRRepository
+import at.fhooe.ecommunity.data.remote.signalr.dto.BufferedMeterDataRTDto
+import at.fhooe.ecommunity.data.remote.signalr.dto.MeterDataRTDto
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.base.LoadingStateViewModel
+import at.fhooe.ecommunity.ui.screen.home.HomeViewModel
+import com.google.gson.Gson
+import com.microsoft.signalr.HubConnectionState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.util.*
 
 class ECommunityViewModel private constructor(_application: ECommunityApplication) : LoadingStateViewModel(_application) {
@@ -25,6 +37,9 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         const val NEW = 3
         const val MONITORING = 4
         const val PORTION_ACK = 5
+        const val REQUEST_RT_DATA = 6
+        const val STOP_RT_DATA = 7
+        const val EXTEND_RT_DATA = 8
 
         private var instance: ECommunityViewModel? = null
 
@@ -35,6 +50,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         }
     }
 
+    private var mCloudSignalRRepository = CloudSignalRRepository()
     private val mECommunityApi = ECommunityApi(Constants.HTTP_BASE_URL_CLOUD)
     private val mSmartMeterApi = SmartMeterApi(Constants.HTTP_BASE_URL_CLOUD)
     private val mDistributionApi = DistributionApi(Constants.HTTP_BASE_URL_CLOUD)
@@ -43,8 +59,12 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     var mRunningOperations = mutableStateOf(0)
 
     val mSmartMeters = mutableStateListOf<MinimalSmartMeterDto>()
-    val mSelectedSmartMeterIdx = mutableStateOf<Int>(0)
+    var mSelectedSmartMeterIdx = 0
     val mECommunity = mutableStateOf<MinimalECommunityDto?>(null)
+
+    val mMeterDataRT = mutableStateOf<BufferedMeterDataRTDto?>(null)
+    private var mExtendTimer = Timer()
+    private var mTimerCount =  0
 
     val mPerformance = mutableStateOf<PerformanceDto?>(null)
     val mCurrentPortion = mutableStateOf<CurrentPortionDto?>(null)
@@ -53,12 +73,13 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     val mMonitoringStatus = mutableStateListOf<MonitoringStatusDto>()
 
     fun initLoad() {
+        mRunningOperations.value = 0
         loadBaseData()
         loadNewDistribution()
         loadMonitoringStatus()
     }
 
-    private fun loadBaseData () {
+    private fun loadBaseData() {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadBaseData()")
 
         mRunningOperations.value++
@@ -77,7 +98,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         }
     }
 
-    fun loadSmartMeterDependent(){
+    fun loadSmartMeterDependent() {
         loadPerformance(Constants.DEFAULT_PERFORMANCE_DURATION_DAYS)
         loadCurrentPortion()
     }
@@ -85,7 +106,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     fun loadPerformance(_durationDays: Int) {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadPerformance($_durationDays)")
 
-        if(mSmartMeters.size > 0) {
+        if (mSmartMeters.size > 0) {
             mRunningOperations.value++
             mPerformance.value = null
 
@@ -102,7 +123,7 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     private fun loadCurrentPortion() {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadCurrentPortion()")
 
-        if(mSmartMeters.size > 0) {
+        if (mSmartMeters.size > 0) {
             mRunningOperations.value++
             mCurrentPortion.value = null
 
@@ -175,7 +196,119 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         }
     }
 
-    private fun getSelectedSmartMeterId() : UUID?{
-        return mSmartMeters.getOrNull(mSelectedSmartMeterIdx.value)?.id
+    private fun getSelectedSmartMeterId(): UUID? {
+        return mSmartMeters.getOrNull(mSelectedSmartMeterIdx)?.id
     }
+
+    //region SignalR
+    /**
+     * start SignalR listener
+     */
+    private fun startSignalR(_accessToken: String) {
+        val connStr = Constants.HTTP_BASE_URL_CLOUD + Constants.SIGNALR_URL
+        mCloudSignalRRepository = CloudSignalRRepository()
+
+        mCloudSignalRRepository.initialize(connStr, _accessToken, Constants.SIGNALR_METHOD) { data ->
+            run {
+                val json = JSONObject(data.toMap()) // json object of server data
+                mMeterDataRT.value = Gson().fromJson(json.toString(), BufferedMeterDataRTDto::class.java)
+            }
+        }
+
+        // start connection
+        mCloudSignalRRepository.let {
+            val started = it.startConnection()
+
+            if (started) {
+                Log.d(TAG, "$TAG_E_COMMUNITY_VM::startSignalR() SignalR try starting")
+            } else {
+                Log.e(TAG, "$TAG_E_COMMUNITY_VM::startSignalR() SignalR not started")
+            }
+        }
+    }
+
+    /**
+     * request RT data from cloud
+     */
+    fun requestRTDataStart(_requestStart: Boolean = true) {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::requestRTDataStart()")
+        mRunningOperations.value++
+
+        mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(REQUEST_RT_DATA)) { token ->
+            emitState(LoadingState(LoadingState.State.RUNNING, REQUEST_RT_DATA))
+
+            startSignalR(token)
+            if (_requestStart) {
+                val response = mSmartMeterApi.smartMeterRequestRTDataGet()
+                val state = response.status
+            }
+
+            emitState(LoadingState(LoadingState.State.SUCCESS, REQUEST_RT_DATA))
+        }
+    }
+
+    /**
+     * stop requesting RT data
+     */
+    fun requestRTDataStop() {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::requestRTDataStop()")
+        mRunningOperations.value++
+
+        mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(STOP_RT_DATA)) {
+            emitState(LoadingState(LoadingState.State.RUNNING, STOP_RT_DATA))
+
+            mSmartMeterApi.smartMeterStopRTDataGet()
+
+            emitState(LoadingState(LoadingState.State.SUCCESS, STOP_RT_DATA))
+        }
+
+        // stop hub connection
+        if (mCloudSignalRRepository.getConnectionState() != HubConnectionState.DISCONNECTED) {
+            mCloudSignalRRepository.stopConnection()
+        }
+        mExtendTimer.cancel()
+        mExtendTimer = Timer()
+    }
+
+    /**
+     * stop requesting RT data
+     */
+    fun requestRTDataExtend() {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::requestRTDataExtend()")
+        mRunningOperations.value++
+
+        mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(EXTEND_RT_DATA)) {
+            emitState(LoadingState(LoadingState.State.RUNNING, EXTEND_RT_DATA))
+
+            mSmartMeterApi.smartMeterExtendRTDataGet()
+
+            emitState(LoadingState(LoadingState.State.SUCCESS, EXTEND_RT_DATA))
+        }
+    }
+
+    /**
+     * check connection to signal R
+     */
+    fun checkSignalRConnection() {
+        mExtendTimer.schedule(object : TimerTask() {
+            override fun run() {
+                if (mCloudSignalRRepository.getConnectionState() != HubConnectionState.CONNECTED) {
+                    Log.e(TAG, "$TAG_E_COMMUNITY_VM::lost SignalR connection")
+                    emitState(LoadingState(LoadingState.State.FAILED))
+                    mMeterDataRT.value = null
+
+                    // start signalR
+                    requestRTDataStart(false)
+                }
+
+                if (++mTimerCount == Constants.TIMER_COUNT) {
+                    requestRTDataExtend()
+                    mTimerCount = 0
+                }
+
+                checkSignalRConnection()
+            }
+        }, Constants.CHECK_SIGNALR_TIMER.toLong())
+    }
+    //endregion
 }

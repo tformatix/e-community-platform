@@ -35,8 +35,9 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
     val runningOperations by remember { viewModel.mRunningOperations }
 
     val eCommunity by remember { viewModel.mECommunity }
-    val selectedSmartMeter by remember { viewModel.mSelectedSmartMeterIdx }
     val smartMeters = remember { viewModel.mSmartMeters }
+
+    val meterDataRT by remember { viewModel.mMeterDataRT }
 
     val performance by remember { viewModel.mPerformance }
     val currentPortion by remember { viewModel.mCurrentPortion }
@@ -71,19 +72,30 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                     }
                 }
                 viewModel.initLoad()
+                viewModel.requestRTDataStart(true)
             }
             Lifecycle.Event.ON_PAUSE -> {
+                viewModel.requestRTDataStop()
+                viewModel.unregisterListener()
+            }
+            Lifecycle.Event.ON_DESTROY -> {
+                viewModel.requestRTDataStop()
                 viewModel.unregisterListener()
             }
             else -> {}
         }
     }
 
+    LaunchedEffect(true) {
+        // only execute once
+        viewModel.checkSignalRConnection()
+    }
+
     Scaffold(
         modifier = Modifier
             .gesturesDisabled(runningOperations > 0)
             .fillMaxSize(),
-        topBar = { ECommunityTopBar(eCommunity) }
+        topBar = { ECommunityTopBar(eCommunity, meterDataRT) }
     ) {
         if (runningOperations > 0) LoadingIndicator()
         Column(
@@ -118,7 +130,7 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                     items = smartMeters.map { it.name ?: "" },
                     fontSize = 14.sp,
                     onSelected = { idx, _ ->
-                        viewModel.mSelectedSmartMeterIdx.value = idx
+                        viewModel.mSelectedSmartMeterIdx = idx
                         viewModel.loadSmartMeterDependent()
                     }
                 )

@@ -24,7 +24,7 @@ import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.local.entity.Tile
 import at.fhooe.ecommunity.data.local.setup.DashboardManager
-import at.fhooe.ecommunity.data.remote.signalr.dto.MeterDataDto
+import at.fhooe.ecommunity.data.remote.signalr.dto.BufferedMeterDataRTDto
 import at.fhooe.ecommunity.data.remote.signalr.dto.MeterDataRTDto
 import at.fhooe.ecommunity.ui.component.LifecycleListener
 import at.fhooe.ecommunity.extension.gesturesDisabled
@@ -103,7 +103,7 @@ fun HomeScreen(_viewModel: HomeViewModel, _navController: NavHostController) {
     // default RT meterData
     val meterDataRTDto = remember {
         mutableStateOf(
-            MeterDataRTDto(
+            BufferedMeterDataRTDto(
                 "",
                 0,
                 0,
@@ -111,7 +111,7 @@ fun HomeScreen(_viewModel: HomeViewModel, _navController: NavHostController) {
                 0,
                 0,
                 0,
-                listOf(MeterDataDto(
+                listOf(MeterDataRTDto(
                     UUID.randomUUID(),
                     UUID.randomUUID(),
                     0,
@@ -178,7 +178,7 @@ fun HomeScreen(_viewModel: HomeViewModel, _navController: NavHostController) {
  * @see Composable
  */
 @Composable
-fun TileCard(_tile: Tile, _meterDataRTDto: MeterDataRTDto) {
+fun TileCard(_tile: Tile, _meterDataRTDto: BufferedMeterDataRTDto) {
 
     Column {
         // region (household, community)
@@ -202,11 +202,11 @@ fun TileCard(_tile: Tile, _meterDataRTDto: MeterDataRTDto) {
             }
 
             LocalContext.current.getString(R.string.tile_id_household_consumption) -> {
-                value = _meterDataRTDto.meterDataMember.sumOf { it.activePowerPlus }
+                value = _meterDataRTDto.meterDataMember?.sumOf { it.activePowerPlus } ?: 0
             }
 
             LocalContext.current.getString(R.string.tile_id_household_feed_in) -> {
-                value = _meterDataRTDto.meterDataMember.sumOf { it.activePowerMinus }
+                value = _meterDataRTDto.meterDataMember?.sumOf { it.activePowerMinus } ?: 0
                 if (value > 0) { color = colorResource(id = R.color.value_good) }
             }
 
@@ -236,7 +236,7 @@ fun TileCard(_tile: Tile, _meterDataRTDto: MeterDataRTDto) {
  *
  */
 @Composable
-fun TileGridView(_isLoading: Boolean, _tiles: List<Tile>, _meterDataRTDto: MutableState<MeterDataRTDto>) {
+fun TileGridView(_isLoading: Boolean, _tiles: List<Tile>, _meterDataRTDto: MutableState<BufferedMeterDataRTDto>) {
     Column(
         // for this column we are adding a
         // modifier to it to fill max size.
@@ -404,7 +404,7 @@ private fun testColumn(_columnHeights: IntArray): Int {
  * @param _viewModel viewModel for Home Screen
  * @param _meterDataRTDto current meterData
  */
-fun initSignalR(_viewModel: HomeViewModel, _meterDataRTDto: MutableState<MeterDataRTDto>) {
+fun initSignalR(_viewModel: HomeViewModel, _meterDataRTDto: MutableState<BufferedMeterDataRTDto>) {
     Log.d(TAG, "request START RT data")
     _viewModel.requestRTDataStart(_meterDataRTDto)
 }
@@ -457,7 +457,7 @@ fun TopBarHome(_navController: NavHostController) {
  */
 fun checkConnection(
     _extendTimer: MutableState<Timer>,
-    _meterDataRTDto: MutableState<MeterDataRTDto>,
+    _meterDataRTDto: MutableState<BufferedMeterDataRTDto>,
     _timerCount: MutableState<Int>,
     _viewModel: HomeViewModel
 ) {
@@ -476,7 +476,7 @@ fun checkConnection(
 
                 // reset tile => user know no data is coming
                 //setTilesZero()
-                _meterDataRTDto.value = MeterDataRTDto(
+                _meterDataRTDto.value = BufferedMeterDataRTDto(
                     "",
                     0,
                     0,
@@ -484,7 +484,7 @@ fun checkConnection(
                     0,
                     0,
                     0,
-                    listOf(MeterDataDto(
+                    listOf(MeterDataRTDto(
                         UUID.randomUUID(),
                         UUID.randomUUID(),
                         0,
