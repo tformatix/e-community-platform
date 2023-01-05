@@ -6,14 +6,20 @@ using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.Endpoints.Dtos
 {
-    public class LocalMeterDataRTDto
+    /// <summary>
+    /// real time meter data
+    /// </summary>
+    public class MeterDataRTDto
     {
+        /// <summary>
+        /// id of member
+        /// </summary>
         public Guid SmartMeterId { get; set; }
 
         /// <summary>
-        /// date and time of measuring point
+        /// id of member
         /// </summary>
-        public DateTime Timestamp { get; set; }
+        public Guid MemberId { get; set; }
 
         /// <summary>
         /// current power P+

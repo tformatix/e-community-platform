@@ -1,4 +1,5 @@
-﻿using System;
+﻿using e_community_cloud_lib.Endpoints.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Timers;
 
@@ -22,6 +23,6 @@ namespace e_community_cloud_lib.NonEntities
         /// <summary>
         /// measurements at timestamp
         /// </summary>
-        public List<RTMeterData> MeterData { get; set; }
+        public List<MeterDataRTDto> MeterData { get; set; }
     }
 }

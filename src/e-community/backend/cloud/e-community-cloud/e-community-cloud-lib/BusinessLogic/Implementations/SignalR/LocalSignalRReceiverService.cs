@@ -38,7 +38,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
                     if (listenerData.SmartMeterCount > 1) {
                         // more than one smart meter (wait for others - BUFFERING)
 
-                        var meterData = _meterData.CopyPropertiesTo(new RTMeterData());
+                        var meterData = _meterData.CopyPropertiesTo(new MeterDataRTDto());
                         meterData.MemberId = _memberId;
                         var id = listenerData.ECommunityId ?? _memberId;
 
@@ -57,7 +57,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
                             // no entry for given timestamp
                             buffer = new RTMeterDataBuffer() {
                                 Timestamp = _meterData.Timestamp,
-                                MeterData = new List<RTMeterData> { meterData }
+                                MeterData = new List<MeterDataRTDto> { meterData }
                             };
 
                             // add new timer for automatic sending after AUTO_SEND_RT_DATA_SECONDS (even if data is missing)

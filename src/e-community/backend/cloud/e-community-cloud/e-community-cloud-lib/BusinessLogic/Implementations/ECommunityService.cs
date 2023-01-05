@@ -20,7 +20,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         }
 
         public async Task<ECommunity> GetECommunity(Guid _memberId) {
-            var eCommunityId = await mDb.GetECommunityId(_memberId);
+            var eCommunityId = mDb.GetECommunityId(_memberId);
 
             if(eCommunityId == null) return null;
 

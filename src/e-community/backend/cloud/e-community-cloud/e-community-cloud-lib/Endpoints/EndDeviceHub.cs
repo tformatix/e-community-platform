@@ -36,7 +36,7 @@ namespace e_community_cloud_lib.Endpoints
             if (memberId != null)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, memberId?.GetGroupName(GroupType.Member));
-                var eCommunityId = await mDb.GetECommunityId(memberId);
+                var eCommunityId = mDb.GetECommunityId(memberId);
                 if (eCommunityId != null)
                 {
                     await Groups.AddToGroupAsync(Context.ConnectionId, eCommunityId?.GetGroupName(GroupType.ECommunity));

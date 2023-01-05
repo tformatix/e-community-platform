@@ -1,5 +1,6 @@
 package at.fhooe.ecommunity.ui.screen.home
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -23,6 +24,7 @@ import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.local.entity.Tile
 import at.fhooe.ecommunity.data.local.setup.DashboardManager
+import at.fhooe.ecommunity.data.remote.signalr.dto.MeterDataDto
 import at.fhooe.ecommunity.data.remote.signalr.dto.MeterDataRTDto
 import at.fhooe.ecommunity.ui.component.LifecycleListener
 import at.fhooe.ecommunity.extension.gesturesDisabled
@@ -43,6 +45,7 @@ import java.util.*
  * @param _navController navController for navigation to other Screens
  * @see Composable
  */
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(_viewModel: HomeViewModel, _navController: NavHostController) {
 
@@ -108,10 +111,15 @@ fun HomeScreen(_viewModel: HomeViewModel, _navController: NavHostController) {
                 0,
                 0,
                 0,
-                0,
-                0,
-                0,
-                0)
+                listOf(MeterDataDto(
+                    UUID.randomUUID(),
+                    UUID.randomUUID(),
+                    0,
+                    0,
+                    0,
+                    0,
+                ))
+            )
         )
     }
 
@@ -194,11 +202,11 @@ fun TileCard(_tile: Tile, _meterDataRTDto: MeterDataRTDto) {
             }
 
             LocalContext.current.getString(R.string.tile_id_household_consumption) -> {
-                value = _meterDataRTDto.activePowerPlus
+                value = _meterDataRTDto.meterDataMember.sumOf { it.activePowerPlus }
             }
 
             LocalContext.current.getString(R.string.tile_id_household_feed_in) -> {
-                value = _meterDataRTDto.activePowerMinus
+                value = _meterDataRTDto.meterDataMember.sumOf { it.activePowerMinus }
                 if (value > 0) { color = colorResource(id = R.color.value_good) }
             }
 
@@ -476,10 +484,15 @@ fun checkConnection(
                     0,
                     0,
                     0,
-                    0,
-                    0,
-                    0,
-                    0)
+                    listOf(MeterDataDto(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        0,
+                        0,
+                        0,
+                        0,
+                    ))
+                )
 
                 // start signalR
                 _viewModel.requestRTDataStart(_meterDataRTDto, false)

@@ -47,7 +47,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
             var listenerDataMember = mRTListenerSingleton.RTListeners.GetValueOrDefault(memberId);
             if (listenerDataMember == null) {
                 // first devive of a member tries to start the real time service
-                var eCommunityId = await mDb.GetECommunityId(_memberId);
+                var eCommunityId = mDb.GetECommunityId(_memberId);
                 listenerDataMember = new RTListenerData() {
                     ECommunityId = eCommunityId,
                     ActiveDeviceCount = 0
@@ -63,7 +63,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
                         .Count();
                     listenerDataMember.SmartMeterCountMember = listenerDataMember.SmartMeterCount;
 
-                    mSmartMeterHubContext.Clients.Groups(listenerDataMember.SignalRGroupName).RequestRTData(); // request real time data
+                    await mSmartMeterHubContext.Clients.Groups(listenerDataMember.SignalRGroupName).RequestRTData(); // request real time data
                 }
                 else {
                     // member is part in an eCommunity
@@ -95,7 +95,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
                             .Select(x => x.Id)
                             .ToList();
 
-                        mSmartMeterHubContext.Clients.Groups(listenerDataMember.SignalRGroupName).RequestRTData(); // request real time data
+                        await mSmartMeterHubContext.Clients.Groups(listenerDataMember.SignalRGroupName).RequestRTData(); // request real time data
                     }
                     else {
                         // not first device of an eCommunity (copy values from other listener)

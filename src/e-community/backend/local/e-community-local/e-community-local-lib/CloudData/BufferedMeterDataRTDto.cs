@@ -24,26 +24,6 @@ namespace e_community_local_lib.CloudData
         public int MissingSmartMeterCountMember { get; set; }
 
         /// <summary>
-        /// current power P+
-        /// </summary>
-        public int ActivePowerPlus { get; set; }
-
-        /// <summary>
-        /// current power P-
-        /// </summary>
-        public int ActivePowerMinus { get; set; }
-
-        /// <summary>
-        /// current power R+
-        /// </summary>
-        public int ReactivePowerPlus { get; set; }
-
-        /// <summary>
-        /// current power R-
-        /// </summary>
-        public int ReactivePowerMinus { get; set; }
-
-        /// <summary>
         /// current power P+ of whole eCommunity
         /// </summary>
         public int ECommunityActivePowerPlus { get; set; }
@@ -62,5 +42,7 @@ namespace e_community_local_lib.CloudData
         /// current power R- of whole eCommunity
         /// </summary>
         public int ECommunityReactivePowerMinus { get; set; }
+
+        public List<ProcessedMeterDataRTDto> MeterDataMember { get; set; }
     }
 }

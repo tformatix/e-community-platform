@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_community_cloud_lib.NonEntities
-{
-    /// <summary>
-    /// real time meter data
-    /// </summary>
-    public class RTMeterData
-    {
+namespace e_community_local_lib.CloudData {
+    public class ProcessedMeterDataRTDto {
+        /// <summary>
+        /// id of member
+        /// </summary>
+        public Guid SmartMeterId { get; set; }
+
         /// <summary>
         /// id of member
         /// </summary>

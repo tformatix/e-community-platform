@@ -38,12 +38,15 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
             var meterData = await mDb.MeterDataRealTime
                     .OrderBy(x => x.Id)
                     .LastOrDefaultAsync();
-            if (meterData != null) {
+            var smartMeterId = (await mDb.SmartMeter.FirstOrDefaultAsync())?.Id;
+            if (meterData != null && smartMeterId != null) {
                 meterData.Timestamp = meterData.Timestamp.ToUniversalTime(); // convert timestamp to UTC
                 Log.Information($"CloudSignalRSenderService::SendRTData() from {meterData.Timestamp}");
                 await mHubConnectionService.InvokeSignalR(
                     nameof(ICloudSignalRSender.ReceiveRTData),
-                    meterData.CopyPropertiesTo(new MeterDataRTDto())
+                    meterData.CopyPropertiesTo(new MeterDataRTDto() {
+                        SmartMeterId = (Guid)smartMeterId,
+                    })
                 );
             }
         }
@@ -51,12 +54,10 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
             await mHubConnectionService.InvokeSignalR(nameof(ICloudSignalRSender.TimerElapsed));
         }
 
-        public async Task SendBlockchainAccountBalance()
-        {
+        public async Task SendBlockchainAccountBalance() {
             Process processAccountBalance = new Process();
 
-            processAccountBalance.StartInfo = new ProcessStartInfo(Constants.PYTHON_EXE, Constants.GET_ACCOUNT_BALANCE)
-            {
+            processAccountBalance.StartInfo = new ProcessStartInfo(Constants.PYTHON_EXE, Constants.GET_ACCOUNT_BALANCE) {
                 RedirectStandardOutput = true
             };
             processAccountBalance.Start();
@@ -66,13 +67,12 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
             processAccountBalance.WaitForExit();
             processAccountBalance.Close();
 
-            var blockchainAccountBalance = new BlockchainAccountBalanceDto
-            {
+            var blockchainAccountBalance = new BlockchainAccountBalanceDto {
                 Received = "5",
                 Sent = "1",
                 Balance = output
             };
-            
+
             Log.Information($"CloudSignalRSenderService::SendBlockchainAccountBalance() ${nameof(ICloudSignalRSender.ReceiveBlockchainAccountBalance)}");
 
             await mHubConnectionService.InvokeSignalR(

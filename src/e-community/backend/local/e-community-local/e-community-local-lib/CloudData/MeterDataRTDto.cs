@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace e_community_local_lib.CloudData {
     public class MeterDataRTDto
     {
+        public Guid SmartMeterId { get; set; }
+
         /// <summary>
         /// date and time of measuring point
         /// </summary>

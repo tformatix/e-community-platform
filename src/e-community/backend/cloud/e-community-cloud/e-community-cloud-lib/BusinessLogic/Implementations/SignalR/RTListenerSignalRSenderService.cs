@@ -41,12 +41,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
 
                 if (_listenerData.ECommunityId == null) {
                     // member is not part in an eCommunity
-                    _buffer.MeterData.ForEach(meterData => {
-                        bufferedMeterData.ActivePowerPlus += meterData.ActivePowerPlus;
-                        bufferedMeterData.ActivePowerMinus += meterData.ActivePowerMinus;
-                        bufferedMeterData.ReactivePowerPlus += meterData.ReactivePowerPlus;
-                        bufferedMeterData.ReactivePowerMinus += meterData.ReactivePowerMinus;
-                    });
+                    bufferedMeterData.MeterDataMember = _buffer.MeterData;
 
                     _listenerData.PreviousSentTimestamp = _buffer.Timestamp;
                     bufferedMeterData.MissingSmartMeterCountMember = bufferedMeterData.MissingSmartMeterCount;
@@ -59,12 +54,12 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
                 }
                 else {
                     // member is part in an eCommunity
-                    var memberMeterDataMap = new Dictionary<Guid, RTMeterDataMemberBuffer>(); // listening members (MemberId -> Meter Data)
+                    var memberMeterDataMap = new Dictionary<Guid, List<MeterDataRTDto>>(); // listening members (MemberId -> Meter Data)
 
                     mRTListenerSingleton.GetListeners((Guid)_listenerData.ECommunityId).ForEach(listener => {
                         // new map entry for every listening member
                         listener.Value.PreviousSentTimestamp = _buffer.Timestamp;
-                        memberMeterDataMap.Add(listener.Key, new RTMeterDataMemberBuffer());
+                        memberMeterDataMap.Add(listener.Key, new List<MeterDataRTDto>());
                     });
 
                     _buffer.MeterData.ForEach(meterData => {
@@ -74,26 +69,18 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
                         bufferedMeterData.ECommunityReactivePowerPlus += meterData.ReactivePowerPlus;
                         bufferedMeterData.ECommunityReactivePowerMinus += meterData.ReactivePowerMinus;
 
-                        var memberMeterData = memberMeterDataMap.GetValueOrDefault(meterData.MemberId);
-                        if (memberMeterData != null) {
+                        if (memberMeterDataMap.GetValueOrDefault(meterData.MemberId) != null) {
                             // member is listening
-                            memberMeterData.ActivePowerPlus += meterData.ActivePowerPlus;
-                            memberMeterData.ActivePowerMinus += meterData.ActivePowerMinus;
-                            memberMeterData.ReactivePowerPlus += meterData.ReactivePowerPlus;
-                            memberMeterData.ReactivePowerMinus += meterData.ReactivePowerMinus;
-                            memberMeterData.SmartMeterCount++;
+                            memberMeterDataMap[meterData.MemberId].Add(meterData); 
                         }
                     });
 
                     foreach (var memberMeterData in memberMeterDataMap) {
                         // send to every member
-                        bufferedMeterData.ActivePowerPlus = memberMeterData.Value.ActivePowerPlus;
-                        bufferedMeterData.ActivePowerMinus = memberMeterData.Value.ActivePowerMinus;
-                        bufferedMeterData.ReactivePowerPlus = memberMeterData.Value.ReactivePowerPlus;
-                        bufferedMeterData.ReactivePowerMinus = memberMeterData.Value.ReactivePowerMinus;
+                        bufferedMeterData.MeterDataMember = memberMeterData.Value;
 
                         bufferedMeterData.MissingSmartMeterCountMember =
-                            _listenerData.SmartMeterCountMember - memberMeterData.Value.SmartMeterCount;
+                            _listenerData.SmartMeterCountMember - memberMeterData.Value.Count;
                         if (bufferedMeterData.MissingSmartMeterCount > 0) {
                             // missing smart meters
                             mLocalSignalRSenderService.RequestRTDataFaulty(_listenerData.SignalRGroupName);

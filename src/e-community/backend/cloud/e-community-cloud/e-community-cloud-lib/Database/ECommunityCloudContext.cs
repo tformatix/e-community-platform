@@ -145,11 +145,10 @@ namespace e_community_cloud_lib.Database
 
         /// <param name="_memberId">member id</param>
         /// <returns>eCommunity id of a member (only when currently active)</returns>
-        public async Task<Guid?> GetECommunityId(Guid? _memberId)
+        public Guid? GetECommunityId(Guid? _memberId)
         {
-            return (await ECommunityMembership
-                .FirstOrDefaultAsync(x => x.MemberId == _memberId && Constants.ACTIVE_MEMBER_PERMISSIONS.Contains(x.ECommunityPermission)))
-                ?.ECommunityId;
+            return ECommunityMembership
+                .FirstOrDefault(x => x.MemberId == _memberId && Constants.ACTIVE_MEMBER_PERMISSIONS.Contains(x.ECommunityPermission))?.ECommunityId;
         }
     }
 }
