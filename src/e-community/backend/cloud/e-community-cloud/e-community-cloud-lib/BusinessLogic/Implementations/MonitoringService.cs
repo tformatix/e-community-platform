@@ -140,12 +140,11 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
                             if (!currentPortion.SmartMeter.IsNonComplianceMuted) {
                                 // only send notification if not muted and if feed-in over threshold
-                                var deviation = meterDataMonitoring.ProjectedActiveEnergyPlus - forecast;
+                                var deviation = (meterDataMonitoring.ProjectedActiveEnergyPlus ?? 0) - forecast;
                                 var fcmAndroidData = (deviation > 0) ? mFCMService.NonComplianceMore : mFCMService.NonComplianceLess;
                                 fcmAndroidData.BodyArgs = new List<string>() {
                                     currentPortion.SmartMeter.Name,
-                                    deviation.ToString(),
-                                    "Wh"
+                                    Formatter.formatMeterData(deviation, true)
                                 };
 
                                 await mFCMService.SendPushNotificationMember(fcmAndroidData, currentPortion.SmartMeter.MemberId);

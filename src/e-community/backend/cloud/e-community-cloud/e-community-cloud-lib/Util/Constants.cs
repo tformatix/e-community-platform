@@ -20,5 +20,15 @@ namespace e_community_cloud_lib.Util
         public const double DISTRIBUTION_GOOD_FORECAST_PERCENT = 0.1; // +/- 10% deviation from forecast -> good
 
         public static readonly ECommunityPermission[] ACTIVE_MEMBER_PERMISSIONS = new ECommunityPermission[] { ECommunityPermission.Admin, ECommunityPermission.Member };
+
+        public const int KILOWATT = 1000;
+        public const int MEGAWATT = 1000000;
+        public const int GIGAWATT = 1000000000;
+
+        public const string WATT_UNIT = "W";
+        public const string KILOWATT_UNIT = "kW";
+        public const string MEGAWATT_UNIT = "MW";
+        public const string GIGAWATT_UNIT = "GW";
+        public const string HOUR_UNIT = "h";
     }
 }

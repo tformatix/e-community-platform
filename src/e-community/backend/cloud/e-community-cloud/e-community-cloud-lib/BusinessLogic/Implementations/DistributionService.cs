@@ -302,7 +302,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                             sumConsumption += (_portion.EstimatedActiveEnergyPlus + _portion.Deviation);
                         });
 
-                    _fcmAndroidData.BodyArgs = new List<string>() { sumConsumption.ToString(), "Wh" };
+                    _fcmAndroidData.BodyArgs = new List<string>() { Formatter.formatMeterData(sumConsumption, true) };
                     mFCMService.SendPushNotificationMember(_fcmAndroidData, _pair.Key);
                 });
         }

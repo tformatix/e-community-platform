@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace e_community_cloud_lib.Util
+{
+    public static class Formatter
+    {
+        public static string formatMeterData(int value, bool isEnergy = false) {
+            var firstNumber = 0;
+            var commanNumber = 0.0;
+            var unit = "";
+            var energyUnit = isEnergy? Constants.HOUR_UNIT : "";
+
+            if(value < Constants.KILOWATT) {
+                return $"{value} {Constants.WATT_UNIT}{energyUnit}";
+            } else if(value < Constants.MEGAWATT) {
+                firstNumber = value / Constants.KILOWATT;
+                commanNumber = ((double)value) % Constants.KILOWATT;
+                unit = Constants.KILOWATT_UNIT;
+            }else if (value < Constants.GIGAWATT) {
+                firstNumber = value / Constants.MEGAWATT;
+                commanNumber = ((double)value) % Constants.MEGAWATT;
+                unit = Constants.MEGAWATT_UNIT;
+            }else { 
+                firstNumber = value / Constants.GIGAWATT;
+                commanNumber = ((double)value) % Constants.GIGAWATT;
+                unit = Constants.GIGAWATT_UNIT;
+            }
+
+            return $"{firstNumber}.{commanNumber.ToString().Substring(0,2)} {unit}{energyUnit}";
+        }
+    }
+}

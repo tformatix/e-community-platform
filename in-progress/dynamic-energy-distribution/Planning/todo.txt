@@ -1,11 +1,8 @@
 - Android
-	- SmartMeter
-		- Tabs
 	- Chart + TopBar
 		- RT SignalR
 	- Notification Badge
 - Backend
-	- Notifications -> Wh, kWh, ...
-	- error handling (e.g. portion ack no distribution)
+	- error handling Portion Ack
 
 Ersatzwerte, Lastprofil und Flexibiltät schlecht --> in BA schreiben
