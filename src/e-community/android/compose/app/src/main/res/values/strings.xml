@@ -175,6 +175,8 @@
     <string name="e_community_distribution_more_energy">Probably %1$s energy still available.</string>
     <string name="e_community_distribution_less_energy">Probably %1$s of energy is missing.</string>
     <string name="e_community_distribution_forecasts_missing">Missing Forecasts from %1$d Smart Meters - Calculation may be incorrect!</string>
+    <string name="e_community_real_time_title">Real Time Monitoring</string>
+    <string name="e_community_real_time_consumption">Consumption</string>
     <string name="e_community_new_distribution_title">New Hour - New Energy Distribution!</string>
     <string name="e_community_new_distribution_accept_icon_desc">Accept</string>
     <string name="e_community_new_distribution_more_energy">Probably %1$s energy still available - Increase Flexibility?</string>

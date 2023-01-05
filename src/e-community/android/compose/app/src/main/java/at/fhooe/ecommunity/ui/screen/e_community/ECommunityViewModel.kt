@@ -59,12 +59,12 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     var mRunningOperations = mutableStateOf(0)
 
     val mSmartMeters = mutableStateListOf<MinimalSmartMeterDto>()
-    var mSelectedSmartMeterIdx = 0
+    val mSelectedSmartMeterIdx = mutableStateOf(0)
     val mECommunity = mutableStateOf<MinimalECommunityDto?>(null)
 
     val mMeterDataRT = mutableStateOf<BufferedMeterDataRTDto?>(null)
     private var mExtendTimer = Timer()
-    private var mTimerCount =  0
+    private var mTimerCount = 0
 
     val mPerformance = mutableStateOf<PerformanceDto?>(null)
     val mCurrentPortion = mutableStateOf<CurrentPortionDto?>(null)
@@ -106,14 +106,15 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     fun loadPerformance(_durationDays: Int) {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadPerformance($_durationDays)")
 
-        if (mSmartMeters.size > 0) {
+        val smartMeterId = mSmartMeters.getOrNull(mSelectedSmartMeterIdx.value)?.id
+        if (smartMeterId != null) {
             mRunningOperations.value++
             mPerformance.value = null
 
             mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(PERFORMANCE)) {
                 emitState(LoadingState(LoadingState.State.RUNNING, PERFORMANCE))
 
-                mPerformance.value = mMonitoringApi.monitoringPerformanceGet(getSelectedSmartMeterId(), _durationDays)
+                mPerformance.value = mMonitoringApi.monitoringPerformanceGet(smartMeterId, _durationDays)
 
                 emitState(LoadingState(LoadingState.State.SUCCESS, PERFORMANCE))
             }
@@ -123,19 +124,21 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     private fun loadCurrentPortion() {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadCurrentPortion()")
 
-        if (mSmartMeters.size > 0) {
+        val smartMeterId = mSmartMeters.getOrNull(mSelectedSmartMeterIdx.value)?.id
+        if (smartMeterId != null) {
             mRunningOperations.value++
             mCurrentPortion.value = null
 
             mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(CURRENT)) {
                 emitState(LoadingState(LoadingState.State.RUNNING, CURRENT))
 
-                mCurrentPortion.value = mDistributionApi.distributionCurrentPortionGet(getSelectedSmartMeterId())
+                mCurrentPortion.value = mDistributionApi.distributionCurrentPortionGet(smartMeterId)
 
                 emitState(LoadingState(LoadingState.State.SUCCESS, CURRENT))
             }
         }
     }
+
 
     private fun loadNewDistribution() {
         Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadNewDistribution()")
@@ -194,10 +197,6 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
 
             emitState(LoadingState(LoadingState.State.SUCCESS, PORTION_ACK))
         }
-    }
-
-    private fun getSelectedSmartMeterId(): UUID? {
-        return mSmartMeters.getOrNull(mSelectedSmartMeterIdx)?.id
     }
 
     //region SignalR

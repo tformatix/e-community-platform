@@ -153,6 +153,8 @@
     <string name="e_community_distribution_more_energy">Wahrscheinlich %1$d Energie noch verfügbar.</string>
     <string name="e_community_distribution_less_energy">Wahrscheinlich fehlen %1$s an Energie.</string>
     <string name="e_community_distribution_forecasts_missing">Fehlende Prognosen von %1$d Smart Meters - Die Berechnung kann falsch sein!</string>
+    <string name="e_community_real_time_title">Echtzeit Überwachung</string>
+    <string name="e_community_real_time_consumption">Verbrauch</string>
     <string name="e_community_new_distribution_title">Neue Stunde - neue Energieverteilung!</string>
     <string name="e_community_new_distribution_accept_icon_desc">Akzeptieren</string>
     <string name="e_community_new_distribution_more_energy">Wahrscheinlich %1$d Energie noch verfügbar - Flexibilität erhöhen?</string>

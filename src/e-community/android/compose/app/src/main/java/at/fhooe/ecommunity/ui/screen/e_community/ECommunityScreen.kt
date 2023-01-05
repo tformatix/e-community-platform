@@ -24,6 +24,7 @@ import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityDivider
 import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityTopBar
 import at.fhooe.ecommunity.ui.screen.e_community.component.monitoring.ECommunityDistribution
 import at.fhooe.ecommunity.ui.screen.e_community.component.monitoring.ECommunityPerformance
+import at.fhooe.ecommunity.ui.screen.e_community.component.monitoring.ECommunityRealTime
 import at.fhooe.ecommunity.ui.screen.e_community.component.notifcation.ECommunityNewDistribution
 import at.fhooe.ecommunity.ui.screen.e_community.component.notifcation.ECommunityNonCompliance
 import at.fhooe.ecommunity.ui.screen.e_community.component.notifcation.ECommunityOffline
@@ -36,6 +37,7 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
 
     val eCommunity by remember { viewModel.mECommunity }
     val smartMeters = remember { viewModel.mSmartMeters }
+    val selectedSmartMeterIdx by remember { viewModel.mSelectedSmartMeterIdx }
 
     val meterDataRT by remember { viewModel.mMeterDataRT }
 
@@ -130,7 +132,7 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                     items = smartMeters.map { it.name ?: "" },
                     fontSize = 14.sp,
                     onSelected = { idx, _ ->
-                        viewModel.mSelectedSmartMeterIdx = idx
+                        viewModel.mSelectedSmartMeterIdx.value = idx
                         viewModel.loadSmartMeterDependent()
                     }
                 )
@@ -143,7 +145,14 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                 }
             )
             ECommunityDivider()
-            ECommunityDistribution(currentPortion)
+            ECommunityDistribution(
+                currentPortion = currentPortion
+            )
+            ECommunityDivider()
+            ECommunityRealTime(
+                meterDataRT = meterDataRT,
+                selectedSmartMeterId = smartMeters.getOrNull(selectedSmartMeterIdx)?.id
+            )
         }
     }
 }

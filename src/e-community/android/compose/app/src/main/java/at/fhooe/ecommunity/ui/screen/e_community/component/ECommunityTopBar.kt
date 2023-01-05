@@ -84,52 +84,41 @@ fun ECommunityTopBar(eCommunity: MinimalECommunityDto?, meterDataRT: BufferedMet
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
-                Column {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.WbSunny,
-                            contentDescription = stringResource(R.string.e_community_top_bar_feed_in_icon_desc),
-                            tint = colorResource(id = R.color.value_good),
-                            modifier = Modifier
-                                .size(20.dp)
-                                .padding(end = 4.dp)
-                        )
-                        Text(
-                            text = formatter.formatSmartMeterValue(meterDataRT.eCommunityActivePowerMinus),
-                            color = colorResource(id = R.color.value_good),
-                            fontSize = 16.sp,
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Power,
-                            contentDescription = stringResource(R.string.e_community_top_bar_consumption_icon_desc),
-                            tint = colorResource(id = R.color.value_bad),
-                            modifier = Modifier
-                                .size(20.dp)
-                                .padding(end = 4.dp)
-                        )
-                        Text(
-                            text = formatter.formatSmartMeterValue(meterDataRT.eCommunityActivePowerPlus),
-                            color = colorResource(id = R.color.value_bad),
-                            fontSize = 16.sp,
-                        )
-                    }
+                Column(
+                    horizontalAlignment = Alignment.End,
+                ) {
+                    Text(
+                        text = formatter.formatSmartMeterValue(meterDataRT.eCommunityActivePowerMinus),
+                        color = colorResource(id = R.color.value_good),
+                        fontSize = 16.sp,
+                    )
+                    Text(
+                        text = formatter.formatSmartMeterValue(meterDataRT.eCommunityActivePowerPlus),
+                        color = colorResource(id = R.color.value_bad),
+                        fontSize = 16.sp,
+                    )
+                }
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.WbSunny,
+                        contentDescription = stringResource(R.string.e_community_top_bar_feed_in_icon_desc),
+                        tint = colorResource(id = R.color.value_good),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .padding(start = 4.dp)
+                    )
+                    Icon(
+                        imageVector = Icons.Outlined.Power,
+                        contentDescription = stringResource(R.string.e_community_top_bar_consumption_icon_desc),
+                        tint = colorResource(id = R.color.value_bad),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .padding(start = 4.dp)
+                    )
                 }
             }
-//            Icon(
-//                imageVector = Icons.Outlined.ArrowForwardIos,
-//                contentDescription = stringResource(R.string.e_community_top_bar_detail_icon_desc),
-//                tint = colorResource(id = R.color.white),
-//                modifier = Modifier
-//                    .padding(start = 8.dp)
-//            )
         }
     }
 }
