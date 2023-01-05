@@ -11,6 +11,8 @@ object Constants {
     const val BROADCAST_RECEIVER_NOTIFICATION_EXTRA_MESSAGE = "NOTIFICATION_EXTRA_MESSAGE"
     const val BROADCAST_RECEIVER_NOTIFICATION_EXTRA_ID = "NOTIFICATION_EXTRA_ID"
 
+    const val NOTIFICATION_ID_E_COMMUNITY = "e_community"
+
     /* ENCRYPTED SHARED PREFERENCES */
     const val ENCRYPTED_KEY_ALIAS = "_androidx_security_master_key_"
     const val ENCRYPTED_KEY_SIZE = 256
@@ -53,4 +55,8 @@ object Constants {
 
     /* NEWS-Search */
     const val VIEW_MORE_RESULTS = 3
+
+    /* E-COMMUNITY */
+    const val DEFAULT_PERFORMANCE_DURATION_DAYS = 1;
+    const val MAX_MEMBERS_TOP_BAR = 4;
 }

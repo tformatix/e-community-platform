@@ -1,15 +1,15 @@
 package at.fhooe.ecommunity.ui.screen.e_community
 
 import android.util.Log
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import at.fhooe.ecommunity.Constants
 import at.fhooe.ecommunity.ECommunityApplication
 import at.fhooe.ecommunity.TAG
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.DistributionApi
+import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.ECommunityApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.MonitoringApi
+import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.SmartMeterApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.*
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.base.LoadingStateViewModel
@@ -19,13 +19,14 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
     companion object {
         const val TAG_E_COMMUNITY_VM = "ECommunityViewModel"
 
-        const val PERFORMANCE = 0
-        const val CURRENT = 1
-        const val NEW = 2
-        const val MONITORING = 3
-        const val PORTION_ACK = 4
+        const val BASE_DATA = 0
+        const val PERFORMANCE = 1
+        const val CURRENT = 2
+        const val NEW = 3
+        const val MONITORING = 4
+        const val PORTION_ACK = 5
 
-        private var instance : ECommunityViewModel? = null
+        private var instance: ECommunityViewModel? = null
 
         fun getInstance(_application: ECommunityApplication): ECommunityViewModel {
             if (instance == null)
@@ -34,24 +35,49 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         }
     }
 
+    private val mECommunityApi = ECommunityApi(Constants.HTTP_BASE_URL_CLOUD)
+    private val mSmartMeterApi = SmartMeterApi(Constants.HTTP_BASE_URL_CLOUD)
     private val mDistributionApi = DistributionApi(Constants.HTTP_BASE_URL_CLOUD)
     private val mMonitoringApi = MonitoringApi(Constants.HTTP_BASE_URL_CLOUD)
 
     var mRunningOperations = mutableStateOf(0)
+
+    val mSmartMeters = mutableStateListOf<MinimalSmartMeterDto>()
+    val mECommunity = mutableStateOf<MinimalECommunityDto?>(null)
+
     val mPerformance = mutableStateOf<PerformanceDto?>(null)
     val mCurrentPortion = mutableStateOf<CurrentPortionDto?>(null)
-    val mNewDistribution = mutableStateOf<NewDistributionDto?>( null)
+
+    val mNewDistribution = mutableStateOf<NewDistributionDto?>(null)
     val mMonitoringStatus = mutableStateListOf<MonitoringStatusDto>()
 
-    fun init(){
-        performance(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387"),1) // TODO
-        currentPortion(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387")) // TODO
-        newDistribution()
-        monitoringStatus()
+    fun init(_includeBase: Boolean = true) {
+        if(_includeBase) loadBaseData()
+        loadPerformance(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387"), Constants.DEFAULT_PERFORMANCE_DURATION_DAYS) // TODO
+        loadCurrentPortion(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387")) // TODO
+        loadNewDistribution()
+        loadMonitoringStatus()
     }
 
-    fun performance(_smartMeterId: UUID, _durationDays: Int) {
-        Log.d(TAG, "$TAG_E_COMMUNITY_VM::performance($_smartMeterId, $_durationDays)")
+    fun loadBaseData () {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadBaseData()")
+
+        mRunningOperations.value++
+        mSmartMeters.clear()
+        mECommunity.value = null
+
+        mApplication.cloudRESTRepository.authorizedBackendCall(getDefaultExceptionHandler(BASE_DATA)) {
+            emitState(LoadingState(LoadingState.State.RUNNING, BASE_DATA))
+
+            mECommunity.value = mECommunityApi.eCommunityGetMinimalECommunityGet()
+            mSmartMeters.addAll(mSmartMeterApi.smartMeterGetMinimalSmartMetersGet())
+
+            emitState(LoadingState(LoadingState.State.SUCCESS, BASE_DATA))
+        }
+    }
+
+    fun loadPerformance(_smartMeterId: UUID, _durationDays: Int) {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadPerformance($_smartMeterId, $_durationDays)")
 
         mRunningOperations.value++
         mPerformance.value = null
@@ -65,8 +91,8 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         }
     }
 
-    fun currentPortion(_smartMeterId: UUID) {
-        Log.d(TAG, "$TAG_E_COMMUNITY_VM::currentPortion($_smartMeterId)")
+    fun loadCurrentPortion(_smartMeterId: UUID) {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadCurrentPortion($_smartMeterId)")
 
         mRunningOperations.value++
         mCurrentPortion.value = null
@@ -80,8 +106,8 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         }
     }
 
-    fun newDistribution() {
-        Log.d(TAG, "$TAG_E_COMMUNITY_VM::newDistribution()")
+    fun loadNewDistribution() {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadNewDistribution()")
 
         mRunningOperations.value++
         mNewDistribution.value = null
@@ -95,8 +121,8 @@ class ECommunityViewModel private constructor(_application: ECommunityApplicatio
         }
     }
 
-    fun monitoringStatus() {
-        Log.d(TAG, "$TAG_E_COMMUNITY_VM::monitoring()")
+    fun loadMonitoringStatus() {
+        Log.d(TAG, "$TAG_E_COMMUNITY_VM::loadMonitoringStatus()")
         mRunningOperations.value++
         mMonitoringStatus.clear()
 

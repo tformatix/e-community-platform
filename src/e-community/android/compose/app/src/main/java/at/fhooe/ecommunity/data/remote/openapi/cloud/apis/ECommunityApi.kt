@@ -23,8 +23,7 @@ package at.fhooe.ecommunity.data.remote.openapi.cloud.apis
 import java.io.IOException
 
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ErrorDto
-import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MemberDto
-import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalMemberDto
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalECommunityDto
 
 import com.squareup.moshi.Json
 
@@ -41,7 +40,7 @@ import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ResponseType
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.Success
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.toMultiValue
 
-class MemberApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
+class ECommunityApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
     companion object {
         @JvmStatic
         val defaultBasePath: String by lazy {
@@ -52,7 +51,7 @@ class MemberApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath)
     /**
     * 
     * 
-    * @return MemberDto
+    * @return MinimalECommunityDto
     * @throws IllegalStateException If the request is not correctly configured
     * @throws IOException Rethrows the OkHttp execute method exception
     * @throws UnsupportedOperationException If the API returns an informational or redirection response
@@ -61,11 +60,11 @@ class MemberApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath)
     */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun memberGetMemberGet() : MemberDto {
-        val localVarResponse = memberGetMemberGetWithHttpInfo()
+    fun eCommunityGetMinimalECommunityGet() : MinimalECommunityDto {
+        val localVarResponse = eCommunityGetMinimalECommunityGetWithHttpInfo()
 
         return when (localVarResponse.responseType) {
-            ResponseType.Success -> (localVarResponse as Success<*>).data as MemberDto
+            ResponseType.Success -> (localVarResponse as Success<*>).data as MinimalECommunityDto
             ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
             ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
             ResponseType.ClientError -> {
@@ -82,26 +81,26 @@ class MemberApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath)
     /**
     * 
     * 
-    * @return ApiResponse<MemberDto?>
+    * @return ApiResponse<MinimalECommunityDto?>
     * @throws IllegalStateException If the request is not correctly configured
     * @throws IOException Rethrows the OkHttp execute method exception
     */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
-    fun memberGetMemberGetWithHttpInfo() : ApiResponse<MemberDto?> {
-        val localVariableConfig = memberGetMemberGetRequestConfig()
+    fun eCommunityGetMinimalECommunityGetWithHttpInfo() : ApiResponse<MinimalECommunityDto?> {
+        val localVariableConfig = eCommunityGetMinimalECommunityGetRequestConfig()
 
-        return request<Unit, MemberDto>(
+        return request<Unit, MinimalECommunityDto>(
             localVariableConfig
         )
     }
 
     /**
-    * To obtain the request config of the operation memberGetMemberGet
+    * To obtain the request config of the operation eCommunityGetMinimalECommunityGet
     *
     * @return RequestConfig
     */
-    fun memberGetMemberGetRequestConfig() : RequestConfig<Unit> {
+    fun eCommunityGetMinimalECommunityGetRequestConfig() : RequestConfig<Unit> {
         val localVariableBody = null
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
@@ -109,74 +108,7 @@ class MemberApi(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath)
 
         return RequestConfig(
             method = RequestMethod.GET,
-            path = "/Member/GetMember",
-            query = localVariableQuery,
-            headers = localVariableHeaders,
-            body = localVariableBody
-        )
-    }
-
-    /**
-    * 
-    * 
-    * @return MinimalMemberDto
-    * @throws IllegalStateException If the request is not correctly configured
-    * @throws IOException Rethrows the OkHttp execute method exception
-    * @throws UnsupportedOperationException If the API returns an informational or redirection response
-    * @throws ClientException If the API returns a client error response
-    * @throws ServerException If the API returns a server error response
-    */
-    @Suppress("UNCHECKED_CAST")
-    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun memberGetMinimalMemberGet() : MinimalMemberDto {
-        val localVarResponse = memberGetMinimalMemberGetWithHttpInfo()
-
-        return when (localVarResponse.responseType) {
-            ResponseType.Success -> (localVarResponse as Success<*>).data as MinimalMemberDto
-            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
-            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
-            ResponseType.ClientError -> {
-                val localVarError = localVarResponse as ClientError<*>
-                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
-            }
-            ResponseType.ServerError -> {
-                val localVarError = localVarResponse as ServerError<*>
-                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
-            }
-        }
-    }
-
-    /**
-    * 
-    * 
-    * @return ApiResponse<MinimalMemberDto?>
-    * @throws IllegalStateException If the request is not correctly configured
-    * @throws IOException Rethrows the OkHttp execute method exception
-    */
-    @Suppress("UNCHECKED_CAST")
-    @Throws(IllegalStateException::class, IOException::class)
-    fun memberGetMinimalMemberGetWithHttpInfo() : ApiResponse<MinimalMemberDto?> {
-        val localVariableConfig = memberGetMinimalMemberGetRequestConfig()
-
-        return request<Unit, MinimalMemberDto>(
-            localVariableConfig
-        )
-    }
-
-    /**
-    * To obtain the request config of the operation memberGetMinimalMemberGet
-    *
-    * @return RequestConfig
-    */
-    fun memberGetMinimalMemberGetRequestConfig() : RequestConfig<Unit> {
-        val localVariableBody = null
-        val localVariableQuery: MultiValueMap = mutableMapOf()
-        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
-        localVariableHeaders["Accept"] = "application/json"
-
-        return RequestConfig(
-            method = RequestMethod.GET,
-            path = "/Member/GetMinimalMember",
+            path = "/ECommunity/GetMinimalECommunity",
             query = localVariableQuery,
             headers = localVariableHeaders,
             body = localVariableBody

@@ -140,10 +140,11 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
                             if (!currentPortion.SmartMeter.IsNonComplianceMuted) {
                                 // only send notification if not muted and if feed-in over threshold
-                                var fcmAndroidData = mFCMService.NonCompliance;
+                                var deviation = meterDataMonitoring.ProjectedActiveEnergyPlus - forecast;
+                                var fcmAndroidData = (deviation > 0) ? mFCMService.NonComplianceMore : mFCMService.NonComplianceLess;
                                 fcmAndroidData.BodyArgs = new List<string>() {
                                     currentPortion.SmartMeter.Name,
-                                    (meterDataMonitoring.ProjectedActiveEnergyPlus - forecast).ToString(),
+                                    deviation.ToString(),
                                     "Wh"
                                 };
                                 await mFCMService.SendPushNotificationMember(fcmAndroidData, currentPortion.SmartMeter.MemberId);
@@ -197,20 +198,20 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             await mDb.SmartMeterPortion
                 .Include(x => x.ECommunityDistribution)
                 .ThenInclude(x => x.SmartMeterPortions)
-                .Where(x => x.SmartMeterId == _smartMeterId && x.ECommunityDistribution.Timestamp > notBefore)
+                .Where(x => x.ECommunityDistribution.IsRelevant &&
+                    x.ActualActiveEnergyPlus != null &&
+                    x.SmartMeterId == _smartMeterId &&
+                    x.ECommunityDistribution.Timestamp > notBefore
+                )
                 .ForEachAsync(x => {
-                    if (x.ActualActiveEnergyPlus != null) {
-                        if (x.ECommunityDistribution.IsRelevant) {
-                            var forecast = GetForecastValue(x.EstimatedActiveEnergyPlus, x.Flexibility, x.Deviation);
-                            var actual = (int)x.ActualActiveEnergyPlus;
-                            if (IsGoodForecast(forecast, actual)) {
-                                performance.GoodForecastCount++;
-                            }
-
-                            performance.ForecastCount++;
-                            performance.WrongForecasted += Math.Abs(forecast - actual);
-                        }
+                    var forecast = GetForecastValue(x.EstimatedActiveEnergyPlus, x.Flexibility, x.Deviation);
+                    var actual = (int)x.ActualActiveEnergyPlus;
+                    if (IsGoodForecast(forecast, actual)) {
+                        performance.GoodForecastCount++;
                     }
+
+                    performance.ForecastCount++;
+                    performance.WrongForecasted += Math.Abs(forecast - actual);
                 });
 
             return performance;

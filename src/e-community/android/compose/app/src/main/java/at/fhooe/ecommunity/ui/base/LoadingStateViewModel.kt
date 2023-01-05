@@ -27,6 +27,14 @@ abstract class LoadingStateViewModel(val mApplication: ECommunityApplication) : 
         mListener = _listener
     }
 
+    fun unregisterListener() {
+        mListener = null
+    }
+
+    fun isListenerRegistered():Boolean{
+        return mListener != null
+    }
+
     /**
      * default exception handler for remote operations
      * @param _id (optional) a view model must process more than one action and these must be distinguished (e.g. Login and Register)

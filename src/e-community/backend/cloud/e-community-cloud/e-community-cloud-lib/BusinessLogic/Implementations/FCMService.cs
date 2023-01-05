@@ -21,27 +21,33 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         }
 
         public FCMAndroidData NewDistribution => new() {
-            Id = "ecommunity_new_distribution",
+            Id = "e_community",
             TitleKey = "notification_new_distribution_title",
             BodyKey = "notification_new_distribution_body",
         };
 
         public FCMAndroidData FinalDistribution => new() {
-            Id = "ecommunity_final_distribution",
+            Id = "e_community",
             TitleKey = "notification_final_distribution_title",
             BodyKey = "notification_final_distribution_body",
         };
 
         public FCMAndroidData Offline => new() {
-            Id = "ecommunity_offline",
+            Id = "e_community",
             TitleKey = "notification_offline_title",
             BodyKey = "notification_offline_body",
         };
 
-        public FCMAndroidData NonCompliance => new() {
-            Id = "ecommunity_non_compliance",
+        public FCMAndroidData NonComplianceMore => new() {
+            Id = "e_community",
             TitleKey = "notification_non_compliance_title",
-            BodyKey = "notification_non_compliance_body",
+            BodyKey = "notification_non_compliance_more_body",
+        };
+
+        public FCMAndroidData NonComplianceLess => new() {
+            Id = "e_community",
+            TitleKey = "notification_non_compliance_title",
+            BodyKey = "notification_non_compliance_less_body",
         };
 
         public async Task RegisterFCMToken(Guid _memberId, string _token) {

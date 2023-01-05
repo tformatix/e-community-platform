@@ -20,6 +20,7 @@
 
 package at.fhooe.ecommunity.data.remote.openapi.cloud.models
 
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalMemberDto
 
 import com.squareup.moshi.Json
 
@@ -27,16 +28,20 @@ import com.squareup.moshi.Json
  * 
  *
  * @param id 
- * @param userName 
+ * @param name 
+ * @param members 
  */
 
-data class MinimalMemberDto (
+data class MinimalECommunityDto (
 
     @Json(name = "id")
     val id: java.util.UUID? = null,
 
-    @Json(name = "userName")
-    val userName: kotlin.String? = null
+    @Json(name = "name")
+    val name: kotlin.String? = null,
+
+    @Json(name = "members")
+    val members: kotlin.collections.List<MinimalMemberDto>? = null
 
 )
 

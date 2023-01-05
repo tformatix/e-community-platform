@@ -10,6 +10,7 @@ using e_community_cloud_lib.Util.Enums;
 using System.Collections.Generic;
 using e_community_cloud_lib.Util.Extensions;
 using e_community_cloud_lib.Util;
+using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.Database
 {
@@ -144,10 +145,10 @@ namespace e_community_cloud_lib.Database
 
         /// <param name="_memberId">member id</param>
         /// <returns>eCommunity id of a member (only when currently active)</returns>
-        public Guid? GetECommunityId(Guid? _memberId)
+        public async Task<Guid?> GetECommunityId(Guid? _memberId)
         {
-            return ECommunityMembership
-                .FirstOrDefault(x => x.MemberId == _memberId && Constants.ACTIVE_MEMBER_PERMISSIONS.Contains(x.ECommunityPermission))
+            return (await ECommunityMembership
+                .FirstOrDefaultAsync(x => x.MemberId == _memberId && Constants.ACTIVE_MEMBER_PERMISSIONS.Contains(x.ECommunityPermission)))
                 ?.ECommunityId;
         }
     }

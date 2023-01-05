@@ -75,7 +75,14 @@ class MainActivity : ComponentActivity() {
 
         mMessageReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                Toast.makeText(this@MainActivity, intent?.getStringExtra("NOTIFICATION_EXTRA_MESSAGE"), Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, intent?.getStringExtra(Constants.BROADCAST_RECEIVER_NOTIFICATION_EXTRA_MESSAGE), Toast.LENGTH_LONG)
+                    .show()
+                if (intent?.getStringExtra(Constants.BROADCAST_RECEIVER_NOTIFICATION_EXTRA_ID) == Constants.NOTIFICATION_ID_E_COMMUNITY) {
+                    // message for eCommunity screen
+                    val eCommunityViewModel = ECommunityViewModel.getInstance(mApplication)
+                    if (eCommunityViewModel.isListenerRegistered()) eCommunityViewModel.init(false)
+                }
+
             }
         }
 
@@ -284,7 +291,7 @@ private fun AppBottomNavigation(navController: NavHostController, bottomNavItems
                 icon = {
                     BadgedBox(
                         badge = {
-                            if(screen.badge) Badge()
+                            if (screen.badge) Badge()
                         }) {
                         screen.icon?.let { painterResource(id = it) }?.let {
                             Icon(

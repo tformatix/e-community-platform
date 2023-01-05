@@ -33,7 +33,8 @@
     <string name="notification_offline_title">Smart Meter Offline</string>
     <string name="notification_offline_body">%1$s ist offline!</string>
     <string name="notification_non_compliance_title">Vorhersage wird wahrscheinlich nicht eingehalten!</string>
-    <string name="notification_non_compliance_body">%1$s: Abweichung von Vorhersage ist wahrscheinlich %2$s %3$s.</string>
+    <string name="notification_non_compliance_more_body">%1$s: %2$s %3$s mehr als vorhergesagt</string>
+    <string name="notification_non_compliance_less_body">%1$s: %2$s %3$s weniger als vorhergesagt</string>
 
     <!-- MAIN TITLES -->
     <string name="title_activity_main">eCommunity</string>

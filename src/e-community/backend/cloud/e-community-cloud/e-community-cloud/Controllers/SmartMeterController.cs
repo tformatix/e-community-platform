@@ -32,15 +32,30 @@ namespace e_community_cloud.Controllers
         [ProducesResponseType(typeof(ErrorDto), 400)]
         [Authorize]
         [HttpGet]
-        public List<MinimalSmartMeterDto> GetMinimalSmartMeters() {
+        public async Task<IActionResult> GetMinimalSmartMeters() {
+            var memberId = (Guid)User.GetMemberId();
+            Log.Information($"SmartMeter/GetMinimalSmartMeters::{memberId}");
+
+            var smartMeters = await mSmartMeterService.GetSmartMeters(memberId);
+
+            return Ok(smartMeters
+                .Select(x => x.CopyPropertiesTo(new MinimalSmartMeterDto()))
+                .ToList());
+        }
+
+        [ProducesResponseType(typeof(List<SmartMeterDto>), 200)]
+        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetSmartMeters() {
             var memberId = (Guid)User.GetMemberId();
             Log.Information($"SmartMeter/GetSmartMeters::{memberId}");
 
-            var smartMeters = mSmartMeterService.GetMinimalSmartMeters(memberId);
+            var smartMeters = await mSmartMeterService.GetSmartMeters(memberId);
 
-            return smartMeters
+            return Ok(smartMeters
                 .Select(x => x.CopyPropertiesTo(new MinimalSmartMeterDto()))
-                .ToList();
+                .ToList());
         }
 
         [HttpPut]

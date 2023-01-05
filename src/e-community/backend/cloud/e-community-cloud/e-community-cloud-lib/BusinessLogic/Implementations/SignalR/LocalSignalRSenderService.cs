@@ -38,7 +38,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
             mDb = _db;
         }
 
-        public void RequestRTData(Guid? _memberId) {
+        public async void RequestRTData(Guid? _memberId) {
             if (_memberId == null) {
                 throw new ServiceException(ServiceException.Type.MEMBER_ID_NOT_RESOLVABLE);
             }
@@ -47,7 +47,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
             var listenerDataMember = mRTListenerSingleton.RTListeners.GetValueOrDefault(memberId);
             if (listenerDataMember == null) {
                 // first devive of a member tries to start the real time service
-                var eCommunityId = mDb.GetECommunityId(_memberId);
+                var eCommunityId = await mDb.GetECommunityId(_memberId);
                 listenerDataMember = new RTListenerData() {
                     ECommunityId = eCommunityId,
                     ActiveDeviceCount = 0

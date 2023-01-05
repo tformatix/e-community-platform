@@ -19,14 +19,14 @@ import at.fhooe.ecommunity.ui.screen.e_community.component.ECommunityTile
 import at.fhooe.ecommunity.util.Formatter
 
 @Composable
-fun ECommunityPerformance(performance: PerformanceDto?) {
+fun ECommunityPerformance(performance: PerformanceDto?, onDurationDaysChanged: (durationDays: Int) -> Unit) {
     val formatter = Formatter(LocalContext.current)
-    val selectItems = listOf(
-        stringResource(R.string.e_community_performance_day),
-        stringResource(R.string.e_community_performance_week),
-        stringResource(R.string.e_community_performance_month),
-        stringResource(R.string.e_community_performance_year),
-        stringResource(R.string.e_community_performance_total)
+    val selectItems = mapOf(
+        stringResource(R.string.e_community_performance_day) to 1,
+        stringResource(R.string.e_community_performance_week) to 7,
+        stringResource(R.string.e_community_performance_month) to 30,
+        stringResource(R.string.e_community_performance_year) to 365,
+        stringResource(R.string.e_community_performance_total) to -1
     )
 
     var goodForecastsString = "-/-"
@@ -56,9 +56,9 @@ fun ECommunityPerformance(performance: PerformanceDto?) {
                     .align(Alignment.Center)
             )
             DropDown(
-                items = selectItems,
-                onSelected = {
-                    // TODO
+                items = selectItems.keys.toList(),
+                onSelected = { _, item ->
+                    selectItems[item]?.let { onDurationDaysChanged(it) }
                 },
                 modifier = Modifier
                     .align(Alignment.CenterEnd)

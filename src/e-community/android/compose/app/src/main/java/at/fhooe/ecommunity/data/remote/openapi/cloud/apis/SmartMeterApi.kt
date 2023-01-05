@@ -25,6 +25,7 @@ import java.io.IOException
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ErrorDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalSmartMeterDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.OkDto
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.SmartMeterDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.UpdateSmartMeterModel
 
 import com.squareup.moshi.Json
@@ -178,6 +179,73 @@ class SmartMeterApi(basePath: kotlin.String = defaultBasePath) : ApiClient(baseP
         return RequestConfig(
             method = RequestMethod.GET,
             path = "/SmartMeter/GetMinimalSmartMeters",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            body = localVariableBody
+        )
+    }
+
+    /**
+    * 
+    * 
+    * @return kotlin.collections.List<SmartMeterDto>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    * @throws UnsupportedOperationException If the API returns an informational or redirection response
+    * @throws ClientException If the API returns a client error response
+    * @throws ServerException If the API returns a server error response
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun smartMeterGetSmartMetersGet() : kotlin.collections.List<SmartMeterDto> {
+        val localVarResponse = smartMeterGetSmartMetersGetWithHttpInfo()
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as kotlin.collections.List<SmartMeterDto>
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+    * 
+    * 
+    * @return ApiResponse<kotlin.collections.List<SmartMeterDto>?>
+    * @throws IllegalStateException If the request is not correctly configured
+    * @throws IOException Rethrows the OkHttp execute method exception
+    */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun smartMeterGetSmartMetersGetWithHttpInfo() : ApiResponse<kotlin.collections.List<SmartMeterDto>?> {
+        val localVariableConfig = smartMeterGetSmartMetersGetRequestConfig()
+
+        return request<Unit, kotlin.collections.List<SmartMeterDto>>(
+            localVariableConfig
+        )
+    }
+
+    /**
+    * To obtain the request config of the operation smartMeterGetSmartMetersGet
+    *
+    * @return RequestConfig
+    */
+    fun smartMeterGetSmartMetersGetRequestConfig() : RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/SmartMeter/GetSmartMeters",
             query = localVariableQuery,
             headers = localVariableHeaders,
             body = localVariableBody

@@ -10,6 +10,6 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces
     {
         /// <param name="_memberId">member id</param>
         /// <returns>member which has according member id</returns>
-        Member GetMinimalMember(Guid _memberId);
+        Task<Member> GetMember(Guid _memberId);
     }
 }

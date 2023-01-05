@@ -7,6 +7,7 @@ using e_community_cloud_lib.Database;
 using e_community_cloud_lib.Database.General;
 using e_community_cloud_lib.Database.Local;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace e_community_cloud_lib.BusinessLogic.Implementations 
 {
@@ -24,8 +25,8 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations
             mUserManager = _userManager;
         }
 
-        public Member GetMinimalMember(Guid _memberId) {
-            var member = mDb.Member.SingleOrDefault(x => x.Id == _memberId);
+        public async Task<Member> GetMember (Guid _memberId) {
+            var member = await mDb.Member.SingleOrDefaultAsync(x => x.Id == _memberId);
             return member;
         }
     }

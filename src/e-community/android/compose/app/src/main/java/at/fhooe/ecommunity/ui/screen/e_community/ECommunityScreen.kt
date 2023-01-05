@@ -13,7 +13,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
-import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MonitoringStatusDto
 import at.fhooe.ecommunity.extension.gesturesDisabled
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.model.RemoteException
@@ -32,39 +31,48 @@ import java.util.*
 @Composable
 fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostController) {
     val runningOperations by remember { viewModel.mRunningOperations }
+
+    val eCommunity by remember { viewModel.mECommunity }
+    val smartMeters = remember { viewModel.mSmartMeters }
+
     val performance by remember { viewModel.mPerformance }
     val currentPortion by remember { viewModel.mCurrentPortion }
+
     val newDistribution by remember { viewModel.mNewDistribution }
     val monitoringStatus = remember { viewModel.mMonitoringStatus }
 
-
-    viewModel.registerListener { viewModelState ->
-        when (viewModelState.mState) {
-            LoadingState.State.SUCCESS -> {
-                viewModel.mRunningOperations.value--
-            }
-            LoadingState.State.FAILED -> {
-                // view model operation failed
-                viewModel.mRunningOperations.value--
-                viewModelState.mException?.let {
-                    val remoteException = viewModel.mApplication.remoteExceptionRepository.exceptionToRemoteException(it)
-                    if (remoteException.mType != RemoteException.Type.NOT_FOUND) {
-                        Toast.makeText(
-                            viewModel.mApplication,
-                            viewModel.mApplication.remoteExceptionRepository.remoteExceptionToString(remoteException),
-                            Toast.LENGTH_SHORT
-                        ).show() // show error message
-                    }
-                }
-            }
-            else -> {}
-        }
-    }
-
     LifecycleListener {
         // be aware of lifecycle event
-        if (it == Lifecycle.Event.ON_RESUME) {
-            viewModel.init()
+        when (it) {
+            Lifecycle.Event.ON_RESUME -> {
+                viewModel.registerListener { viewModelState ->
+                    when (viewModelState.mState) {
+                        LoadingState.State.SUCCESS -> {
+                            viewModel.mRunningOperations.value--
+                        }
+                        LoadingState.State.FAILED -> {
+                            // view model operation failed
+                            viewModel.mRunningOperations.value--
+                            viewModelState.mException?.let {
+                                val remoteException = viewModel.mApplication.remoteExceptionRepository.exceptionToRemoteException(it)
+                                if (remoteException.mType != RemoteException.Type.NOT_FOUND) {
+                                    Toast.makeText(
+                                        viewModel.mApplication,
+                                        viewModel.mApplication.remoteExceptionRepository.remoteExceptionToString(remoteException),
+                                        Toast.LENGTH_SHORT
+                                    ).show() // show error message
+                                }
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+                viewModel.init()
+            }
+            Lifecycle.Event.ON_PAUSE -> {
+                viewModel.unregisterListener()
+            }
+            else -> {}
         }
     }
 
@@ -72,7 +80,7 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
         modifier = Modifier
             .gesturesDisabled(runningOperations > 0)
             .fillMaxSize(),
-        topBar = { ECommunityTopBar() }
+        topBar = { ECommunityTopBar(eCommunity) }
     ) {
         if (runningOperations > 0) LoadingIndicator()
         Column(
@@ -89,8 +97,8 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                     }
                 )
             }
-            monitoringStatus.forEach{ monitoringStatus->
-                if(monitoringStatus.projectedActiveEnergyPlus == null){
+            monitoringStatus.forEach { monitoringStatus ->
+                if (monitoringStatus.projectedActiveEnergyPlus == null) {
                     ECommunityOffline(monitoringStatus)
                 } else {
                     ECommunityNonCompliance(
@@ -101,7 +109,12 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
                     )
                 }
             }
-            ECommunityPerformance(performance)
+            ECommunityPerformance(
+                performance = performance,
+                onDurationDaysChanged = {
+                    viewModel.loadPerformance(UUID.fromString("6fb64e7f-b7f9-43e6-298e-08da59e57387"), it) // TODO
+                }
+            )
             ECommunityDivider()
             ECommunityDistribution(currentPortion)
         }

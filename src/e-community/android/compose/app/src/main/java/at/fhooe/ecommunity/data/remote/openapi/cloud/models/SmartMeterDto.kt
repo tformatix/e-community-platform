@@ -29,10 +29,16 @@ import com.squareup.moshi.Json
  * @param id 
  * @param name 
  * @param description 
+ * @param isNonComplianceMuted 
  * @param isMain 
+ * @param measuresConsumption 
+ * @param measuresFeedIn 
+ * @param isDirectFeedIn 
+ * @param isOverflowFeedIn 
+ * @param localStorageId 
  */
 
-data class MinimalSmartMeterDto (
+data class SmartMeterDto (
 
     @Json(name = "id")
     val id: java.util.UUID? = null,
@@ -43,8 +49,26 @@ data class MinimalSmartMeterDto (
     @Json(name = "description")
     val description: kotlin.String? = null,
 
+    @Json(name = "isNonComplianceMuted")
+    val isNonComplianceMuted: kotlin.Boolean? = null,
+
     @Json(name = "isMain")
-    val isMain: kotlin.Boolean? = null
+    val isMain: kotlin.Boolean? = null,
+
+    @Json(name = "measuresConsumption")
+    val measuresConsumption: kotlin.Boolean? = null,
+
+    @Json(name = "measuresFeedIn")
+    val measuresFeedIn: kotlin.Boolean? = null,
+
+    @Json(name = "isDirectFeedIn")
+    val isDirectFeedIn: kotlin.Boolean? = null,
+
+    @Json(name = "isOverflowFeedIn")
+    val isOverflowFeedIn: kotlin.Boolean? = null,
+
+    @Json(name = "localStorageId")
+    val localStorageId: java.util.UUID? = null
 
 )
 

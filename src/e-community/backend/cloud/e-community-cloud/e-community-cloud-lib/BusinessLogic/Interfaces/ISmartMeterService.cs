@@ -14,7 +14,7 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces
         /// fetchs all smart meters belonging to the member
         /// </summary>
         /// <returns>list of smart meters</returns>
-        List<SmartMeter> GetMinimalSmartMeters(Guid _memberId);
+        Task<List<SmartMeter>> GetSmartMeters(Guid _memberId);
 
         /// <summary>
         /// updates the smart meter object

@@ -18,25 +18,5 @@ namespace e_community_cloud.Dtos {
         /// marks the main raspberry (only one weather calculation per household)
         /// </summary>
         public bool IsMain { get; set; }
-
-        /// <summary>
-        /// device measures energy consumption
-        /// </summary>
-        public bool MeasuresConsumption { get; set; }
-
-        /// <summary>
-        /// device measures energy feed in
-        /// </summary>
-        public bool MeasuresFeedIn { get; set; }
-
-        /// <summary>
-        /// everything of the energy feed in goes directly back to the power grid
-        /// </summary>
-        public bool IsDirectFeedIn { get; set; }
-
-        /// <summary>
-        /// just the overflow of the energy feed in goes back to the power grid
-        /// </summary>
-        public bool IsOverflowFeedIn { get; set; }
     }
 }

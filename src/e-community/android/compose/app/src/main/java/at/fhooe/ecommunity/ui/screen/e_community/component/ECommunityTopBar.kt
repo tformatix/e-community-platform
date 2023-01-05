@@ -7,31 +7,40 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.Power
 import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import at.fhooe.ecommunity.Constants
 import at.fhooe.ecommunity.R
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.MinimalECommunityDto
 
 @Composable
-fun ECommunityTopBar() {
+fun ECommunityTopBar(eCommunity: MinimalECommunityDto?) {
+    var memberString = ""
+    val lastMemberIndex = eCommunity?.members?.size?.minus(1) ?: 0
+    eCommunity?.members?.forEachIndexed { index, member ->
+        var splitter = ""
+        if(index != lastMemberIndex) {
+            splitter = if (index == Constants.MAX_MEMBERS_TOP_BAR - 1) ", ..." else ", "
+        }
+        memberString = "$memberString${member.userName}$splitter"
+    }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(colorResource(id = R.color.blue))
-            .padding(16.dp, 8.dp, 12.dp, 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -51,13 +60,13 @@ fun ECommunityTopBar() {
                     .padding(horizontal = 8.dp),
             ) {
                 Text(
-                    text = "Amazing Community",
+                    text = eCommunity?.name ?: "",
                     color = colorResource(id = R.color.white),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    text = "Fischer, Hofer, Puchner, Zauner, ...",
+                    text = memberString,
                     color = colorResource(id = R.color.white),
                     fontSize = 12.sp,
                     modifier = Modifier
@@ -107,13 +116,13 @@ fun ECommunityTopBar() {
                     )
                 }
             }
-            Icon(
-                imageVector = Icons.Outlined.ArrowForwardIos,
-                contentDescription = stringResource(R.string.e_community_top_bar_detail_icon_desc),
-                tint = colorResource(id = R.color.white),
-                modifier = Modifier
-                    .padding(start = 8.dp)
-            )
+//            Icon(
+//                imageVector = Icons.Outlined.ArrowForwardIos,
+//                contentDescription = stringResource(R.string.e_community_top_bar_detail_icon_desc),
+//                tint = colorResource(id = R.color.white),
+//                modifier = Modifier
+//                    .padding(start = 8.dp)
+//            )
         }
     }
 }

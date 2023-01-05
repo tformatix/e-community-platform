@@ -26,12 +26,24 @@ namespace e_community_cloud.Controllers
         [ProducesResponseType(typeof(ErrorDto), 400)]
         [Authorize]
         [HttpGet]
-        public MinimalMemberDto GetMinimalMember() {
+        public async Task<IActionResult> GetMinimalMember() {
             var memberId = (Guid)User.GetMemberId();
             Log.Information($"Member/GetMinimalMember::{memberId}");
 
-            var member = mMemberService.GetMinimalMember(memberId);
-            return member.CopyPropertiesTo(new MinimalMemberDto());
+            var member = await mMemberService.GetMember(memberId);
+            return Ok(member.CopyPropertiesTo(new MinimalMemberDto()));
+        }
+
+        [ProducesResponseType(typeof(MemberDto), 200)]
+        [ProducesResponseType(typeof(ErrorDto), 400)]
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetMember() {
+            var memberId = (Guid)User.GetMemberId();
+            Log.Information($"Member/GetMember::{memberId}");
+
+            var member = await mMemberService.GetMember(memberId);
+            return Ok(member.CopyPropertiesTo(new MemberDto()));
         }
     }
 }

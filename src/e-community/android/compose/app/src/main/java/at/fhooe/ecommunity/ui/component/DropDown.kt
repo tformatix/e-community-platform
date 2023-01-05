@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import at.fhooe.ecommunity.R
 
 @Composable
-fun DropDown(items: List<String>, onSelected: (idx: Int) -> Unit, modifier: Modifier = Modifier) {
+fun DropDown(items: List<String>, onSelected: (idx: Int, item: String) -> Unit, modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
 
@@ -30,7 +30,7 @@ fun DropDown(items: List<String>, onSelected: (idx: Int) -> Unit, modifier: Modi
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .clickable(onClick = { expanded = true })
-        ){
+        ) {
             Text(
                 text = items[selectedIndex],
                 fontSize = 12.sp,
@@ -45,18 +45,24 @@ fun DropDown(items: List<String>, onSelected: (idx: Int) -> Unit, modifier: Modi
             onDismissRequest = { expanded = false }
         ) {
             items.forEachIndexed { idx, item ->
+                val isSelected = idx == selectedIndex
                 DropdownMenuItem(
                     onClick = {
                         selectedIndex = idx
                         expanded = false
-                        onSelected(idx)
+                        onSelected(idx, item)
                     },
                     modifier = Modifier
-                        .background(if (idx == selectedIndex) colorResource(id = R.color.gray_light) else Color.White)
+                        .background(if (isSelected) colorResource(id = R.color.gray_light) else Color.Transparent)
                 ) {
-                    Text(
-                        text = item,
-                    )
+                    if(isSelected) {
+                        Text(
+                            text = item,
+                            color = Color.Black
+                        )
+                    }else {
+                        Text(text = item)
+                    }
                 }
             }
         }

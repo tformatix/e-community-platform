@@ -1,21 +1,11 @@
-TODO
-- When is a good forecast?
-	- from forecast to forecast +/- flexibility OR only forecast +/- flexibility
-- MonitoringStatus
-
 - Android
-	- Non-Compliance Text
-	- DropDown Performance
-	- Mute
-	- Tabs (more smart meters)
-	- in-app notification -> show NewDistribution/Finalize/NonCompliance/Offline
-		- Singleton ViewModel
+	- SmartMeter
+		- Tabs
 	- Chart + TopBar
 		- RT SignalR
+	- Notification Badge
 - Backend
 	- Notifications -> Wh, kWh, ...
 	- error handling (e.g. portion ack no distribution)
-
-- Good Min Threshold?
 
 Ersatzwerte, Lastprofil und Flexibiltät schlecht --> in BA schreiben
