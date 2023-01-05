@@ -1,6 +1,4 @@
 - Android
-	- Chart + TopBar
-		- RT SignalR
 	- Notification Badge
 - Backend
 	- error handling Portion Ack
