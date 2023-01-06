@@ -192,8 +192,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 WrongForecasted = 0
             };
 
-            var notBefore = DateTime.UtcNow
-                .AddDays(-_durationDays);
+            var notBefore = (_durationDays >= 0) ? DateTime.UtcNow.AddDays(-_durationDays) : DateTime.MinValue;
 
             await mDb.SmartMeterPortion
                 .Include(x => x.ECommunityDistribution)

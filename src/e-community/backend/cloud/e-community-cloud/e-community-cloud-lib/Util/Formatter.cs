@@ -30,7 +30,7 @@ namespace e_community_cloud_lib.Util
                 unit = Constants.GIGAWATT_UNIT;
             }
 
-            return $"{firstNumber}.{commanNumber.ToString().Substring(0,2)} {unit}{energyUnit}";
+            return $"{firstNumber}.{(commanNumber * 10).ToString().Substring(0,2)} {unit}{energyUnit}";
         }
     }
 }

@@ -1,8 +1,6 @@
 - Android
 	- Notification Badge
-	- 1.2. kWh
 - Backend
-	- total performance
 	- error handling Portion Ack
 
 Ersatzwerte, Lastprofil und Flexibiltät schlecht --> in BA schreiben

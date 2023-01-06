@@ -3,12 +3,15 @@ package at.fhooe.ecommunity.ui.screen.startup.forgot_password
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -74,9 +77,12 @@ fun ForgotPasswordScreen(_viewModel: ForgotPasswordViewModel, _navController: Na
         ) {
             // logo as image
             Image(
-                painter = painterResource(R.drawable.ic_e_community_logo),
-                modifier = Modifier.height(100.dp),
+                painter = painterResource(id = R.drawable.ic_e_community_logo),
                 contentDescription = stringResource(R.string.image_description_logo),
+                contentScale = ContentScale.Crop, // crop the image if it's not a square
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(CircleShape)
             )
             Spacer(modifier = Modifier.height(40.dp))
 

@@ -41,7 +41,7 @@ fun ECommunityRealTime(meterDataRT: BufferedMeterDataRTDto?, selectedSmartMeterI
         content = currentConsumptionString,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 4.dp)
+            .padding(top = 8.dp)
             .padding(horizontal = dimensionResource(id = R.dimen.activity_vertical_margin))
     )
 }

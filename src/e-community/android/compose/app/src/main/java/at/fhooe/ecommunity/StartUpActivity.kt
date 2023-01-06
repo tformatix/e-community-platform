@@ -41,25 +41,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-/**
- * Activity managing the start up process
- * check if user is logged => go directly to MainActivity
- * else show StartUp Screen
- * @see ComponentActivity (compose activity)
- */
 class StartUpActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val application = application as ECommunityApplication
 
-        CoroutineScope(Dispatchers.IO).launch {
-            application.cloudRESTRepository.authorize()?.let {
-                // user authorized
-                val intent = Intent(this@StartUpActivity, MainActivity::class.java)
-                this@StartUpActivity.startActivity(intent)
-            }
-        }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            application.cloudRESTRepository.authorize()?.let {
+//                // user authorized
+//                val intent = Intent(this@StartUpActivity, MainActivity::class.java)
+//                this@StartUpActivity.startActivity(intent)
+//            }
+//        }
 
         setContent {
             ECommunityTheme {

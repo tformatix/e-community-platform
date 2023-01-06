@@ -54,7 +54,7 @@ class Formatter(private val mContext: Context) {
             unit = Constants.GIGAWATT_UNIT
         }
 
-        return "$firstNumber.${commaNumber.toString().substring(0, 2)} $unit$energyUnit"
+        return "$firstNumber.${(commaNumber * 10).toString().substring(0, 2)} $unit$energyUnit"
     }
 
     /**
