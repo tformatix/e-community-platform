@@ -144,7 +144,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                                 var fcmAndroidData = (deviation > 0) ? mFCMService.NonComplianceMore : mFCMService.NonComplianceLess;
                                 fcmAndroidData.BodyArgs = new List<string>() {
                                     currentPortion.SmartMeter.Name,
-                                    Formatter.formatMeterData(deviation, true)
+                                    Formatter.formatMeterData(Math.Abs(deviation), true)
                                 };
 
                                 await mFCMService.SendPushNotificationMember(fcmAndroidData, currentPortion.SmartMeter.MemberId);

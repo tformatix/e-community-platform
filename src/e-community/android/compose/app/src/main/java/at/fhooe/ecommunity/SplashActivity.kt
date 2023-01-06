@@ -62,7 +62,7 @@ class SplashActivity : ComponentActivity() {
         val application = application as ECommunityApplication
 
         CoroutineScope(Dispatchers.IO).launch {
-            val login = application.cloudRESTRepository.authorize()
+            val login = application.cloudRESTRepository.authorize(true)
             val path = if (login == null) {
                 // user not authorized
                 StartUpActivity::class.java
@@ -77,10 +77,9 @@ class SplashActivity : ComponentActivity() {
         setContent {
             ECommunityTheme {// A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colors.background
                 ) {
-                    LoadingIndicator()
                     Splash()
                 }
             }
@@ -95,6 +94,10 @@ fun Splash() {
         modifier = Modifier
             .fillMaxSize()
     ) {
+        LoadingIndicator(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+        )
         Image(
             painter = painterResource(id = R.drawable.ic_e_community_logo),
             contentDescription = stringResource(R.string.image_description_logo),

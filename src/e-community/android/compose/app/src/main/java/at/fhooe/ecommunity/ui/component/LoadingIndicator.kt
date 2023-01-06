@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
  * @see Composable
  */
 @Composable
-fun LoadingIndicator() {
+fun LoadingIndicator(modifier: Modifier = Modifier) {
     LinearProgressIndicator(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     )
 }

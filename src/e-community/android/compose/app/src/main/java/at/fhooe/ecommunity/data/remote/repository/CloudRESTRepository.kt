@@ -7,6 +7,7 @@ import at.fhooe.ecommunity.*
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.AuthApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.apis.FCMApi
 import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ApiClient
+import at.fhooe.ecommunity.data.remote.openapi.cloud.infrastructure.ClientException
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.LoginDto
 import at.fhooe.ecommunity.model.RemoteException
 import at.fhooe.ecommunity.util.EncryptedPreferences
@@ -34,7 +35,7 @@ class CloudRESTRepository(private val mApplication: ECommunityApplication) {
             else Dispatchers.IO + _exceptionHandler
 
         CoroutineScope(coroutineContext).launch {
-            val login = authorize()
+            val login = authorize(_shouldRefresh)
             if (login == null) {
                 goToStartUpActivity()
                 return@launch
@@ -46,8 +47,7 @@ class CloudRESTRepository(private val mApplication: ECommunityApplication) {
                         return@launch
                     } catch (_exc: Exception){
                         if(!_shouldRefresh) {
-                            val remoteExc = mApplication.remoteExceptionRepository.exceptionToRemoteException(_exc)
-                            if (remoteExc.mType == RemoteException.Type.UNAUTHORIZED) {
+                            if (_exc is ClientException && _exc.statusCode == 401) {
                                 // access token invalid --> refresh token
                                 authorizedBackendCall(_exceptionHandler, true, _backendCall)
                                 return@launch
