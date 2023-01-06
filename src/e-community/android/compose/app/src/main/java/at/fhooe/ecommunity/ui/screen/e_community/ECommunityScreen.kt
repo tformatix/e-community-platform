@@ -95,7 +95,6 @@ fun ECommunityScreen(viewModel: ECommunityViewModel, navController: NavHostContr
 
     Scaffold(
         modifier = Modifier
-            .gesturesDisabled(runningOperations > 0)
             .fillMaxSize(),
         topBar = { ECommunityTopBar(eCommunity, meterDataRT) }
     ) {

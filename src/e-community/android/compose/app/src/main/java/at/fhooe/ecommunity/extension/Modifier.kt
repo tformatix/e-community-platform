@@ -19,10 +19,10 @@ fun Modifier.gesturesDisabled(_disabled: Boolean = true) =
                 while (true) {
                     awaitPointerEvent(pass = PointerEventPass.Initial)
                         .changes
-                        .forEach(PointerInputChange::consumeAllChanges)
+                        .forEach(PointerInputChange::consume)
                 }
             }
         }
     } else {
-        Modifier
+        this
     }
