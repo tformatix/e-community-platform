@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 /**
  * Cloud REST functionality
@@ -26,47 +27,68 @@ class CloudRESTRepository(private val mApplication: ECommunityApplication) {
      * @param _exceptionHandler handler for exceptions
      * @param _backendCall lambda call which gets token and returns nothing
      */
-    fun authorizedBackendCall(_exceptionHandler: CoroutineExceptionHandler? = null, _backendCall: (token: String) -> Unit) {
+    fun authorizedBackendCall(_exceptionHandler: CoroutineExceptionHandler? = null, _shouldRefresh: Boolean = false, _backendCall: (token: String) -> Unit) {
         // add exception handler (if available) to coroutine context
         val coroutineContext =
             if (_exceptionHandler == null) Dispatchers.IO
             else Dispatchers.IO + _exceptionHandler
 
         CoroutineScope(coroutineContext).launch {
-            try {
-                val login = authorize()
-                if (login == null) {
-                    goToStartUpActivity()
-                    return@launch
-                } else {
-                    // authorized
-                    login.accessToken?.let { token ->
+            val login = authorize()
+            if (login == null) {
+                goToStartUpActivity()
+                return@launch
+            } else {
+                // authorized
+                login.accessToken?.let { token ->
+                    try {
                         _backendCall(token)
                         return@launch
+                    } catch (_exc: Exception){
+                        if(!_shouldRefresh) {
+                            val remoteExc = mApplication.remoteExceptionRepository.exceptionToRemoteException(_exc)
+                            if (remoteExc.mType == RemoteException.Type.UNAUTHORIZED) {
+                                // access token invalid --> refresh token
+                                authorizedBackendCall(_exceptionHandler, true, _backendCall)
+                                return@launch
+                            } else {
+                                throw _exc
+                            }
+                        } else {
+                            throw _exc
+                        }
                     }
                 }
-            } catch (_exc: Exception) {
-                //Toast.makeText(mApplication, mApplication.remoteExceptionRepository.exceptionToString(_exc), Toast.LENGTH_LONG)
-                //    .show() // show error message
-                throw _exc
             }
         }
     }
 
     /**
      * renews refresh token and puts access token into HTTP header
+     * @param _shouldRefresh (optional) should refresh token on server
      * @return a LoginDto containing the tokens (null if not successful)
      */
-    fun authorize(): LoginDto? {
-        val authApi = AuthApi(Constants.HTTP_BASE_URL_CLOUD)
-
+    fun authorize(_shouldRefresh: Boolean = false): LoginDto? {
         val sharedPrefs = EncryptedPreferences(mApplication)
-        val refreshToken = sharedPrefs.mSharedPreferences?.getString(mApplication.getString(R.string.shared_prefs_refresh_token), null) ?: return null
 
         try {
-            val loginDto = authApi.authRefreshPost(refreshToken) // try refreshing the tokens
+            val loginDto: LoginDto?
+            if (_shouldRefresh) {
+                // refresh from backend
+                val authApi = AuthApi(Constants.HTTP_BASE_URL_CLOUD)
+                val refreshToken =
+                    sharedPrefs.mSharedPreferences?.getString(mApplication.getString(R.string.shared_prefs_refresh_token), null) ?: return null
+                loginDto = authApi.authRefreshPost(refreshToken) // try refreshing the tokens
 
-            sharedPrefs.updateCredentials(loginDto) // update tokens
+                sharedPrefs.updateCredentials(loginDto) // update tokens
+            } else {
+                // token from shared prefs
+                loginDto = sharedPrefs.getCredentials()
+                if (loginDto == null) {
+                    // no tokens in shared prefs --> refresh from backend
+                    return authorize(true)
+                }
+            }
             loginDto.accessToken?.let { token ->
                 // insert token into http header
                 ApiClient.apiKey[Constants.HTTP_AUTHORIZATION_KEY] = token

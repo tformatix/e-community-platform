@@ -59,4 +59,12 @@ class EncryptedPreferences(private val mContext: Context) {
             mSharedPreferences?.edit()?.clear()?.apply()
         }
     }
+
+    fun getCredentials() : LoginDto? {
+        val token = mSharedPreferences?.getString(mContext.getString(R.string.shared_prefs_access_token), null) ?: return null
+        return LoginDto(
+            accessToken = token,
+            refreshToken = mSharedPreferences?.getString(mContext.getString(R.string.shared_prefs_refresh_token), null)
+        )
+    }
 }
