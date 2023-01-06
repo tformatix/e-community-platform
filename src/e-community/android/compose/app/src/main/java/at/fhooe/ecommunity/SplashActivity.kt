@@ -75,37 +75,21 @@ class SplashActivity : ComponentActivity() {
         }
 
         setContent {
-            ECommunityTheme {// A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Splash()
-                }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_e_community_logo),
+                    contentDescription = stringResource(R.string.image_description_logo),
+                    contentScale = ContentScale.Crop, // crop the image if it's not a square
+                    modifier = Modifier
+                        .padding(bottom = 15.dp)
+                        .size(160.dp)
+                        .clip(CircleShape)
+                        .align(Alignment.Center),
+                )
             }
         }
-    }
-}
-
-@Composable
-@Preview
-fun Splash() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        LoadingIndicator(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-        )
-        Image(
-            painter = painterResource(id = R.drawable.ic_e_community_logo),
-            contentDescription = stringResource(R.string.image_description_logo),
-            contentScale = ContentScale.Crop, // crop the image if it's not a square
-            modifier = Modifier
-                .size(150.dp)
-                .clip(CircleShape)
-                .align(Alignment.Center),
-        )
     }
 }
