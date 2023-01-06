@@ -47,14 +47,6 @@ class StartUpActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val application = application as ECommunityApplication
 
-//        CoroutineScope(Dispatchers.IO).launch {
-//            application.cloudRESTRepository.authorize()?.let {
-//                // user authorized
-//                val intent = Intent(this@StartUpActivity, MainActivity::class.java)
-//                this@StartUpActivity.startActivity(intent)
-//            }
-//        }
-
         setContent {
             ECommunityTheme {
                 // A surface container using the 'background' color from the theme

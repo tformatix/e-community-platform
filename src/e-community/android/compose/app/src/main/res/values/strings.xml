@@ -159,7 +159,7 @@
     <string name="e_community_top_bar_group_icon_desc">Group Icon</string>
     <string name="e_community_top_bar_feed_in_icon_desc">Feed in</string>
     <string name="e_community_top_bar_consumption_icon_desc">Consumption</string>
-    <string name="e_community_top_bar_detail_icon_desc">Detail eCommunity Screen</string>
+    <string name="e_community_top_bar_refresh_icon_desc">Refresh</string>
     <string name="e_community_tile_icon_desc">Undefinable Icon</string>
     <string name="e_community_performance_title">YOUR Performance</string>
     <string name="e_community_performance_good_forecasts">number of good forecasts</string>

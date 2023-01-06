@@ -137,7 +137,7 @@
     <string name="e_community_top_bar_group_icon_desc">Gruppen-Icon</string>
     <string name="e_community_top_bar_feed_in_icon_desc">Einspeisung</string>
     <string name="e_community_top_bar_consumption_icon_desc">Verbrauch</string>
-    <string name="e_community_top_bar_detail_icon_desc">Detail eCommunity Screen</string>
+    <string name="e_community_top_bar_refresh_icon_desc">Neu laden</string>
     <string name="e_community_tile_icon_desc">Undefinierbares Icon</string>
     <string name="e_community_performance_title">DEINE Performance</string>
     <string name="e_community_performance_good_forecasts">Anzahl der guten Prognosen</string>

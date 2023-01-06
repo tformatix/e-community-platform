@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -32,6 +33,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.navigation.Screen
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 import at.fhooe.ecommunity.ui.screen.startup.forgot_password.ForgotPasswordScreen
@@ -43,6 +45,7 @@ import at.fhooe.ecommunity.ui.screen.startup.register.RegisterViewModel
 import at.fhooe.ecommunity.ui.theme.ECommunityTheme
 import com.google.accompanist.pager.*
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,35 +64,67 @@ class SplashActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val application = application as ECommunityApplication
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val login = application.cloudRESTRepository.authorize(true)
-            val path = if (login == null) {
-                // user not authorized
-                StartUpActivity::class.java
-            } else {
-                // user authorized
-                MainActivity::class.java
-            }
-            val intent = Intent(this@SplashActivity, path)
-            this@SplashActivity.startActivity(intent)
-        }
+        tryLogin(application)
 
         setContent {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_e_community_logo),
-                    contentDescription = stringResource(R.string.image_description_logo),
-                    contentScale = ContentScale.Crop, // crop the image if it's not a square
+            ECommunityTheme {
+                Surface(
+                    color = MaterialTheme.colors.background,
                     modifier = Modifier
-                        .padding(bottom = 15.dp)
-                        .size(160.dp)
-                        .clip(CircleShape)
-                        .align(Alignment.Center),
-                )
+                        .fillMaxSize()
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        LoadingIndicator(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_e_community_logo),
+                            contentDescription = stringResource(R.string.image_description_logo),
+                            contentScale = ContentScale.Crop, // crop the image if it's not a square
+                            modifier = Modifier
+                                .padding(bottom = 15.dp)
+                                .size(160.dp)
+                                .clip(CircleShape)
+                                .align(Alignment.Center),
+                        )
+                    }
+                }
             }
         }
+    }
+
+    private fun tryLogin(_application: ECommunityApplication) {
+        val handler = CoroutineExceptionHandler { _, _exc ->
+            CoroutineScope(Dispatchers.Main).launch {
+                Toast.makeText(
+                    _application,
+                    _application.remoteExceptionRepository.exceptionToString(_exc),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            goToActivity(StartUpActivity::class.java)
+        }
+
+        CoroutineScope(Dispatchers.IO + handler).launch {
+            val login = _application.cloudRESTRepository.authorize(true)
+            goToActivity(
+                if (login == null) {
+                    // user not authorized
+                    StartUpActivity::class.java
+                } else {
+                    // user authorized
+                    MainActivity::class.java
+                }
+            )
+        }
+    }
+
+    private fun goToActivity(_path: Class<out ComponentActivity>) {
+        val intent = Intent(this@SplashActivity, _path)
+        this@SplashActivity.startActivity(intent)
     }
 }

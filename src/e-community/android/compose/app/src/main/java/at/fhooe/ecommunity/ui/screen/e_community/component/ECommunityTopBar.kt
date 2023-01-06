@@ -8,6 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Power
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
