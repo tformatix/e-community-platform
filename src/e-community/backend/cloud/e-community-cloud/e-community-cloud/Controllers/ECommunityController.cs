@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 
 namespace e_community_cloud.Controllers {
+
     [ApiController]
     [Route("[controller]/[action]")]
     public class ECommunityController : ControllerBase {

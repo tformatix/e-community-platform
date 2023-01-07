@@ -10,6 +10,9 @@ namespace e_community_cloud.Dtos {
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// list of minimal members
+        /// </summary>
         public List<MinimalMemberDto> Members { get; set; }
     }
 }

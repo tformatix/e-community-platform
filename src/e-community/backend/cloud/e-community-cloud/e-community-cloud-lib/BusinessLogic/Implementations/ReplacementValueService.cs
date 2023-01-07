@@ -1,16 +1,9 @@
 ﻿using e_community_cloud_lib.BusinessLogic.Interfaces;
-using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
 using e_community_cloud_lib.Database;
 using e_community_cloud_lib.Database.Local;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace e_community_cloud_lib.BusinessLogic.Implementations
-{
+namespace e_community_cloud_lib.BusinessLogic.Implementations {
     public class ReplacementValueService : IReplacementValueService {
         private readonly ECommunityCloudContext mDb;
 
@@ -19,6 +12,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations
         }
 
         public SmartMeterPortion GetReplacementValue(SmartMeterPortion _smartMeterPortion) {
+            // simply return last portion
             return mDb.SmartMeterPortion
                 .OrderByDescending(x => x.ECommunityDistributionId)
                 .FirstOrDefault(x =>

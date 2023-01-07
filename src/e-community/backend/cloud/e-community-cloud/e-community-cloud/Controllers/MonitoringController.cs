@@ -1,6 +1,5 @@
 ﻿using e_community_cloud.Dtos;
 using e_community_cloud_lib.BusinessLogic.Interfaces;
-using e_community_cloud_lib.Database.General;
 using e_community_cloud_lib.Models.Distribution;
 using e_community_cloud_lib.Util.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace e_community_cloud.Controllers {
+
     [ApiController]
     [Route("[controller]/[action]")]
     public class MonitoringController : ControllerBase {

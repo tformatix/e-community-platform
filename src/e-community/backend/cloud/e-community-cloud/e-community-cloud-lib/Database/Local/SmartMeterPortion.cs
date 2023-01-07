@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.Database.Local
 {
+    /// <summary>
+    /// assigned portion of a smart meter (for a specific distribution entry)
+    /// </summary>
     public class SmartMeterPortion
     {
         public int ECommunityDistributionId { get; set; }

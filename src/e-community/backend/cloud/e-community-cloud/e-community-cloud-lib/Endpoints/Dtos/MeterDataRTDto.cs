@@ -12,7 +12,7 @@ namespace e_community_cloud_lib.Endpoints.Dtos
     public class MeterDataRTDto
     {
         /// <summary>
-        /// id of member
+        /// id of smart meter
         /// </summary>
         public Guid SmartMeterId { get; set; }
 

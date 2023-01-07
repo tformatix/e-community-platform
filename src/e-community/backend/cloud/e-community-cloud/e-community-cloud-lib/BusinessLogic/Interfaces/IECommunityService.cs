@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace e_community_cloud_lib.BusinessLogic.Interfaces {
     public interface IECommunityService {
         /// <param name="_memberId">member id</param>
-        /// <returns>eComminty according to member id</returns>
+        /// <returns>eComminty according to member id (null if not available)</returns>
         Task<ECommunity> GetECommunity(Guid _memberId);
     }
 }

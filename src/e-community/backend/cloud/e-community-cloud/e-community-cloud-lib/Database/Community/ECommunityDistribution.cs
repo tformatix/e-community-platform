@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace e_community_cloud_lib.Database.Community
 {
+    /// <summary>
+    /// energy distribution at a specific hour for an eCommunity
+    /// </summary>
     public class ECommunityDistribution {
         public int Id { get; set; }
 

@@ -7,6 +7,9 @@ using e_community_cloud_lib.Database.Local;
 
 namespace e_community_cloud_lib.Database.General
 {
+    /// <summary>
+    /// monitoring at a specific timestamp
+    /// </summary>
     public class Monitoring
     {
         public int Id { get; set; }

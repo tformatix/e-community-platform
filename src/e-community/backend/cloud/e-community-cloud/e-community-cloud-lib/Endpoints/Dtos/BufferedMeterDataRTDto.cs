@@ -43,6 +43,9 @@ namespace e_community_cloud_lib.Endpoints.Dtos
         /// </summary>
         public int ECommunityReactivePowerMinus { get; set; }
 
+        /// <summary>
+        /// list of member's meter data
+        /// </summary>
         public List<MeterDataRTDto> MeterDataMember { get; set; }
     }
 }

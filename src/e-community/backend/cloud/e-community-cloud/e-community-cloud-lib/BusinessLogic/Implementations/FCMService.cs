@@ -56,10 +56,12 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
             var validUntil = DateTime.UtcNow.AddMonths(mConfiguration.GetValue<int>("FCMTokenLifetimeMonth"));
             if (fcmToken != null) {
+                // extend lifetime
                 fcmToken.MemberId = _memberId;
                 fcmToken.ValidUntil = validUntil;
             }
             else {
+                // register new token
                 mDb.MemberFCMToken.Add(new MemberFCMToken() {
                     MemberId = _memberId,
                     Token = _token,
@@ -70,6 +72,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         }
 
         public async Task<BatchResponse> SendPushNotificationMember(FCMAndroidData _fcmAndroidData, Guid _memberId) {
+            // get valid FCM-Tokens for a member
             var fcmTokens = mDb.MemberFCMToken
                 .Where(x => x.MemberId == _memberId && x.ValidUntil > DateTime.UtcNow)
                 .ToList();

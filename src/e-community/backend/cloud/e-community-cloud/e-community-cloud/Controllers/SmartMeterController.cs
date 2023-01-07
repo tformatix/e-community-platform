@@ -1,9 +1,7 @@
 ﻿using e_community_cloud.Dtos;
-using e_community_cloud_lib.BusinessLogic.Implementations;
 using e_community_cloud_lib.BusinessLogic.Interfaces;
 using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
 using e_community_cloud_lib.Models.SmartMeter;
-using e_community_cloud_lib.Util;
 using e_community_cloud_lib.Util.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace e_community_cloud.Controllers
-{
+namespace e_community_cloud.Controllers {
     [ApiController]
     [Route("[controller]/[action]")]
     public class SmartMeterController : ControllerBase

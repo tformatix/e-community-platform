@@ -7,6 +7,9 @@ using e_community_cloud_lib.Database.General;
 
 namespace e_community_cloud_lib.Database.Local
 {
+    /// <summary>
+    /// meter data for a specific monitoring entry
+    /// </summary>
     public class MeterDataMonitoring {
         public int MonitoringId { get; set; }
         public Monitoring Monitoring { get; set; }

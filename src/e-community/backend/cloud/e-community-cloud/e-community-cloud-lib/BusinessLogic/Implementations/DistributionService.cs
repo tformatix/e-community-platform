@@ -2,16 +2,13 @@
 using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
 using e_community_cloud_lib.Database;
 using e_community_cloud_lib.Database.Community;
-using e_community_cloud_lib.Database.General;
 using e_community_cloud_lib.Database.Local;
 using e_community_cloud_lib.Models.Distribution;
 using e_community_cloud_lib.NonEntities;
 using e_community_cloud_lib.Util;
-using e_community_cloud_lib.Util.BusinessLogic;
 using e_community_cloud_lib.Util.Enums;
 using e_community_cloud_lib.Util.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Crypto.Fpe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +32,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         public async Task StartDistribution(DateTime _timestamp) {
             var timestamp = _timestamp.AddMinutes(2 * Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES);
 
+            // active memberships in eCommunities with dynamic distribution
             var eCommunityMemberships = await mDb.ECommunityMembership
                 .Include(x => x.ECommunity)
                 .Include(x => x.Member)
@@ -42,12 +40,13 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 .Where(x => x.ECommunity.DistributionMode == DistributionMode.Percentage && Constants.ACTIVE_MEMBER_PERMISSIONS.Contains(x.ECommunityPermission))
                 .ToListAsync();
 
+            // create distribution objects for the active memberships
             var distributions = eCommunityMemberships
                 .DistinctBy(x => x.ECommunityId)
                 .Select(x => new ECommunityDistribution() {
                     ECommunityId = x.ECommunityId,
                     Timestamp = timestamp,
-                    IsCalculating = true,
+                    IsCalculating = true, // distribution is currently calculating
                     WasDistributed = false,
                     IsRelevant = false,
                 })
@@ -57,6 +56,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             await mDb.SaveChangesAsync();
 
             foreach (var distribution in distributions) {
+                // iterate over created distribtuions and create smart meter portions
                 mDb.SmartMeterPortion.AddRange(eCommunityMemberships
                     .Where(x => x.ECommunityId == distribution.ECommunityId)
                     .SelectMany(x => x.Member.SmartMeters)
@@ -74,18 +74,21 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
             await mDb.SaveChangesAsync();
 
+            // request hourly forecast from every smart meter
             mLocalSignalRSenderService.RequestHourlyForecast();
         }
 
         public async Task ForecastArrived(ForecastModel _forecastModel) {
-            var calculatingDistributions = await GetCalculatingDistributions();
+            var calculatingDistributions = await GetCalculatingDistributions(); // currently calculated distributions
 
             if (calculatingDistributions.Count() > 0) {
+                // portion of specific smart meter
                 var smartMeterPortion = calculatingDistributions
                     .SelectMany(x => x.SmartMeterPortions)
                     .FirstOrDefault(x => x.SmartMeterId == _forecastModel.SmartMeterId);
 
                 if (smartMeterPortion != null) {
+                    // portion available
                     smartMeterPortion.EstimatedActiveEnergyMinus = _forecastModel.ActiveEnergyMinus;
                     smartMeterPortion.EstimatedActiveEnergyPlus = _forecastModel.ActiveEnergyPlus;
                     smartMeterPortion.Flexibility = _forecastModel.Flexibility;
@@ -122,6 +125,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
 
             foreach (var smartMeterPortion in _eCommunityDistribution.SmartMeterPortions) {
+                // reset deviation
                 smartMeterPortion.Deviation = 0;
             }
 
@@ -139,13 +143,19 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
 
             _eCommunityDistribution.WasDistributed = true;
-            _eCommunityDistribution.IsRelevant = sumFeedIn > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH;
+            _eCommunityDistribution.IsRelevant = sumFeedIn > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH; // only relevant if feed in is over threshold
             await mDb.SaveChangesAsync();
             if (_eCommunityDistribution.IsRelevant) {
+                // only send notifications if distribution is relevant
                 SendDistributionNotifications(_eCommunityDistribution.SmartMeterPortions, mFCMService.NewDistribution);
             }
         }
 
+        /// <summary>
+        /// distributes energy surplus (consumption < feed-in)
+        /// </summary>
+        /// <param name="_smartMeterPortions">portions of smart meters</param>
+        /// <param name="_energyDifference">consumption - feed-in</param>
         private void DistributeSurplus(IList<SmartMeterPortion> _smartMeterPortions, int _energyDifference) {
             var sumFlexibilityPlus = _smartMeterPortions
                         .Where(x => x.Flexibility > 0)
@@ -162,7 +172,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     }
                 }
                 else {
-                    // difference >= flexibility --> maybe more feed in than consumption (TODO)
+                    // difference >= flexibility --> everybody gets their positive flexibility (maybe more feed in than consumption)
                     foreach (var smartMeterPortion in _smartMeterPortions) {
                         if (smartMeterPortion.Flexibility > 0) {
                             smartMeterPortion.Deviation = smartMeterPortion.Flexibility;
@@ -172,6 +182,12 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
         }
 
+        /// <summary>
+        /// distributes energy shortage (consumption > feed-in)
+        /// </summary>
+        /// <param name="_smartMeterPortions">portions of smart meters</param>
+        /// <param name="_energyDifference">consumption - feed-in</param>
+        /// <param name="sumConsumption">sum of the consumption of the smart meters</param>
         private void DistributeShortage(IList<SmartMeterPortion> _smartMeterPortions, int _energyDifference, int sumConsumption) {
             var sumFlexibilityMinus = -_smartMeterPortions
                         .Where(x => x.Flexibility < 0)
@@ -258,7 +274,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         }
 
         public async Task PortionAck(PortionAckModel _portionAckModel) {
-            var calculatingDistributions = await GetCalculatingDistributions();
+            var calculatingDistributions = await GetCalculatingDistributions(); // currently calculated distributions
             var smartMeterPortion = calculatingDistributions
                 .SelectMany(x => x.SmartMeterPortions)
                 .FirstOrDefault(x => x.SmartMeterId == _portionAckModel.SmartMeterId);
@@ -284,18 +300,26 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             foreach (var distribution in await GetCalculatingDistributions()) {
                 distribution.IsCalculating = false;
                 if (distribution.IsRelevant) {
+                    // only send notifications if distribution is relevant
                     SendDistributionNotifications(distribution.SmartMeterPortions, mFCMService.FinalDistribution);
                 }
             }
             await mDb.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// sends notifications about current distribution via FCM (grouped by member)
+        /// </summary>
+        /// <param name="_smartMeterPortions">portions of smart meters</param>
+        /// <param name="_fcmAndroidData">FCM notification data for Android</param>
         private void SendDistributionNotifications(IList<SmartMeterPortion> _smartMeterPortions, FCMAndroidData _fcmAndroidData) {
             _smartMeterPortions
                 .GroupBy(x => x.SmartMeter.MemberId)
                 .ToDictionary(x => x.Key, x => x.ToList())
                 .ToList()
                 .ForEach(_pair => {
+                    // MemberId -> List<SmartMeterPortion>
+                    // aggregate per member and send notification
                     var sumConsumption = 0;
                     _pair.Value
                         .ForEach(_portion => {
@@ -307,8 +331,9 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 });
         }
 
-        public async Task<CurrentPortion> GetCurrentPortion(Guid _smartMeterId, bool IncludeSmartMeter) {
-            var distribution = (IncludeSmartMeter)
+        public async Task<CurrentPortion> GetCurrentPortion(Guid _smartMeterId, bool _includeSmartMeter) {
+            // get first distribution which is not calculating
+            var distribution = (_includeSmartMeter)
                 ? await mDb.ECommunityDistribution
                     .OrderByDescending(x => x.Id)
                     .Include(x => x.SmartMeterPortions)
@@ -345,7 +370,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 .ThenInclude(x => x.SmartMeter)
                 .FirstOrDefaultAsync(x => x.IsRelevant && x.IsCalculating && x.WasDistributed && x.SmartMeterPortions.Any(portion => portion.SmartMeter.MemberId == _memberId));
 
-
             if (calculatingDistribution == null) {
                 return null;
             }
@@ -359,10 +383,14 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             };
         }
 
+        /// <param name="_distribution">distribution of eCommunity</param>
+        /// <returns>sum of feed in</returns>
         private int GetSumFeedIn(ECommunityDistribution _distribution) {
             return _distribution.SmartMeterPortions.Sum(x => x.EstimatedActiveEnergyMinus);
         }
 
+        /// <param name="_distribution">distribution of eCommunity</param>
+        /// <returns>unassigned A- (feed-in)</returns>
         private int GetUnassignedActiveEnergyMinus(ECommunityDistribution _distribution) {
             var sumFeedIn = GetSumFeedIn(_distribution);
 
@@ -374,10 +402,13 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             return (Math.Abs(unassigned) > Constants.DISTRIBUTION_MINIMUM_ENERGY_WH) ? unassigned : 0;
         }
 
+        /// <param name="_distribution">distribution of eCommunity</param>
+        /// <returns>number of missing forecasts from smart meters</returns>
         private int GetMissingSmartMeterCount(ECommunityDistribution _distribution) {
             return _distribution.SmartMeterPortions.Count(x => !x.ForecastFromSmartMeter);
         }
 
+        /// <returns>distributions currently calculated</returns>
         private async Task<List<ECommunityDistribution>> GetCalculatingDistributions() {
             return await mDb.ECommunityDistribution
                 .Where(x => x.IsCalculating)

@@ -8,6 +8,12 @@ namespace e_community_cloud_lib.Util
 {
     public static class Formatter
     {
+        /// <summary>
+        /// formats meter data value into string representation
+        /// </summary>
+        /// <param name="value">meter data value</param>
+        /// <param name="isEnergy">is energy and not power (power: kW, energy kWh)</param>
+        /// <returns>string representation (e.g. 1.2 kWh)</returns>
         public static string formatMeterData(int value, bool isEnergy = false) {
             var firstNumber = 0;
             var commanNumber = 0.0;

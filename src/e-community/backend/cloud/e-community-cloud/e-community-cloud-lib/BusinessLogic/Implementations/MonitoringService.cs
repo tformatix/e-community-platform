@@ -69,13 +69,16 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             mLocalSignalRSenderService.RequestMeterDataMonitoring();
         }
 
+        /// <summary>
+        /// handles previous monitoring (send notifications, actual energy for portions, ...)
+        /// </summary>
+        /// <param name="_timestamp">current timestamp</param>
         private async Task HandlePreviousMonitoring(DateTime _timestamp) {
             var calculatingMonitoring = await GetCalculatingMonitoring();
             if (calculatingMonitoring != null) {
                 calculatingMonitoring.IsCalculating = false;
 
                 if (_timestamp.Minute == Constants.DISTRIBUTION_MONITOR_INTERVAL_MINUTES) {
-                    // 5 minutes after full hour (e.g. 12:05): store actual energy into portions and delete all monitoring data except current
                     await FivePastFullHour(calculatingMonitoring);
                 }
                 await CheckMonitoring(calculatingMonitoring, _timestamp);
@@ -84,19 +87,26 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
         }
 
+        /// <summary>
+        /// 5 minutes after full hour (e.g. 12:05): store actual energy into portions and delete all monitoring data except current
+        /// </summary>
+        /// <param name="_monitoring">current monitoring</param>
+        /// <returns></returns>
         private async Task FivePastFullHour(Monitoring _monitoring) {
-            var previousTimestamp = _monitoring.Timestamp.AddHours(-1);
+            var previousTimestamp = _monitoring.Timestamp.AddHours(-1); // hour before
+            // always first entry (others got removed)
             var monitoringHourBefore = await mDb.Monitoring
                 .Include(x => x.MeterDataMonitorings)
                 .OrderBy(x => x.Id)
                 .FirstOrDefaultAsync();
 
             if (monitoringHourBefore != null && monitoringHourBefore.Timestamp.Hour == previousTimestamp.Hour && monitoringHourBefore.Timestamp.Minute == previousTimestamp.Minute) {
-                // monitoring entry before an hour available
+                // monitoring entry before an hour available (calculate actual energy)
 
                 var currentDistributions = await GetCurrentDistributions();
                 foreach (var distribution in currentDistributions) {
                     foreach (var portion in distribution.SmartMeterPortions) {
+
                         var currentMeterData = _monitoring.MeterDataMonitorings
                             .FirstOrDefault(x => x.SmartMeterId == portion.SmartMeterId);
                         var meterDataHourBefore = monitoringHourBefore.MeterDataMonitorings
@@ -116,9 +126,14 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             mDb.Monitoring.RemoveRange(
                 mDb.Monitoring
                     .Where(x => x.Id != _monitoring.Id)
-            );
+            ); // remove unnecessary monitorings
         }
 
+        /// <summary>
+        /// offline smart meter or non-compliance with the forecast
+        /// </summary>
+        /// <param name="_monitoring">current monitoring</param>
+        /// <param name="_timestamp">current timestamp</param>
         private async Task CheckMonitoring(Monitoring _monitoring, DateTime _timestamp) {
             foreach (var meterDataMonitoring in _monitoring.MeterDataMonitorings) {
                 if (meterDataMonitoring.ProjectedActiveEnergyPlus == null) {
@@ -132,6 +147,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                     var currentPortion = await mDistributionService.GetCurrentPortion(meterDataMonitoring.SmartMeterId, true);
 
                     if (currentPortion != null && currentPortion.IsRelevant) {
+                        // only check if distribution is relevant
                         int forecast = GetForecastValue(currentPortion.EstimatedActiveEnergyPlus, currentPortion.Flexibility, currentPortion.Deviation);
 
                         if (!IsGoodForecast(forecast, (int)meterDataMonitoring.ProjectedActiveEnergyPlus)) {
@@ -172,9 +188,10 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                         .FirstOrDefaultAsync(x => !x.Monitoring.IsCalculating); // automatically first because of deletion of unnecessary values
 
                 if (meterDataFullHour != null && meterDataFullHour.ActiveEnergyPlus != null) {
+                    // calculate projected energy for an hour
                     var timeDifference = meterDataMontoring.Monitoring.Timestamp - meterDataFullHour.Monitoring.Timestamp;
 
-                    var multiplier = 60.0 / (double)timeDifference.TotalMinutes;
+                    var multiplier = 60.0 / (double)timeDifference.TotalMinutes; // e.g. 12:05 --> *12
                     var projectedPlus = (int)((meterDataMontoring.ActiveEnergyPlus - meterDataFullHour.ActiveEnergyPlus) * multiplier);
                     var projectedMinus = (int)((meterDataMontoring.ActiveEnergyMinus - meterDataFullHour.ActiveEnergyMinus) * multiplier);
 
@@ -189,10 +206,12 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         public async Task<Performance> GetPerformance(Guid _smartMeterId, int _durationDays) {
             var performance = new Performance() {
                 GoodForecastCount = 0,
-                WrongForecasted = 0
+                WrongForecasted = 0,
+                ForecastCount = 0,
             };
 
-            var notBefore = (_durationDays >= 0) ? DateTime.UtcNow.AddDays(-_durationDays) : DateTime.MinValue;
+            // days to consider (<0 for total performance)
+            var notBefore = (_durationDays >= 0) ? DateTime.UtcNow.AddDays(-_durationDays) : DateTime.MinValue; 
 
             await mDb.SmartMeterPortion
                 .Include(x => x.ECommunityDistribution)
@@ -228,7 +247,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
 
             var meterDataMonitoring = monitoring.MeterDataMonitorings
-                .Where(x => x.SmartMeter.MemberId == _memberId && (x.NonCompliance || x.ProjectedActiveEnergyPlus == null))
+                .Where(x => x.SmartMeter.MemberId == _memberId && (x.NonCompliance || x.ProjectedActiveEnergyPlus == null)) // non compliance or offline
                 .ToList();
 
             if (meterDataMonitoring.Count == 0) {
@@ -271,6 +290,9 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             }
         }
 
+        /// <param name="_forecast">forecast value</param>
+        /// <param name="_actual">actual value</param>
+        /// <returns>if forecast if good (is in given range)</returns>
         private static bool IsGoodForecast(int _forecast, int _actual) {
             var min = _forecast * (1 - Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
             var max = _forecast * (1 + Constants.DISTRIBUTION_GOOD_FORECAST_PERCENT);
@@ -278,6 +300,10 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             return _actual >= min && _actual <= max;
         }
 
+        /// <param name="_estimated">estimated</param>
+        /// <param name="_flexibility">flexibility</param>
+        /// <param name="_deviation">deviation</param>
+        /// <returns>reference value for forecast</returns>
         private static int GetForecastValue(int _estimated, int _flexibility, int _deviation) {
             var forecast = _estimated;
             if (Math.Abs(_deviation) > Math.Abs(_flexibility)) {
@@ -293,6 +319,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             return forecast;
         }
 
+        /// <returns>first distributions which are not calculating</returns>
         private async Task<List<ECommunityDistribution>> GetCurrentDistributions() {
             var nonCalulating = await mDb.ECommunityDistribution
                 .Include(x => x.SmartMeterPortions)
@@ -307,6 +334,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 .ToList();
         }
 
+        /// <returns>currently calculated monitoring</returns>
         private async Task<Monitoring> GetCalculatingMonitoring() {
             return await mDb.Monitoring
                 .Include(x => x.MeterDataMonitorings)

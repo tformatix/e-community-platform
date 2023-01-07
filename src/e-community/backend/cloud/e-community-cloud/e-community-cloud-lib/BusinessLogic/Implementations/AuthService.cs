@@ -354,7 +354,8 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations
             var smartMeter = await mDb.SmartMeter
                 .FirstOrDefaultAsync(x => x.Id == _smartMeterId && x.MemberId == _memberId);
 
-            if(smartMeter== null) {
+            if(smartMeter == null) {
+                // smart meter doesn't belong to member
                 throw (new ServiceException(ServiceException.Type.SMART_METER_NOT_TO_USER));
             }
         }
