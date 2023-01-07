@@ -29,6 +29,7 @@ namespace e_community_local_lib.BusinessLogic.Implementations {
                     .FirstOrDefaultAsync();
 
             async Task<MeterDataRealTime> GetMeterDataRealTime(int count = 0) {
+                // try max. 10 times (MeterDataRealTime could be empty)
                 var meterData = await mDb.MeterDataRealTime
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefaultAsync();
