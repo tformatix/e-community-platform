@@ -32,11 +32,12 @@ contract ConsentContract {
 
     enum STATE {
         CONTRACT_PENDING,
-        CONTRACT_SIGNED_BOTH,
-        CONTRACT_PAYMENT_RECEIVED,
-        CONTRACT_VALID,
+        CONTRACT_ACTIVE,
+        CONTRACT_PAYMENT_DEPOSIT,
+        CONTRACT_PAYMENT_PENDING,
         CONTRACT_REJECTED,
-        CONTRACT_INVALID
+        CONTRACT_REVOKED,
+        CONTRACT_CLOSED
     }
 
     // both parties need to sign the contract
@@ -45,11 +46,18 @@ contract ConsentContract {
         bool signedByConsenter;
     }
 
+
     // notify consenter that he received a payment => contract is now valid
     event PaymentReceived(address proposer, address consenter, string contractID);
 
     // notify proposer that the contract got signed by the consenter
     event ApprovedContract(address proposer, address consenter, string contractID);
+
+    // notify both when contract gets closed
+    event ClosedContract(address proposer, address consenter, string contractID);
+
+    // notify proposer that the contract got revoked
+    event RevokedContract(address proposer, address consenter, string contractID);
 
     // ### Contract Details ###
     string public contractID;
@@ -71,6 +79,10 @@ contract ConsentContract {
     constructor(string memory _contractID) {
         proposer = msg.sender;
         contractID = _contractID;
+    }
+
+    function getContractDetails() public view returns(address, address, string memory, uint, uint, uint, uint, uint) {
+        return (proposer, consenter, contractID, startEnergyData, endEnergyData, validityOfContract, pricePerHour, totalPrice);
     }
 
     // set details about the contract
@@ -105,40 +117,46 @@ contract ConsentContract {
 
         if (signature.signedByProposer && signature.signedByConsenter) {
             emit ApprovedContract(proposer, consenter, contractID);
-            contractState = STATE.CONTRACT_SIGNED_BOTH;
+            contractState = STATE.CONTRACT_PAYMENT_PENDING;
         }
     }
 
     // contract can be revoked from both parties
     function revokeConsent() public bothParties {
+        contractState = STATE.CONTRACT_REVOKED;
+        emit RevokedContract(proposer, consenter, contractID);
     }
 
     // proposer needs to deposit the agreed ethers to the contract
     function deposit() public payable onlyOwner {
         require(msg.value == totalPrice, "You need to deposit the agreed price!");
+        contractState = STATE.CONTRACT_PAYMENT_DEPOSIT;
     }
 
-    // get the balance of the contract
-    function balance() public view bothParties returns(uint) {
-        return address(this).balance;
-    }
-
-    // withdraw the ethers balance from the proposer
+    // withdraw the ethers balance from the contract to address of the consenter
+    // after withdraw the contract is active and running
     function withdraw() public onlyConsenter {
-        payable(consenter).transfer(address(this).balance);
+        require(contractState == STATE.CONTRACT_PAYMENT_DEPOSIT, "Nothing withdraw, consenter needs to send ETH first");
+
+        payable(consenter).transfer(totalPrice);
 
         emit PaymentReceived(consenter, proposer, contractID);
 
-        contractState = STATE.CONTRACT_VALID;
+        contractState = STATE.CONTRACT_ACTIVE;
     }
 
-    // returns the contract state
-    function getState() view public returns(STATE) {
-        if (contractState == STATE.CONTRACT_VALID) {
-            // check if contract is still valid
+    // returns the contract state, will be always called when the user interact with energy data
+    function getState() public returns(STATE) {
+
+        // check if contract is still valid if not emit Closed() event
+        if (contractState == STATE.CONTRACT_ACTIVE) {
+            if (block.timestamp > validityOfContract) {
+                emit ClosedContract(proposer, consenter, contractID);
+                contractState = STATE.CONTRACT_CLOSED;
+            }
         }
         
-        return STATE.CONTRACT_INVALID;
+        return contractState;
     }
 
     // modifier for functions only the owner can execute

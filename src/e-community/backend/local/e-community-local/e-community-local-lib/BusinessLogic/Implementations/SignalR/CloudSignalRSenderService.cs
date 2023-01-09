@@ -68,8 +68,8 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
             processAccountBalance.Close();
 
             var blockchainAccountBalance = new BlockchainAccountBalanceDto {
-                Received = "5",
-                Sent = "1",
+                Received = "0.05",
+                Sent = "1.4",
                 Balance = output
             };
 

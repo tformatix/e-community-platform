@@ -4,9 +4,15 @@ import json
 from ast import literal_eval
 import web3
 from web3.middleware import geth_poa_middleware
+from classes.ConsentContract import ConsentContract
+from classes.GoQuorumNode import GoQuorumNode
 
+# Blockchain Node
 GOQUORUM_NODE_URL = 'http://127.0.0.1:22000'
 GOQUORUM_NODE = ""
+
+# this is the address of the factory contract (is static)
+GOQUORUM_CONTRACT_FACTORY_ADDRESS = "0x5D2335F00E98757bA576921d6DD180BA3103CAF1"
 
 # CLI object
 cli = typer.Typer()
@@ -31,11 +37,18 @@ GOQUORUM_READ_PRIVATE_KEY = "cat /home/michael/Documents/dev/network/QBFT-Networ
 TRUFFLE_DEPLOY_CONTRACT = 'cd $SMART_CONTRACT_PATH && truffle migrate | grep "contract ' \
                           'address" | grep -o -E "0[xX][0-9a-fA-F]+"'
 
+""" deployment configuration
 TRUFFLE_CONTRACT_BYTECODE = 'cat $SMART_CONTRACT_PATH/build/contracts/ConsentContract.json | grep -oP \'(?<="bytecode": ")[^"]*\''
 TRUFFLE_READ_CONTRACT_ABI = 'cat $SMART_CONTRACT_PATH/build/contracts/ConsentContract.json'
-
 TRUFFLE_CONTRACT_BYTECODE_FACTORY = 'cat $SMART_CONTRACT_PATH/build/contracts/ConsentContractFactory.json | grep -oP \'(?<="bytecode": ")[^"]*\''
 TRUFFLE_READ_CONTRACT_ABI_FACTORY = 'cat $SMART_CONTRACT_PATH/build/contracts/ConsentContractFactory.json'
+"""
+
+TRUFFLE_CONTRACT_BYTECODE = 'cat build/ConsentContract.json | grep -oP \'(?<="bytecode": ")[^"]*\''
+TRUFFLE_READ_CONTRACT_ABI = 'cat build/ConsentContract.json'
+
+TRUFFLE_CONTRACT_BYTECODE_FACTORY = 'cat build/ConsentContractFactory.json | grep -oP \'(?<="bytecode": ")[^"]*\''
+TRUFFLE_READ_CONTRACT_ABI_FACTORY = 'cat build/ConsentContractFactory.json'
 
 # UNLOCK ETHEREUM ACCOUNT
 GOQUORUM_ACCOUNT_UNLOCK = 'curl -s -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \
@@ -44,30 +57,13 @@ GOQUORUM_ACCOUNT_UNLOCK = 'curl -s -H "Content-Type: application/json" -X POST -
 
 # GET ACCOUNT BALANCE
 GOQUORUM_ACCOUNT_BALANCE = 'curl -s -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \
-                          '"method":"eth_getBalance","params":["%s", "latest"],"id":1}\' ' \
-                          '%s'
-
-
-class GoQuorumNode:
-    """ object for a goquorum (blockchain) node """
-    deployedContractAddress = ""
-
-    def __init__(self, account_address, account_password, account_private_key):
-        self.accountAddress = w3.toChecksumAddress(account_address)
-        self.accountPassword = account_password
-        self.accountPrivateKey = account_private_key
-
-    def set_deployed_contract_address(self, deployed_address):
-        self.deployedContractAddress = deployed_address
+                           '"method":"eth_getBalance","params":["%s", "latest"],"id":1}\' ' \
+                           '%s'
 
 
 @cli.command()
 def deploy_consent_contract():
     """deploys a new consent contract to the blockchain and returns the deployed address"""
-
-    if not w3.isConnected():
-        print("Ethereum Node not running...")
-        return
 
     # unlock account first
     if not unlock_account(GOQUORUM_NODE):
@@ -81,18 +77,9 @@ def deploy_consent_contract():
     # save deployed contract address, needed for updating values later
     GOQUORUM_NODE.deployedContractAddress = deployed_address
 
-    # read abi string from builded contract
-    contract_abi_read = os.popen(TRUFFLE_READ_CONTRACT_ABI_FACTORY)
-    contract_abi = json.loads(contract_abi_read.read())["abi"]
-
-    # extract the builded bytecode
-    contract_bytecode_read = os.popen(TRUFFLE_CONTRACT_BYTECODE_FACTORY)
-    contract_bytecode = contract_bytecode_read.read().strip()
-    contract_bytecode_hex = hex(int(contract_bytecode, 16))
-
     # create contract object and call constructor()
-    consent_contract_factory = w3.eth.contract(address=deployed_address, abi=contract_abi,
-                                               bytecode=contract_bytecode_hex)
+    consent_contract_factory = w3.eth.contract(address=deployed_address, abi=GOQUORUM_NODE.abiFactory,
+                                               bytecode=GOQUORUM_NODE.bytecodeFactory)
 
     constructor_tx = consent_contract_factory.constructor().build_transaction(
         {
@@ -110,26 +97,22 @@ def deploy_consent_contract():
 
 @cli.command()
 def create_consent_contract(
-    address_contract_factory: str = typer.Option(..., "--adr-con-fac", "-acf", help="address of the contract factory"),
-    address_consenter: str = typer.Option(..., "--adr-con", "-ac", help="address of the consenter")
+    address_consenter: str = typer.Option(..., "--adr-con", "-ac", help="address of the consenter"),
+    contract_id: str = typer.Option(..., "--contract-id", "-cid", help="id of the contract"),
+    start_energy_data: int = typer.Option(..., "--start-e-data", "-sed",
+                                          help="start datetime of energy data (unix timestamp)"),
+    end_energy_data: int = typer.Option(..., "--end-e-data", "-eed",
+                                        help="end datetime of energy data (unix timestamp)"),
+    validity_contract: int = typer.Option(..., "--val-con", "-vc", help="validity of contract (unix timestamp)"),
+    price_per_hour: str = typer.Option(..., "--price-hour", "-ph", help="price per 1h of energy data (in ETH)"),
+    total_price: str = typer.Option(..., "--price-total", "-pt", help="total price of the energy data (in ETH)")
 ):
-    if not w3.isConnected():
-        print("Ethereum Node not running...")
-        return
 
-    # read abi string from builded contract
-    contract_abi_read = os.popen(TRUFFLE_READ_CONTRACT_ABI_FACTORY)
-    contract_abi = json.loads(contract_abi_read.read())["abi"]
+    consent_contract_factory = w3.eth.contract(address=GOQUORUM_CONTRACT_FACTORY_ADDRESS, abi=GOQUORUM_NODE.abiFactory,
+                                               bytecode=GOQUORUM_NODE.bytecodeFactory)
 
-    # extract the builded bytecode
-    contract_bytecode_read = os.popen(TRUFFLE_CONTRACT_BYTECODE_FACTORY)
-    contract_bytecode = contract_bytecode_read.read().strip()
-    contract_bytecode_hex = hex(int(contract_bytecode, 16))
-
-    consent_contract_factory = w3.eth.contract(address=address_contract_factory, abi=contract_abi,
-                                               bytecode=contract_bytecode_hex)
-
-    create_consent_contract_tx = consent_contract_factory.functions.createConsentContract("12345").build_transaction(
+    create_consent_contract_tx = consent_contract_factory.functions.createConsentContract(
+        contract_id).build_transaction(
         {
             'from': GOQUORUM_NODE.accountAddress,
             'nonce': w3.eth.get_transaction_count(GOQUORUM_NODE.accountAddress),
@@ -140,25 +123,21 @@ def create_consent_contract(
     # sign and make createContract transaction
     make_contract_tx(create_consent_contract_tx)
 
-    # read base contract abi
-    contract_abi_read = os.popen(TRUFFLE_READ_CONTRACT_ABI)
-    contract_abi = json.loads(contract_abi_read.read())["abi"]
+    # get deployed contract address with the contract_id
+    deployed_contract_address = consent_contract_factory.functions.getContractAddress(contract_id).call()
 
-    contract_bytecode_read = os.popen(TRUFFLE_CONTRACT_BYTECODE)
-    contract_bytecode = contract_bytecode_read.read().strip()
-    contract_bytecode_hex = hex(int(contract_bytecode, 16))
+    consent_contract = w3.eth.contract(address=deployed_contract_address, abi=GOQUORUM_NODE.abiContract,
+                                       bytecode=GOQUORUM_NODE.bytecodeFactory)
 
-    deployed_contract_address = consent_contract_factory.functions.getContractAddress("12345").call()
-
-    consent_contract = w3.eth.contract(address=deployed_contract_address, abi=contract_abi,
-                                       bytecode=contract_bytecode_hex)
-
-    # build checkSum from consenter's address
-    checksum_address_consenter = w3.toChecksumAddress(address_consenter)
-
-    # set consenter address
-    set_contract_details_tx = consent_contract.functions.setContractDetails(checksum_address_consenter,
-                                                                            1, 1, 1, 1, 1).build_transaction(
+    print(f'total_price (wei): {w3.toWei(total_price, "ether")}')
+    # set contract details
+    set_contract_details_tx = consent_contract.functions.setContractDetails(w3.toChecksumAddress(address_consenter),
+                                                                            start_energy_data,
+                                                                            end_energy_data,
+                                                                            validity_contract,
+                                                                            w3.toWei(price_per_hour, "ether"),
+                                                                            w3.toWei(total_price,
+                                                                                     "ether")).build_transaction(
         {
             'from': GOQUORUM_NODE.accountAddress,
             'nonce': w3.eth.get_transaction_count(GOQUORUM_NODE.accountAddress),
@@ -180,28 +159,17 @@ def create_consent_contract(
 
     # sign and make signContract transaction
     make_contract_tx(sign_contract_tx)
-    print(f'deployedAddress (factory): {deployed_contract_address}')
+    print(f'deployedAddress (contract): {deployed_contract_address}')
 
 
 @cli.command()
 def deposit_to_contract(
-        address_contract: str = typer.Option(..., "--adr-con", "-ac", help="address of the contract"),
-        value: int = typer.Option(..., "--val", "-v", help="value in ETH")
+    address_contract: str = typer.Option(..., "--adr-con", "-ac", help="address of the contract"),
+    value: str = typer.Option(..., "--val", "-v", help="value in ETH")
 ):
-    if not w3.isConnected():
-        print("Ethereum Node not running...")
-        return
 
-    # read base contract abi
-    contract_abi_read = os.popen(TRUFFLE_READ_CONTRACT_ABI)
-    contract_abi = json.loads(contract_abi_read.read())["abi"]
-
-    contract_bytecode_read = os.popen(TRUFFLE_CONTRACT_BYTECODE)
-    contract_bytecode = contract_bytecode_read.read().strip()
-    contract_bytecode_hex = hex(int(contract_bytecode, 16))
-
-    consent_contract = w3.eth.contract(address=address_contract, abi=contract_abi,
-                                       bytecode=contract_bytecode_hex)
+    consent_contract = w3.eth.contract(address=address_contract, abi=GOQUORUM_NODE.abiContract,
+                                       bytecode=GOQUORUM_NODE.bytecodeFactory)
 
     # sign the contract
     sign_contract_tx = consent_contract.functions.deposit().build_transaction(
@@ -209,7 +177,7 @@ def deposit_to_contract(
             'from': GOQUORUM_NODE.accountAddress,
             'nonce': w3.eth.get_transaction_count(GOQUORUM_NODE.accountAddress),
             'gasPrice': w3.eth.gas_price,
-            'value': value
+            'value': w3.toWei(value, "ether")
         }
     )
 
@@ -217,6 +185,50 @@ def deposit_to_contract(
     make_contract_tx(sign_contract_tx)
 
     print(f'balance of contract: {get_account_balance(str(address_contract), True)}')
+
+
+@cli.command()
+def withdraw_from_contract(
+    address_contract: str = typer.Option(..., "--adr-con", "-ac", help="address of the contract")
+):
+
+    consent_contract = w3.eth.contract(address=address_contract, abi=GOQUORUM_NODE.abiContract,
+                                       bytecode=GOQUORUM_NODE.bytecodeFactory)
+
+    # sign the contract
+    withdraw_tx = consent_contract.functions.withdraw().build_transaction(
+        {
+            'from': GOQUORUM_NODE.accountAddress,
+            'nonce': w3.eth.get_transaction_count(GOQUORUM_NODE.accountAddress),
+            'gasPrice': w3.eth.gas_price,
+        }
+    )
+
+    # sign and make signContract transaction
+    make_contract_tx(withdraw_tx)
+
+
+@cli.command()
+def get_contract_details(
+    address_contract: str = typer.Option(..., "--adr-con", "-ac", help="address of the contract")
+):
+
+    consent_contract = w3.eth.contract(address=address_contract, abi=GOQUORUM_NODE.abiContract,
+                                       bytecode=GOQUORUM_NODE.bytecodeFactory)
+
+    contract_details = consent_contract.functions.getContractDetails().call()
+
+    # create contract object from smart contract
+    contract = ConsentContract(contract_details[0],
+                               contract_details[1],
+                               contract_details[2],
+                               contract_details[3],
+                               contract_details[4],
+                               contract_details[5],
+                               w3.fromWei(contract_details[6], "ether"),
+                               w3.fromWei(contract_details[7], "ether"))
+
+    print(contract.to_dict())
 
 
 @cli.command()
@@ -261,7 +273,6 @@ def get_account_details():
     accountAddress => ethereum wallet
     accountPassword => password for the wallet
     accountPrivateKey => private key for signing transactions
-    $GOQUORUM_NODE needs to be set
     """
     account_address_read = os.popen(GOQUORUM_READ_ADDRESS)
     account_address = account_address_read.read()
@@ -272,7 +283,29 @@ def get_account_details():
     account_private_key_read = os.popen(GOQUORUM_READ_PRIVATE_KEY)
     account_private_key = account_private_key_read.read()
 
-    return GoQuorumNode(account_address, account_password, account_private_key)
+    node = GoQuorumNode(w3.toChecksumAddress(account_address), account_password, account_private_key)
+
+    # abi - factory contract
+    abi_factory_read = os.popen(TRUFFLE_READ_CONTRACT_ABI_FACTORY)
+    abi_factory = json.loads(abi_factory_read.read())["abi"]
+
+    # bytecode - factory contract
+    bytecode_factory_read = os.popen(TRUFFLE_CONTRACT_BYTECODE_FACTORY)
+    bytecode_factory = bytecode_factory_read.read().strip()
+    bytecode_factory = hex(int(bytecode_factory, 16))
+
+    # abi - base contract
+    abi_contract_read = os.popen(TRUFFLE_READ_CONTRACT_ABI)
+    abi_contract = json.loads(abi_contract_read.read())["abi"]
+
+    # bytecode - base contract
+    bytecode_contract_read = os.popen(TRUFFLE_CONTRACT_BYTECODE)
+    bytecode_contract = bytecode_contract_read.read().strip()
+    bytecode_contract = hex(int(bytecode_contract, 16))
+
+    node.set_build_config(abi_factory, abi_contract, bytecode_factory, bytecode_contract)
+
+    return node
 
 
 def unlock_account(node):
@@ -295,7 +328,7 @@ def make_contract_tx(tx):
     tx_create = w3.eth.account.sign_transaction(tx, GOQUORUM_NODE.accountPrivateKey)
     tx_hash = w3.eth.send_raw_transaction(tx_create.rawTransaction)
     tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
-    print(tx_receipt['transactionHash'])
+    # print(tx_receipt['transactionHash'])
     return tx_receipt.contractAddress
 
 
@@ -311,4 +344,7 @@ if __name__ == '__main__':
     # get local GOQUORUM node details
     GOQUORUM_NODE = get_account_details()
 
-    cli()
+    if not w3.isConnected():
+        print("Ethereum Node not running...")
+    else:
+        cli()

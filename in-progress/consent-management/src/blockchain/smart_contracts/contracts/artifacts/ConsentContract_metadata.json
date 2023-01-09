@@ -63,21 +63,58 @@
 						"type": "string"
 					}
 				],
+				"name": "ClosedContract",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "proposer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "consenter",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "contractID",
+						"type": "string"
+					}
+				],
 				"name": "PaymentReceived",
 				"type": "event"
 			},
 			{
-				"inputs": [],
-				"name": "balance",
-				"outputs": [
+				"anonymous": false,
+				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
+						"indexed": false,
+						"internalType": "address",
+						"name": "proposer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "consenter",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "contractID",
+						"type": "string"
 					}
 				],
-				"stateMutability": "view",
-				"type": "function"
+				"name": "RevokedContract",
+				"type": "event"
 			},
 			{
 				"inputs": [],
@@ -101,6 +138,54 @@
 			},
 			{
 				"inputs": [],
+				"name": "getContractDetails",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "getState",
 				"outputs": [
 					{
@@ -109,7 +194,7 @@
 						"type": "uint8"
 					}
 				],
-				"stateMutability": "view",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -200,11 +285,11 @@
 	},
 	"sources": {
 		"Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContract.sol": {
-			"keccak256": "0xcf9742c527323480ed11bd9212cc53c59515a77626bbbe93bbfee57a6d36e8fc",
+			"keccak256": "0xe2a78a218000548b9b93a61c8bccf5e47b90aaea167e631d7af31fa6232ccf66",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://ef30e2423d9c88e333585e2388b2fd81a37671e0f51c1ea9d1c546116f591ae7",
-				"dweb:/ipfs/Qmbpp6GoCTB3Csxd8NoK5DqsTPPfB8yTdStxQGdbrijpwE"
+				"bzz-raw://141e32047bfae0f6932d249f6fb141bb11df35a5796efcea8de1cfcd08f8018d",
+				"dweb:/ipfs/QmdtMCgCBR1CgWZTi1MsHMfkfNNxV4b6C4gCKnVWcEGW1A"
 			]
 		}
 	},
