@@ -48,5 +48,12 @@ namespace e_community_local_lib.Endpoints.Interfaces
         /// cloud requests meter data for monitoring
         /// </summary>
         Task RequestMeterDataMonitoring();
+        
+        /// <summary>
+        /// creates a new consent contract on the blockchain
+        /// </summary>
+        /// <param name="_consentContractModel"></param>
+        /// <returns></returns>
+        Task CreateConsentContract(ConsentContractModel _consentContractModel);
     }
 }

@@ -75,6 +75,8 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
                         // blockchain connections
                         mHubConnection?.On(nameof(ICloudSignalRReceiver.RequestBlockchainAccountBalance),
                             () => cloudBackgroundService.RequestBlockchainAccountBalance());
+                        mHubConnection?.On(nameof(ICloudSignalRReceiver.CreateConsentContract),
+                            (ConsentContractModel _consentContractModel) => cloudBackgroundService.CreateConsentContract(_consentContractModel));
 
                         await mHubConnection?.StartAsync();
                         if (mHubConnection?.State == HubConnectionState.Connected) {

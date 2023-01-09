@@ -24,31 +24,33 @@ w3.handleRevert = True
 
 # CLI COMMANDS #
 # READ ETHEREUM ACCOUNT
-# GOQUORUM_READ_ADDRESS = "cat /home/pi/blockchain/Node/data/keystore/accountAddress"
-# GOQUORUM_READ_PASSWORD = "cat /home/pi/blockchain/Node/data/keystore/accountPassword"
-# GOQUORUM_READ_PRIVATE_KEY = "cat /home/pi/blockchain/Node/data/keystore/accountPrivateKey"
+GOQUORUM_READ_ADDRESS = "cat /home/pi/blockchain/Node/data/keystore/accountAddress"
+GOQUORUM_READ_PASSWORD = "cat /home/pi/blockchain/Node/data/keystore/accountPassword"
+GOQUORUM_READ_PRIVATE_KEY = "cat /home/pi/blockchain/Node/data/keystore/accountPrivateKey"
 
-GOQUORUM_READ_ADDRESS = "cat /home/michael/Documents/dev/network/QBFT-Network/Node-0/data/keystore/accountAddress"
-GOQUORUM_READ_PASSWORD = "cat /home/michael/Documents/dev/network/QBFT-Network/Node-0/data/keystore/accountPassword"
-GOQUORUM_READ_PRIVATE_KEY = "cat /home/michael/Documents/dev/network/QBFT-Network/Node-0/data/keystore/accountPrivateKey"
+#GOQUORUM_READ_ADDRESS = "cat /home/michael/Documents/dev/network/QBFT-Network/Node-0/data/keystore/accountAddress"
+#GOQUORUM_READ_PASSWORD = "cat /home/michael/Documents/dev/network/QBFT-Network/Node-0/data/keystore/accountPassword"
+#GOQUORUM_READ_PRIVATE_KEY = "cat /home/michael/Documents/dev/network/QBFT-Network/Node-0/data/keystore/accountPrivateKey"
 
 # TRUFFLE #
 # deploy new consent contract
-TRUFFLE_DEPLOY_CONTRACT = 'cd $SMART_CONTRACT_PATH && truffle migrate | grep "contract ' \
+TRUFFLE_DEPLOY_CONTRACT = 'cd bla && truffle migrate | grep "contract ' \
                           'address" | grep -o -E "0[xX][0-9a-fA-F]+"'
 
 """ deployment configuration
+TRUFFLE_DEPLOY_CONTRACT = 'cd $SMART_CONTRACT_PATH && truffle migrate | grep "contract ' \
+                          'address" | grep -o -E "0[xX][0-9a-fA-F]+"'
 TRUFFLE_CONTRACT_BYTECODE = 'cat $SMART_CONTRACT_PATH/build/contracts/ConsentContract.json | grep -oP \'(?<="bytecode": ")[^"]*\''
 TRUFFLE_READ_CONTRACT_ABI = 'cat $SMART_CONTRACT_PATH/build/contracts/ConsentContract.json'
 TRUFFLE_CONTRACT_BYTECODE_FACTORY = 'cat $SMART_CONTRACT_PATH/build/contracts/ConsentContractFactory.json | grep -oP \'(?<="bytecode": ")[^"]*\''
 TRUFFLE_READ_CONTRACT_ABI_FACTORY = 'cat $SMART_CONTRACT_PATH/build/contracts/ConsentContractFactory.json'
 """
 
-TRUFFLE_CONTRACT_BYTECODE = 'cat build/ConsentContract.json | grep -oP \'(?<="bytecode": ")[^"]*\''
-TRUFFLE_READ_CONTRACT_ABI = 'cat build/ConsentContract.json'
+TRUFFLE_CONTRACT_BYTECODE = 'cat /home/pi/backend/Util/Extensions/Python/build/ConsentContract.json | grep -oP \'(?<="bytecode": ")[^"]*\''
+TRUFFLE_READ_CONTRACT_ABI = 'cat /home/pi/backend/Util/Extensions/Python/build/ConsentContract.json'
 
-TRUFFLE_CONTRACT_BYTECODE_FACTORY = 'cat build/ConsentContractFactory.json | grep -oP \'(?<="bytecode": ")[^"]*\''
-TRUFFLE_READ_CONTRACT_ABI_FACTORY = 'cat build/ConsentContractFactory.json'
+TRUFFLE_CONTRACT_BYTECODE_FACTORY = 'cat /home/pi/backend/Util/Extensions/Python/build/ConsentContractFactory.json | grep -oP \'(?<="bytecode": ")[^"]*\''
+TRUFFLE_READ_CONTRACT_ABI_FACTORY = 'cat /home/pi/backend/Util/Extensions/Python/build/ConsentContractFactory.json'
 
 # UNLOCK ETHEREUM ACCOUNT
 GOQUORUM_ACCOUNT_UNLOCK = 'curl -s -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \
@@ -129,7 +131,6 @@ def create_consent_contract(
     consent_contract = w3.eth.contract(address=deployed_contract_address, abi=GOQUORUM_NODE.abiContract,
                                        bytecode=GOQUORUM_NODE.bytecodeFactory)
 
-    print(f'total_price (wei): {w3.toWei(total_price, "ether")}')
     # set contract details
     set_contract_details_tx = consent_contract.functions.setContractDetails(w3.toChecksumAddress(address_consenter),
                                                                             start_energy_data,
@@ -159,7 +160,7 @@ def create_consent_contract(
 
     # sign and make signContract transaction
     make_contract_tx(sign_contract_tx)
-    print(f'deployedAddress (contract): {deployed_contract_address}')
+    print(deployed_contract_address)
 
 
 @cli.command()

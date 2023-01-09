@@ -34,5 +34,12 @@ namespace e_community_local_lib.Endpoints.Interfaces
         /// <param name="_blockchainAccountBalance"></param>
         /// <returns></returns>
         Task ReceiveBlockchainAccountBalance(BlockchainAccountBalanceDto _blockchainAccountBalance);
+
+        /// <summary>
+        /// receive the created contract on an address
+        /// </summary>
+        /// <param name="_consentContractDto"></param>
+        /// <returns></returns>
+        Task ReceiveCreateContract(ConsentContractDto _consentContractDto);
     }
 }

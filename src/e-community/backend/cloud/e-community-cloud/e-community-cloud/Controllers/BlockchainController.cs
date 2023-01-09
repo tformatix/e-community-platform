@@ -5,6 +5,7 @@ using e_community_cloud_lib.BusinessLogic.Interfaces;
 using e_community_cloud_lib.BusinessLogic.Interfaces.SignalR;
 using e_community_cloud_lib.Database.Community;
 using e_community_cloud_lib.Database.General;
+using e_community_cloud_lib.Models.Blockchain;
 using e_community_cloud_lib.Util.Extensions;
 using e_community_cloud.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -36,6 +37,23 @@ public class BlockchainController : ControllerBase
         Log.Information($"Blockchain/GetAccountBalance::{memberId}");
         mLocalSignalRSenderService.RequestBlockchainAccountBalance(memberId);
 
+        return Ok(new OkDto());
+    }
+
+    [ProducesResponseType(typeof(OkDto), 200)]
+    [ProducesResponseType(typeof(ErrorDto), 400)]
+    [Authorize]
+    [HttpPost]
+    public IActionResult CreateConsentContract([FromBody] ConsentContractModel _consentContractModel)
+    {
+        var memberId = (Guid)User.GetMemberId();
+        // generate a unique id
+        _consentContractModel.ContractId = new Guid();
+        
+        
+        Log.Information($"Blockchain/CreateConsentContract::memberId: {memberId}; contractId: {_consentContractModel.ContractId}");
+        
+        mLocalSignalRSenderService.CreateConsentContract(memberId, _consentContractModel);
         return Ok(new OkDto());
     }
 }

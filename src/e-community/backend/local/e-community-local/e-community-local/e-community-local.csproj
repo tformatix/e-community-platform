@@ -21,6 +21,20 @@
     <Content Include="Util\Extensions\Python\goquorum_listener.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Util\Extensions\Python\build\ConsentContract.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Util\Extensions\Python\build\ConsentContractFactory.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Util\Extensions\Python\classes\ConsentContract.py" />
+    <Content Include="Util\Extensions\Python\classes\ConsentContract.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Util\Extensions\Python\classes\GoQuorumNode.py" />
+    <Content Include="Util\Extensions\Python\classes\GoQuorumNode.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

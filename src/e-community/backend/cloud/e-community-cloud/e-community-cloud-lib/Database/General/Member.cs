@@ -87,7 +87,5 @@ namespace e_community_cloud_lib.Database.General
         /// list of their firebase cloud messaging tokens
         /// </summary>
         public IList<MemberFCMToken> MemberFCMTokens { get; set; }
-
     }
-
 }

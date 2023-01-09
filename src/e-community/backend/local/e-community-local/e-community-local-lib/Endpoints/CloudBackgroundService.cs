@@ -147,5 +147,16 @@ namespace e_community_local_lib.Endpoints {
                 }
             }
         }
+
+        public async Task CreateConsentContract(ConsentContractModel _consentContractModel)
+        {
+            Log.Information("CloudBackgroundService::CreateConsentContract requested");
+
+            using (var scope = mServiceScopeFactory.CreateScope())
+            {
+                var cloudSignalR = scope.ServiceProvider.GetRequiredService<ICloudSignalRSenderService>();
+                await cloudSignalR.SendCreateConsentContract(_consentContractModel);
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using e_community_cloud_lib.Models.Blockchain;
 
 namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
 {
@@ -201,6 +202,32 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR
             
             Log.Information("RequestBlockchainAccountBalance()");
             mSmartMeterHubContext.Clients.Groups(listenerDataMember.SignalRGroupName).RequestBlockchainAccountBalance();
+        }
+
+        public void CreateConsentContract(Guid? _memberId, ConsentContractModel _consentContractModel)
+        {
+            if (_memberId == null) {
+                throw new ServiceException(ServiceException.Type.MEMBER_ID_NOT_RESOLVABLE);
+            }
+            var memberId = (Guid)_memberId;
+            
+            var listenerDataMember = mRTListenerSingleton.RTListeners.GetValueOrDefault(memberId);
+
+            if (listenerDataMember == null)
+            {
+                listenerDataMember = new RTListenerData() {};
+                
+                listenerDataMember.SignalRGroupName = memberId.GetGroupName(GroupType.Member);
+                listenerDataMember.SmartMeterCount = mDb.Member
+                    .Include(x => x.SmartMeters)
+                    .Where(x => x.Id == memberId)
+                    .Select(x => x.SmartMeters)
+                    .Count();
+                listenerDataMember.SmartMeterCountMember = listenerDataMember.SmartMeterCount;
+                mRTListenerSingleton.RTListeners.Add(memberId, listenerDataMember);
+            }
+            
+            mSmartMeterHubContext.Clients.Groups(listenerDataMember.SignalRGroupName).CreateConsentContract(_consentContractModel);
         }
     }
 }

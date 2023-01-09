@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using e_community_local_lib.CloudData;
 
 namespace e_community_local_lib.BusinessLogic.Interfaces.SignalR
 {
@@ -33,5 +34,12 @@ namespace e_community_local_lib.BusinessLogic.Interfaces.SignalR
         /// </summary>
         /// <returns></returns>
         Task SendBlockchainAccountBalance();
+
+        /// <summary>
+        /// creates a new consent contract on the blockchain
+        /// </summary>
+        /// <param name="_consentContractModel"></param>
+        /// <returns></returns>
+        Task SendCreateConsentContract(ConsentContractModel _consentContractModel);
     }
 }

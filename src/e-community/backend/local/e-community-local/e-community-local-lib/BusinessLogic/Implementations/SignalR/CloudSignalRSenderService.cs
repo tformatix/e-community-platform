@@ -62,7 +62,7 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
             };
             processAccountBalance.Start();
 
-            string output = processAccountBalance.StandardOutput.ReadToEnd();
+            var output = processAccountBalance.StandardOutput.ReadToEnd();
 
             processAccountBalance.WaitForExit();
             processAccountBalance.Close();
@@ -78,6 +78,40 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
             await mHubConnectionService.InvokeSignalR(
                 nameof(ICloudSignalRSender.ReceiveBlockchainAccountBalance),
                 blockchainAccountBalance.CopyPropertiesTo(new BlockchainAccountBalanceDto())
+            );
+        }
+
+        public async Task SendCreateConsentContract(ConsentContractModel _consentContractModel)
+        {
+            var args =
+                $"-ac {_consentContractModel.AddressConsenter} " +
+                $"-cid {_consentContractModel.ContractId} " +
+                $"-sed {_consentContractModel.StartEnergyData} " +
+                $"-eed {_consentContractModel.EndEnergyData} " +
+                $"-vc {_consentContractModel.ValidityOfContract} " +
+                $"-ph {_consentContractModel.PricePerHour} " +
+                $"-pt {_consentContractModel.TotalPrice}";
+            
+            // create consent contract on blockchain
+            Process processCreateContract = new Process();
+
+            processCreateContract.StartInfo = new ProcessStartInfo(Constants.PYTHON_EXE, Constants.CREATE_CONSENT_CONTRACT + args)
+            {
+                RedirectStandardOutput = true
+            };
+            processCreateContract.Start();
+
+            var contractAddress = processCreateContract.StandardOutput.ReadToEnd();
+
+            processCreateContract.WaitForExit();
+            processCreateContract.Close();
+            
+            Log.Information($"CloudSignalRSenderService::SendCreateConsentContract() deployed contract address {contractAddress}");
+
+            _consentContractModel.AddressContract = contractAddress;
+            await mHubConnectionService.InvokeSignalR(
+                nameof(ICloudSignalRSender.ReceiveCreateContract),
+                _consentContractModel.CopyPropertiesTo(new ConsentContractDto())
             );
         }
     }

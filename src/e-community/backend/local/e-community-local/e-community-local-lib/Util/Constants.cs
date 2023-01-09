@@ -14,8 +14,6 @@ namespace e_community_local_lib.Util
         
         // PAIRING Constants
 
-        public const string CONNECT_NETWORK_COMMAND = "python3 /home/michael/Documents/dev/FH/4_Semester/DAB/Solr/SliderR/app.py start --stop-all";
-
         public const string ADD_NETWORK_COMMAND = "Util/Extensions/Python/networking.py add -s \"test\" -p \"test\"";
 
         public const string NETWORK_DISCOVERY = "Util/Extensions/Python/networking.py discover-networks";
@@ -29,6 +27,8 @@ namespace e_community_local_lib.Util
         // BLOCKCHAIN Constants
 
         public const string GET_ACCOUNT_BALANCE = "Util/Extensions/Python/goquorum.py account-balance";
+
+        public const string CREATE_CONSENT_CONTRACT = "Util/Extensions/Python/goquorum.py create-consent-contract ";
 
         public const int RT_EXTEND_MILLISECONDS = 360000; // 6 minutes
 

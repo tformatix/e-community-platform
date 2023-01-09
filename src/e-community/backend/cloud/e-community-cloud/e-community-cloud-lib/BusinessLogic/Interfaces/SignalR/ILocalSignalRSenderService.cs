@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using e_community_cloud_lib.Models.Blockchain;
 
 namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR
 {
@@ -53,5 +54,12 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR
         /// cloud requests information about the local ethereum account (balances)
         /// </summary>
         void RequestBlockchainAccountBalance(Guid? _memberId);
+
+        /// <summary>
+        /// creates a new consent contract on the blockchain
+        /// </summary>
+        /// <param name="_memberId"></param>
+        /// <param name="_consentContractModel"></param>
+        void CreateConsentContract(Guid? _memberId, ConsentContractModel _consentContractModel);
     }
 }
