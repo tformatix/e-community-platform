@@ -164,7 +164,7 @@ fun HomeScreen(_viewModel: HomeViewModel, _navController: NavHostController) {
 
     // build screen (TopBar and GridLayout)
     Scaffold(
-        topBar = { TopBarHome(_navController) }
+        topBar = { TopBarHome(_viewModel, _navController) }
     ) {
         TileGridView(isLoading, tiles, meterDataRTDto)
     }
@@ -423,7 +423,7 @@ fun stopSignalR(_viewModel: HomeViewModel) {
  * @see Composable
  */
 @Composable
-fun TopBarHome(_navController: NavHostController) {
+fun TopBarHome(_viewModel: HomeViewModel, _navController: NavHostController) {
     val isRealtimeActive = remember { mutableStateOf(true) }
 
     TopAppBar(
@@ -433,7 +433,10 @@ fun TopBarHome(_navController: NavHostController) {
                 },
         actions = {
 
-            IconButton(onClick = { _navController.navigate(Screen.Search.route) }) {
+            IconButton(onClick = {
+                _viewModel.requestRTDataStop()
+                _navController.navigate(Screen.Search.route)
+            }) {
                 Icon(painterResource(R.drawable.ic_search), "Search")
             }
 

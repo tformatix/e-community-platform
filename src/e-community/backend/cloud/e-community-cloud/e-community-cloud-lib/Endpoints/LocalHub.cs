@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using e_community_cloud_lib.Models.Blockchain;
 
 namespace e_community_cloud_lib.Endpoints {
     /// <summary>
@@ -94,6 +95,19 @@ namespace e_community_cloud_lib.Endpoints {
             if (memberId != null)
             {
                 mLocalSignalRReceiverService.ReceivedBlockchainAccountBalance((Guid) memberId, _blockchainAccountBalance);
+            }
+            
+            return Task.CompletedTask;
+        }
+
+        public Task ReceiveCreateConsentContract(ConsentContractModel _consentContractModel)
+        {
+            Log.Information($"Endpoint/Local::ReceiveCreateConsentContract ");
+            var memberId = Context.User.GetMemberId();
+
+            if (memberId != null)
+            {
+                mLocalSignalRReceiverService.ReceiveCreateConsentContract((Guid) memberId, _consentContractModel);
             }
             
             return Task.CompletedTask;

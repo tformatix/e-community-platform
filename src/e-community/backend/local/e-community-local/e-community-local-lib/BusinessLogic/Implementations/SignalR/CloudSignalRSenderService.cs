@@ -94,6 +94,8 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
             
             // create consent contract on blockchain
             Process processCreateContract = new Process();
+            
+            Log.Information($"CloudSignalRSenderService::SendCreateConsentContract() command: {Constants.CREATE_CONSENT_CONTRACT + args}");
 
             processCreateContract.StartInfo = new ProcessStartInfo(Constants.PYTHON_EXE, Constants.CREATE_CONSENT_CONTRACT + args)
             {
@@ -109,9 +111,10 @@ namespace e_community_local_lib.BusinessLogic.Implementations.SignalR {
             Log.Information($"CloudSignalRSenderService::SendCreateConsentContract() deployed contract address {contractAddress}");
 
             _consentContractModel.AddressContract = contractAddress;
+
             await mHubConnectionService.InvokeSignalR(
-                nameof(ICloudSignalRSender.ReceiveCreateContract),
-                _consentContractModel.CopyPropertiesTo(new ConsentContractDto())
+                nameof(ICloudSignalRSender.ReceiveCreateConsentContract),
+                _consentContractModel
             );
         }
     }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using e_community_cloud_lib.Models.Blockchain;
 
 namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR {
     public interface IRTListenerSignalRSenderService {
@@ -28,5 +29,12 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR {
         /// </summary>
         /// <param name="_memberId"></param>
         void SendToMemberBlockchainAccountBalance(Guid _memberId, BlockchainAccountBalanceDto _blockchainAccountBalance);
+
+        /// <summary>
+        /// send the created consent contract to member
+        /// </summary>
+        /// <param name="_memberId"></param>
+        /// <param name="_consentContractModel"></param>
+        void SendToMemberCreateConsentContract(Guid _memberId, ConsentContractModel _consentContractModel);
     }
 }

@@ -1,7 +1,7 @@
 {
   "nonce": "0x0",
   "timestamp": "0x58ee40ba",
-  "extraData": "0xf865a00000000000000000000000000000000000000000000000000000000000000000f83f94e4bf589c8f1d999a7d5de833e7a39bcf91c9be6d9400008ed957e6a1d5a3937b407b568d7a15b743cd94bd6582bee7a6e679a43e2cd82274a7e21d140765c080c0",
+  "extraData": "0xf87aa00000000000000000000000000000000000000000000000000000000000000000f8549412ecea9d636262f56b3a431ecc079f70db63d412940b211b68d8b958586de4b7ccc8c670501174a2779494f313552cfc3b70eaaff394912b9c6f3a5d6d46942224ae4e04393cd66faed78bb8b530f5a3b74f59c080c0",
   "gasLimit": "0xFFFFFF",
   "gasUsed": "0x0",
   "number": "0x0",
@@ -18,31 +18,23 @@
     "eip158Block": 0,
     "byzantiumBlock": 0,
     "constantinopleBlock": 0,
-    "isQuorum": true,
-    "maxCodeSizeConfig": [
-      {
-        "block": 0,
-        "size": 64
-      }
-    ],
-    "txnSizeLimit": 64,
     "qbft": {
-      "policy": 0,
-      "epoch": 30000,
-      "ceil2Nby3Block": 0,
-      "testQBFTBlock": 0,
       "blockperiodseconds": 5,
-      "emptyblockperiodseconds": 60
+      "epochlength": 30000,
+      "requesttimeoutseconds": 10
     }
   },
   "alloc": {
-    "0xf9f10c4b4ae97e8de139377a3f6605a10f70fe3a": {
+    "0x04008c24fa559f9ec9b1cc1888e45c0975943720": {
       "balance": "1000000000000000000000000000"
     },
-    "0xdb9d3f78a39e8fbb5019b7e4511c9736ad2302e2": {
+    "0x6240311ad7a58913f8d3f373a230948f753db9d3": {
       "balance": "1000000000000000000000000000"
     },
-    "0x90a463d850a5d206f46873610040540c724b2c7d": {
+    "0x7a9c291f38003fcf212333953882c591ae556d9a": {
+      "balance": "1000000000000000000000000000"
+    },
+    "0xf28f17214b727625de9c3c414cc8814b1c999ade": {
       "balance": "1000000000000000000000000000"
     }
   }

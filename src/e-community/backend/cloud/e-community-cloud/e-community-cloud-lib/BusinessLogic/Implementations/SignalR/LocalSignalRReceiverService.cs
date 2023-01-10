@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using e_community_cloud_lib.Models.Blockchain;
 
 namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
     /// <summary>
@@ -114,6 +115,11 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
         {
             var blockchainAccountBalance = _blockchainAccountBalance.CopyPropertiesTo(new BlockchainAccountBalanceDto());
             mRTListenerSignalRSenderService.SendToMemberBlockchainAccountBalance(_memberId, blockchainAccountBalance);
+        }
+
+        public void ReceiveCreateConsentContract(Guid _memberId, ConsentContractModel _consentContractModel)
+        {
+            mRTListenerSignalRSenderService.SendToMemberCreateConsentContract(_memberId, _consentContractModel);
         }
     }
 }

@@ -2,7 +2,6 @@ package at.fhooe.ecommunity.ui.screen.sharing.contract.add_upd_contract
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,6 +10,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.MultipleStop
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,7 +20,6 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,17 +29,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ConsentContractModel
 import at.fhooe.ecommunity.model.LoadingState
 import at.fhooe.ecommunity.ui.component.LoadingIndicator
 import at.fhooe.ecommunity.ui.screen.sharing.ConsentContract
 import at.fhooe.ecommunity.ui.screen.sharing.SharingViewModel
+import at.fhooe.ecommunity.util.TimeSpan
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import okhttp3.internal.cacheGet
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
@@ -80,316 +82,345 @@ fun SharingAddOrUpdContract(_memberId: String, _viewModel: SharingViewModel, _na
             TopBarAddOrUpdContract(_navController)
         }
     ) {
-        EditContractForm(consentContract)
+        EditContractForm(_viewModel)
     }
 }
 
 @Composable
-fun EditContractForm(_consentContract: MutableState<ConsentContract>) {
+fun EditContractForm(_viewModel: SharingViewModel) {
     Box {
         Column(modifier = Modifier
             .padding(all = 10.dp)) {
 
             // time-span energy data
-            FormTimeSpan(_consentContract)
+            var startDate by remember {
+                mutableStateOf(TimeSpan(
+                    LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                )
+            }
+
+            var endDate by remember {
+                mutableStateOf(TimeSpan(
+                    LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                )
+            }
 
             // validity date of contract
-            FormValidityOfContract(_consentContract)
+            var validityDate by remember {
+                mutableStateOf(TimeSpan(
+                    LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                )
+            }
+
+            val isCreatingConsentContract = remember {
+                mutableStateOf(false)
+            }
+
+            val hasSubmittedContract = remember {
+                mutableStateOf(false)
+            }
+
+            val consentContractModel = remember {
+                mutableStateOf(ConsentContractModel(
+                    contractId = null,
+                    state = 0,
+                    addressContract = null,
+                    addressProposer = null,
+                    addressConsenter = null,
+                    startEnergyData = "",
+                    endEnergyData = "",
+                    validityOfContract = "",
+                    pricePerHour = "",
+                    totalPrice = ""
+                ))
+            }
 
             // price per 1h energy data
-            FormPricePerEnergyData(_consentContract)
+            var pricePerOneHour by remember {
+                mutableStateOf("0")
+            }
+
+            val dialogValidityDateState = rememberMaterialDialogState()
+            val dialogStartDateState = rememberMaterialDialogState()
+            val dialogEndDateState = rememberMaterialDialogState()
+
+            val shape = RoundedCornerShape(10.dp)
+
+            // start date & time of the energy data
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier.align(CenterHorizontally),
+                    text = stringResource(R.string.sharing_contract_timespan_energy_data)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .padding(top = 10.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Row {
+                        Column(horizontalAlignment = CenterHorizontally,
+                            modifier = Modifier
+                                .weight(1.0f)
+                                .fillMaxWidth()) {
+
+                            TextField(
+                                modifier = Modifier
+                                    .clip(shape),
+                                enabled = false,
+                                value = startDate.displayDate,
+                                onValueChange = { startDate.displayDate = it },
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Outlined.CalendarMonth,
+                                        contentDescription = stringResource(R.string.e_community_offline_icon_desc),
+                                        modifier = Modifier
+                                            .padding(end = 4.dp)
+                                            .clickable { dialogStartDateState.show() }
+                                    )
+                                }
+                            )
+                        }
+
+                        Icon(
+                            imageVector = Icons.Outlined.MultipleStop,
+                            contentDescription = "between",
+                            modifier = Modifier
+                                .padding(top = 17.dp)
+                                .weight(0.30f)
+                        )
+
+                        Column(horizontalAlignment = CenterHorizontally,
+                            modifier = Modifier
+                                .weight(1.0f)
+                                .fillMaxWidth()) {
+
+                            TextField(
+                                modifier = Modifier
+                                    .clip(shape),
+                                enabled = false,
+                                value = endDate.displayDate,
+                                onValueChange = { endDate.displayDate = it },
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Outlined.CalendarMonth,
+                                        contentDescription = "calendar",
+                                        modifier = Modifier
+                                            .padding(end = 4.dp)
+                                            .clickable { dialogEndDateState.show() }
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+
+            MaterialDialog(
+                dialogState = dialogStartDateState,
+                buttons = {
+                    positiveButton("Ok")
+                    negativeButton("Cancel")
+                }
+            ) {
+                datepicker { date ->
+                    startDate = startDate.copy(
+                        displayDate = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
+                        shortDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    )
+                }
+            }
+
+            MaterialDialog(
+                dialogState = dialogEndDateState,
+                buttons = {
+                    positiveButton("Ok")
+                    negativeButton("Cancel")
+                }
+            ) {
+                datepicker { date ->
+                    endDate = endDate.copy(
+                        displayDate = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
+                        shortDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    )
+                }
+            }
+
+            MaterialDialog(
+                dialogState = dialogValidityDateState,
+                buttons = {
+                    positiveButton("Ok")
+                    negativeButton("Cancel")
+                }
+            ) {
+                datepicker { date ->
+                    validityDate = validityDate.copy(
+                        displayDate = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
+                        shortDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    )
+
+                }
+            }
+
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp)) {
+                Text(
+                    modifier = Modifier.align(CenterHorizontally),
+                    text = stringResource(R.string.sharing_contract_validity_of_contract)
+                )
+
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(10.dp))
+                        .padding(top = 10.dp),
+                    value = validityDate.displayDate,
+                    onValueChange = {
+                        validityDate.displayDate = it
+                    },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.CalendarMonth,
+                            contentDescription = stringResource(R.string.e_community_offline_icon_desc),
+                            modifier = Modifier
+                                .padding(end = 4.dp)
+                                .clickable { dialogStartDateState.show() }
+                        )
+                    }
+                )
+            }
+
+
+
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp)) {
+                Text(
+                    modifier = Modifier.align(CenterHorizontally),
+                    text = stringResource(R.string.sharing_contract_price_per_1h)
+                )
+
+                Row {
+                    TextField(
+                        modifier = Modifier
+                            .weight(0.8f)
+                            .clip(RoundedCornerShape(10.dp))
+                            .padding(top = 10.dp),
+                        value = pricePerOneHour,
+                        onValueChange = {
+                            pricePerOneHour = it
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        singleLine = true
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .weight(0.2f)
+                            .align(CenterVertically)
+                            .padding(start = 10.dp),
+                        text = stringResource(R.string.sharing_contract_currency_ethereum_short),
+                        style = MaterialTheme.typography.h5
+                    )
+                }
+            }
+
+            var totalPrice = 0f
 
             // summary of the price
-            FormSummaryPrice(_consentContract)
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp)) {
+                Text(
+                    modifier = Modifier.align(CenterHorizontally),
+                    text = stringResource(R.string.sharing_contract_summary)
+                )
+
+                val startDateTime = LocalDateTime.parse(startDate.shortDate + "T00:00:00.000000")
+                val endDateTime = LocalDateTime.parse(endDate.shortDate + "T23:59:00.000000")
+                val hours = Duration.between(startDateTime, endDateTime).toHours()
+
+                Column(modifier = Modifier
+                    .padding(top = 10.dp)
+                ) {
+                    Text(
+                        text = "$pricePerOneHour ETH x $hours hours"
+                    )
+
+                    Divider(modifier = Modifier
+                        .padding(top = 5.dp, bottom = 5.dp)
+                        .height(1.dp))
+
+                    totalPrice = if (pricePerOneHour.isNotEmpty()) {
+                        pricePerOneHour.toFloat() * hours
+                    } else { 0f }
+
+                    Text(
+                        text = "$totalPrice ETH",
+                        style = MaterialTheme.typography.h6
+                    )
+                }
+            }
 
             // submit contract
-            FormSubmitContract(_consentContract)
-        }
-    }
-}
-
-@Composable
-fun FormTimeSpan(_consentContract: MutableState<ConsentContract>) {
-    val startDate = remember {
-        mutableStateOf(LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-    }
-
-    val endDate = remember {
-        mutableStateOf(LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-    }
-
-    // init consent contract
-    _consentContract.value.startEnergyDataDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-    _consentContract.value.endEnergyDataDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-
-    val dialogStartDateState = rememberMaterialDialogState()
-    MaterialDialog(
-        dialogState = dialogStartDateState,
-        buttons = {
-            positiveButton("Ok")
-            negativeButton("Cancel")
-        }
-    ) {
-        datepicker { date ->
-            startDate.value = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
-            _consentContract.value.startEnergyDataDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        }
-    }
-
-    val dialogEndDateState = rememberMaterialDialogState()
-    MaterialDialog(
-        dialogState = dialogEndDateState,
-        buttons = {
-            positiveButton("Ok")
-            negativeButton("Cancel")
-        }
-    ) {
-        datepicker { date ->
-            endDate.value = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
-            _consentContract.value.endEnergyDataDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        }
-    }
-
-    val shape = RoundedCornerShape(10.dp)
-
-    // start date & time of the energy data
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            modifier = Modifier.align(CenterHorizontally),
-            text = stringResource(R.string.sharing_contract_timespan_energy_data)
-        )
-
-        Box(
-            modifier = Modifier
-                .padding(top = 10.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Row {
-                Column(horizontalAlignment = CenterHorizontally,
-                    modifier = Modifier
-                        .weight(1.0f)
-                        .fillMaxWidth()) {
-
-                    TextField(
-                        modifier = Modifier
-                            .clip(shape),
-                        enabled = false,
-                        value = startDate.value,
-                        onValueChange = {
-                            startDate.value = it
-                        },
-                        trailingIcon = {
-                            Icon(
-                                imageVector = Icons.Outlined.CalendarMonth,
-                                contentDescription = stringResource(R.string.e_community_offline_icon_desc),
-                                modifier = Modifier
-                                    .padding(end = 4.dp)
-                                    .clickable { dialogStartDateState.show() }
-                            )
-                        }
-                    )
-                }
-
-                Icon(
-                    imageVector = Icons.Outlined.MultipleStop,
-                    contentDescription = "between",
-                    modifier = Modifier
-                        .padding(top = 17.dp)
-                        .weight(0.30f)
-                )
-
-                Column(horizontalAlignment = CenterHorizontally,
-                    modifier = Modifier
-                        .weight(1.0f)
-                        .fillMaxWidth()) {
-
-                    TextField(
-                        modifier = Modifier
-                            .clip(shape),
-                        enabled = false,
-                        value = endDate.value,
-                        onValueChange = {
-                            endDate.value = it
-                        },
-                        trailingIcon = {
-                            Icon(
-                                imageVector = Icons.Outlined.CalendarMonth,
-                                contentDescription = "calendar",
-                                modifier = Modifier
-                                    .padding(end = 4.dp)
-                                    .clickable { dialogEndDateState.show() }
-                            )
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun FormValidityOfContract(_consentContract: MutableState<ConsentContract>) {
-    val startDate = remember {
-        mutableStateOf(LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-    }
-
-    _consentContract.value.contractValidityDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-
-    val dialogStartDateState = rememberMaterialDialogState()
-    MaterialDialog(
-        dialogState = dialogStartDateState,
-        buttons = {
-            positiveButton("Ok")
-            negativeButton("Cancel")
-        }
-    ) {
-        datepicker { date ->
-            startDate.value = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
-            _consentContract.value.contractValidityDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        }
-    }
-
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 10.dp)) {
-        Text(
-            modifier = Modifier.align(CenterHorizontally),
-            text = stringResource(R.string.sharing_contract_validity_of_contract)
-        )
-
-        TextField(
-            modifier = Modifier
+            Button(modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
                 .padding(top = 10.dp),
-            enabled = false,
-            value = startDate.value,
-            onValueChange = {
-                startDate.value = it
-            },
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Outlined.CalendarMonth,
-                    contentDescription = stringResource(R.string.e_community_offline_icon_desc),
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .clickable { dialogStartDateState.show() }
+                enabled = pricePerOneHour.isNotEmpty() && pricePerOneHour.toFloat() > 0f,
+                onClick = {
+                    consentContractModel.value = ConsentContractModel(
+                        contractId = null,
+                        state = 0,
+                        addressContract = null,
+                        addressProposer = null,
+                        addressConsenter = "0x6240311ad7a58913f8d3f373a230948f753db9d3",
+                        startEnergyData = convertDateToUnixTimestamp(startDate.shortDate + "T00:00:00.000000").toString(),
+                        endEnergyData = convertDateToUnixTimestamp(endDate.shortDate + "T23:59:00.000000").toString(),
+                        validityOfContract = convertDateToUnixTimestamp(validityDate.shortDate + "T23:59:00.000000").toString(),
+                        pricePerHour = pricePerOneHour,
+                        totalPrice = totalPrice.toString()
+                    )
+
+                    hasSubmittedContract.value = true
+                    isCreatingConsentContract.value = true
+
+                    _viewModel.createConsentContract(isCreatingConsentContract, consentContractModel)
+                }) {
+                Text(
+                    text = stringResource(R.string.sharing_contract_submit),
+                    color = Color.White
                 )
             }
-        )
-    }
-}
 
-@Composable
-fun FormPricePerEnergyData(_consentContract: MutableState<ConsentContract>) {
-    val pricePerOneHour = remember {
-        mutableStateOf("")
-    }
+            if (hasSubmittedContract.value) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()) {
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 10.dp)) {
-        Text(
-            modifier = Modifier.align(CenterHorizontally),
-            text = stringResource(R.string.sharing_contract_price_per_1h)
-        )
+                    Row() {
+                        Text(
+                            text = stringResource(R.string.sharing_contract_creating)
+                        )
 
-        Row {
-            TextField(
-                modifier = Modifier
-                    .weight(0.8f)
-                    .clip(RoundedCornerShape(10.dp))
-                    .padding(top = 10.dp),
-                value = pricePerOneHour.value,
-                onValueChange = {
-                    pricePerOneHour.value = it
-
-                    Log.d(TAG, "before recomp: ${_consentContract.value.startEnergyDataDate}")
-                    // recreate a new ConsentContract for re-composition (to show summary)
-                    _consentContract.value = ConsentContract(
-                        _consentContract.value.startEnergyDataDate,
-                        _consentContract.value.endEnergyDataDate,
-                        _consentContract.value.contractValidityDate,
-                        it,
-                        0,
-                        ""
-                    )
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                singleLine = true
-            )
-
-            Text(
-                modifier = Modifier
-                    .weight(0.2f)
-                    .align(CenterVertically)
-                    .padding(start = 10.dp),
-                text = stringResource(R.string.sharing_contract_currency_ethereum_short),
-                style = MaterialTheme.typography.h5
-            )
+                        if (isCreatingConsentContract.value) {
+                            CircularProgressIndicator()
+                        }
+                        else {
+                            Icon(
+                                imageVector = Icons.Outlined.Check,
+                                contentDescription = stringResource(R.string.sharing_contract_creating),
+                                tint = colorResource(id = R.color.value_good),
+                                modifier = Modifier
+                                    .padding(end = 8.dp)
+                            )
+                        }
+                    }
+                }
+            }
         }
-    }
-}
-
-@Composable
-fun FormSummaryPrice(_consentContract: MutableState<ConsentContract>) {
-
-    // consent must be ready to calculate summary
-    if (!_consentContract.value.isReadyForSubmit()) {
-        return
-    }
-
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 10.dp)) {
-        Text(
-            modifier = Modifier.align(CenterHorizontally),
-            text = stringResource(R.string.sharing_contract_summary)
-        )
-
-        Log.d(TAG, _consentContract.value.startEnergyDataDate)
-        // add hours because date picker uses whole day
-        _consentContract.value.startEnergyDataDate += "T00:00:00.000000"
-        _consentContract.value.endEnergyDataDate += "T23:59:00.000000"
-
-        val startDateTime = LocalDateTime.parse(_consentContract.value.startEnergyDataDate)
-        val endDateTime = LocalDateTime.parse(_consentContract.value.endEnergyDataDate)
-        val hours = Duration.between(startDateTime, endDateTime).toHours()
-
-        Column(modifier = Modifier
-            .padding(top = 10.dp)
-        ) {
-            Text(
-                text = "${_consentContract.value.pricePerOneHour} ETH x $hours hours"
-            )
-
-            Divider(modifier = Modifier
-                .padding(top = 5.dp, bottom = 5.dp)
-                .height(1.dp))
-
-            Text(
-                text = "${_consentContract.value.pricePerOneHour.toFloat() * hours} ETH",
-                style = MaterialTheme.typography.h6
-            )
-        }
-    }
-}
-
-@Composable
-fun FormSubmitContract(_consentContract: MutableState<ConsentContract>) {
-    if (!_consentContract.value.isReadyForSubmit()) {
-        return
-    }
-
-    Button(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 10.dp),
-        onClick = {
-        }) {
-        Text(
-            text = stringResource(R.string.sharing_contract_submit),
-            color = Color.White
-        )
     }
 }
 
@@ -424,4 +455,10 @@ fun TopBarAddOrUpdContract(_navController: NavHostController) {
             )
         }
     }
+}
+
+fun convertDateToUnixTimestamp(_date: String): Long {
+    val date = LocalDateTime.parse(_date)
+    val zoneId: ZoneId = ZoneId.systemDefault()
+    return date.atZone(zoneId).toEpochSecond()
 }

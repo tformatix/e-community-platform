@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using e_community_cloud_lib.Models.Blockchain;
 
 namespace e_community_cloud_lib.Endpoints.Interfaces
 {
@@ -28,6 +29,18 @@ namespace e_community_cloud_lib.Endpoints.Interfaces
         /// </summary>
         Task TimerElapsed();
 
+        /// <summary>
+        /// receive balance of the local ethereum account
+        /// </summary>
+        /// <param name="_blockchainAccountBalance"></param>
+        /// <returns></returns>
         Task ReceiveBlockchainAccountBalance(BlockchainAccountBalanceDto _blockchainAccountBalance);
+
+        /// <summary>
+        /// receive the created consent contract
+        /// </summary>
+        /// <param name="_consentContractModel"></param>
+        /// <returns></returns>
+        Task ReceiveCreateConsentContract(ConsentContractModel _consentContractModel);
     }
 }

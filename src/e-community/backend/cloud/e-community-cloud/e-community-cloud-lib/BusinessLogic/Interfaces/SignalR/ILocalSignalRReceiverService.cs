@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using e_community_cloud_lib.Models.Blockchain;
 
 namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR
 {
@@ -28,5 +29,12 @@ namespace e_community_cloud_lib.BusinessLogic.Interfaces.SignalR
         /// </summary>
         /// <param name="memberId">member id</param>
         void ReceivedBlockchainAccountBalance(Guid memberId, BlockchainAccountBalanceDto _blockchainAccountBalance);
+        
+        /// <summary>
+        /// receive the created consent contract
+        /// </summary>
+        /// <param name="_consentContractModel"></param>
+        /// <returns></returns>
+        void ReceiveCreateConsentContract(Guid memberId, ConsentContractModel _consentContractModel);
     }
 }

@@ -12,7 +12,7 @@ GOQUORUM_NODE_URL = 'http://127.0.0.1:22000'
 GOQUORUM_NODE = ""
 
 # this is the address of the factory contract (is static)
-GOQUORUM_CONTRACT_FACTORY_ADDRESS = "0x5D2335F00E98757bA576921d6DD180BA3103CAF1"
+GOQUORUM_CONTRACT_FACTORY_ADDRESS = "0x47aea371FaA31E229AF09303835bD5cCFd7dCb8D"
 
 # CLI object
 cli = typer.Typer()
@@ -24,20 +24,24 @@ w3.handleRevert = True
 
 # CLI COMMANDS #
 # READ ETHEREUM ACCOUNT
+
 GOQUORUM_READ_ADDRESS = "cat /home/pi/blockchain/Node/data/keystore/accountAddress"
 GOQUORUM_READ_PASSWORD = "cat /home/pi/blockchain/Node/data/keystore/accountPassword"
 GOQUORUM_READ_PRIVATE_KEY = "cat /home/pi/blockchain/Node/data/keystore/accountPrivateKey"
 
-#GOQUORUM_READ_ADDRESS = "cat /home/michael/Documents/dev/network/QBFT-Network/Node-0/data/keystore/accountAddress"
-#GOQUORUM_READ_PASSWORD = "cat /home/michael/Documents/dev/network/QBFT-Network/Node-0/data/keystore/accountPassword"
-#GOQUORUM_READ_PRIVATE_KEY = "cat /home/michael/Documents/dev/network/QBFT-Network/Node-0/data/keystore/accountPrivateKey"
+"""
+GOQUORUM_READ_ADDRESS = "cat /home/michael/Documents/dev/network/production/michi_local/data/keystore/accountAddress"
+GOQUORUM_READ_PASSWORD = "cat /home/michael/Documents/dev/network/production/michi_local/data/keystore/accountPassword"
+GOQUORUM_READ_PRIVATE_KEY = "cat /home/michael/Documents/dev/network/production/michi_local/data/keystore/accountPrivateKey"
+"""
 
 # TRUFFLE #
 # deploy new consent contract
 TRUFFLE_DEPLOY_CONTRACT = 'cd bla && truffle migrate | grep "contract ' \
                           'address" | grep -o -E "0[xX][0-9a-fA-F]+"'
 
-""" deployment configuration
+
+"""
 TRUFFLE_DEPLOY_CONTRACT = 'cd $SMART_CONTRACT_PATH && truffle migrate | grep "contract ' \
                           'address" | grep -o -E "0[xX][0-9a-fA-F]+"'
 TRUFFLE_CONTRACT_BYTECODE = 'cat $SMART_CONTRACT_PATH/build/contracts/ConsentContract.json | grep -oP \'(?<="bytecode": ")[^"]*\''
@@ -51,6 +55,7 @@ TRUFFLE_READ_CONTRACT_ABI = 'cat /home/pi/backend/Util/Extensions/Python/build/C
 
 TRUFFLE_CONTRACT_BYTECODE_FACTORY = 'cat /home/pi/backend/Util/Extensions/Python/build/ConsentContractFactory.json | grep -oP \'(?<="bytecode": ")[^"]*\''
 TRUFFLE_READ_CONTRACT_ABI_FACTORY = 'cat /home/pi/backend/Util/Extensions/Python/build/ConsentContractFactory.json'
+
 
 # UNLOCK ETHEREUM ACCOUNT
 GOQUORUM_ACCOUNT_UNLOCK = 'curl -s -H "Content-Type: application/json" -X POST --data \'{"jsonrpc":"2.0",' \

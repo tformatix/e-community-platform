@@ -48,9 +48,8 @@ public class BlockchainController : ControllerBase
     {
         var memberId = (Guid)User.GetMemberId();
         // generate a unique id
-        _consentContractModel.ContractId = new Guid();
-        
-        
+        _consentContractModel.ContractId = Guid.NewGuid();
+
         Log.Information($"Blockchain/CreateConsentContract::memberId: {memberId}; contractId: {_consentContractModel.ContractId}");
         
         mLocalSignalRSenderService.CreateConsentContract(memberId, _consentContractModel);

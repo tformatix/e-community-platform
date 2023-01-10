@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Serilog;
 using System.Text.Json;
+using e_community_cloud_lib.Models.Blockchain;
 
 namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
     public class RTListenerSignalRSenderService : IRTListenerSignalRSenderService {
@@ -106,6 +107,14 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations.SignalR {
                 .ReceiveBlockchainAccountBalance(_blockchainAccountBalance);
             mLocalHubContext.Clients.Groups(_memberId.GetGroupName(GroupType.Member))
                 .ReceiveBlockchainAccountBalance(_blockchainAccountBalance);
+        }
+
+        public void SendToMemberCreateConsentContract(Guid _memberId, ConsentContractModel _consentContractModel)
+        {
+            mEndDeviceHubContext.Clients.Groups(_memberId.GetGroupName(GroupType.Member))
+                .ReceiveCreateConsentContract(_consentContractModel);
+            mLocalHubContext.Clients.Groups(_memberId.GetGroupName(GroupType.Member))
+                .ReceiveCreateConsentContract(_consentContractModel);
         }
     }
 }

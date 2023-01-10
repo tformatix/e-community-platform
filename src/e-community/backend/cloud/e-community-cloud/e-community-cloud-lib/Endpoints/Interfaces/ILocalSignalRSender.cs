@@ -55,6 +55,13 @@ namespace e_community_cloud_lib.Endpoints.Interfaces
         /// </summary>
         /// <returns></returns>
         Task ReceiveBlockchainAccountBalance(BlockchainAccountBalanceDto _blockchainAccountBalance);
+        
+        /// <summary>
+        /// receive the created consent contract
+        /// </summary>
+        /// <param name="_consentContractModel"></param>
+        /// <returns></returns>
+        Task ReceiveCreateConsentContract(ConsentContractModel _consentContractModel);
 
         /// <summary>
         /// creates a new consent contract on the blockchain

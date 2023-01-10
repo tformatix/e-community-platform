@@ -32,6 +32,7 @@ object Constants {
     const val SIGNALR_URL = "Endpoint/EndDevice"
     const val SIGNALR_METHOD = "ReceiveRTData"
     const val SIGNALR_METHOD_BLOCK_ACC_BALANCE = "ReceiveBlockchainAccountBalance"
+    const val SIGNALR_METHOD_CREATE_CON_CONTRACT = "ReceiveCreateConsentContract"
 
     /* SMART METER VALUES */
     const val KILOWATT = 1000

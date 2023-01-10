@@ -40,6 +40,6 @@ namespace e_community_local_lib.Endpoints.Interfaces
         /// </summary>
         /// <param name="_consentContractDto"></param>
         /// <returns></returns>
-        Task ReceiveCreateContract(ConsentContractDto _consentContractDto);
+        Task ReceiveCreateConsentContract(ConsentContractDto _consentContractDto);
     }
 }
