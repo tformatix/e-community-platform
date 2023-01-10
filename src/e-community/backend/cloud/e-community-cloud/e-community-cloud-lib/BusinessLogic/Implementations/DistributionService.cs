@@ -299,12 +299,12 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
         public async Task FinalizeDistribution() {
             foreach (var distribution in await GetCalculatingDistributions()) {
                 distribution.IsCalculating = false;
+                await mDb.SaveChangesAsync();
                 if (distribution.IsRelevant) {
                     // only send notifications if distribution is relevant
                     SendDistributionNotifications(distribution.SmartMeterPortions, mFCMService.FinalDistribution);
                 }
             }
-            await mDb.SaveChangesAsync();
         }
 
         /// <summary>

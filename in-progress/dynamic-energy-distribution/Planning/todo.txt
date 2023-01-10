@@ -1,5 +1,6 @@
 - Android
 	- comment
+	- bug reload after notification (multiple smart meters)
 	- Notification Badge
 - Backend
 	- error handling Portion Ack
