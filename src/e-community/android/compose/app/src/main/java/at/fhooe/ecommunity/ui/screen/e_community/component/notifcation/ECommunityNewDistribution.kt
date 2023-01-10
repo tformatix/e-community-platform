@@ -45,7 +45,6 @@ fun ECommunityNewDistribution(
         val flexibilityInt = flexibility.toIntOrNull()
         val isFlexibilityError = flexibilityInt == null
 
-        val consumption = portion.estimatedActiveEnergyPlus ?: 0
         val assignedColor =
             if (abs(portion.deviation ?: 0) <= abs(portion.flexibility ?: 0)) colorResource(id = R.color.value_good)
             else colorResource(id = R.color.value_bad)

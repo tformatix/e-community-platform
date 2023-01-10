@@ -193,7 +193,7 @@
     <string name="e_community_non_compliance_mute">mute for current hour:</string>
     <string name="e_community_non_compliance_unmute">unmute for current hour:</string>
     <string name="e_community_non_compliance_forecast">forecast</string>
-    <string name="e_community_non_compliance_current">current projected consumption</string>
+    <string name="e_community_non_compliance_current">projected consumption</string>
     <string name="e_community_offline_icon_desc">Offline</string>
     <string name="e_community_offline_title">Smart Meter %1$s offline!</string>
 </resources>
