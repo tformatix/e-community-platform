@@ -2,6 +2,7 @@ package at.fhooe.ecommunity.ui.screen.sharing.contract.add_upd_contract
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +12,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.MultipleStop
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,9 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import at.fhooe.ecommunity.R
 import at.fhooe.ecommunity.TAG
+import at.fhooe.ecommunity.data.remote.openapi.cloud.models.BlockchainAccountBalanceDto
 import at.fhooe.ecommunity.data.remote.openapi.cloud.models.ConsentContractModel
 import at.fhooe.ecommunity.model.LoadingState
-import at.fhooe.ecommunity.ui.component.LoadingIndicator
+import at.fhooe.ecommunity.model.RemoteException
 import at.fhooe.ecommunity.ui.screen.sharing.ConsentContract
 import at.fhooe.ecommunity.ui.screen.sharing.SharingViewModel
 import at.fhooe.ecommunity.util.TimeSpan
@@ -58,23 +59,60 @@ fun SharingAddOrUpdContract(_memberId: String, _viewModel: SharingViewModel, _na
             ConsentContract("", "", "", "", 0, "")
         )
     }
-    var isLoading = false
+
+    // saved as state to know when signalr sent the data
+    val isLoading = remember {
+        mutableStateOf(false)
+    }
+
+    // save state of blockchain account balance
+    val blockchainAccountBalance = remember {
+        mutableStateOf(
+            BlockchainAccountBalanceDto(
+                "0", "0", "0"
+            ))
+    }
+
 
     when(state.mState) {
         LoadingState.State.SUCCESS -> {
-            isLoading = false
+            isLoading.value = false
             _viewModel.backToIdle()
         }
         LoadingState.State.RUNNING -> {
-            Log.d(TAG, "loading")
-            // view model operation is loading
-            LoadingIndicator() // show loading indicator
-            isLoading = true
+            isLoading.value = true
         }
         LoadingState.State.FAILED -> {
-            //
+            // view model operation failed
+            _viewModel.backToIdle() // bring the view model back to the idle state
+            Log.d(TAG, "error")
+
+            if (state.mException == null) {
+                Toast.makeText(
+                    _viewModel.mApplication,
+                    _viewModel.mApplication.remoteExceptionRepository.remoteExceptionToString(
+                        RemoteException(RemoteException.Type.NO_INTERNET)
+                    ),
+                    Toast.LENGTH_SHORT
+                ).show() // show error message
+            }
+            state.mException?.let {
+                val remoteException = _viewModel.mApplication.remoteExceptionRepository.exceptionToRemoteException(it)
+                Toast.makeText(
+                    _viewModel.mApplication,
+                    _viewModel.mApplication.remoteExceptionRepository.remoteExceptionToString(
+                        RemoteException(RemoteException.Type.NO_INTERNET)
+                    ),
+                    Toast.LENGTH_SHORT
+                ).show() // show error message
+            }
         }
         else -> {}
+    }
+
+    LaunchedEffect(true) {
+        isLoading.value = true
+        _viewModel.requestBlockchainAccountBalance(isLoading, blockchainAccountBalance)
     }
 
     Scaffold(
@@ -82,12 +120,22 @@ fun SharingAddOrUpdContract(_memberId: String, _viewModel: SharingViewModel, _na
             TopBarAddOrUpdContract(_navController)
         }
     ) {
-        EditContractForm(_viewModel)
+        EditContractForm(isLoading, _viewModel, blockchainAccountBalance)
     }
 }
 
 @Composable
-fun EditContractForm(_viewModel: SharingViewModel) {
+fun EditContractForm(
+    _isLoading: MutableState<Boolean>,
+    _viewModel: SharingViewModel,
+    _blockchainAccountBalance: MutableState<BlockchainAccountBalanceDto>
+) {
+    if (_isLoading.value) {
+        LinearProgressIndicator(
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+
     Box {
         Column(modifier = Modifier
             .padding(all = 10.dp)) {
@@ -347,7 +395,17 @@ fun EditContractForm(_viewModel: SharingViewModel) {
                 Column(modifier = Modifier
                     .padding(top = 10.dp)
                 ) {
-                    Text(
+                    Row() {
+                        Text(
+                            text = stringResource(R.string.sharing_contract_available_balance)
+                        )
+                        Text(modifier = Modifier.padding(start = 5.dp),
+                            text = "${_blockchainAccountBalance.value.balance?.trim()} ETH",
+                            color = Color.Green
+                        )
+                    }
+
+                    Text(modifier = Modifier.padding(top = 5.dp),
                         text = "$pricePerOneHour ETH x $hours hours"
                     )
 
@@ -370,7 +428,8 @@ fun EditContractForm(_viewModel: SharingViewModel) {
             Button(modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp),
-                enabled = pricePerOneHour.isNotEmpty() && pricePerOneHour.toFloat() > 0f,
+                enabled = pricePerOneHour.isNotEmpty() && pricePerOneHour.toFloat() > 0f
+                        && _blockchainAccountBalance.value.balance != null && totalPrice <= _blockchainAccountBalance.value.balance!!.toFloat(),
                 onClick = {
                     consentContractModel.value = ConsentContractModel(
                         contractId = null,

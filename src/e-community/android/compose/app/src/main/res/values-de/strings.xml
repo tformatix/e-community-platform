@@ -134,6 +134,7 @@
     <string name="sharing_contract_submit">Senden</string>
     <string name="sharing_contract_creating">Vertrag wird erstellt…</string>
     <string name="sharing_contract_depositing">Bezahlung wird gebucht…</string>
+    <string name="sharing_contract_available_balance">Verfügbare Bilanz: </string>
 
     <!--COMMUNITY SCREEN-->
     <string name="e_community_top_bar_group_icon_desc">Gruppen-Icon</string>
