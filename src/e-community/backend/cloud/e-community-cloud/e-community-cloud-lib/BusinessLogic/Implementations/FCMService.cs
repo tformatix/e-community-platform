@@ -59,6 +59,7 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 // extend lifetime
                 if(fcmToken.MemberId != _memberId) {
                     mDb.MemberFCMToken.Remove(fcmToken);
+                    await mDb.SaveChangesAsync();
                     mDb.MemberFCMToken.Add(new MemberFCMToken() {
                         MemberId = _memberId,
                         Token = _token,
