@@ -57,8 +57,16 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
             var validUntil = DateTime.UtcNow.AddMonths(mConfiguration.GetValue<int>("FCMTokenLifetimeMonth"));
             if (fcmToken != null) {
                 // extend lifetime
-                fcmToken.MemberId = _memberId;
-                fcmToken.ValidUntil = validUntil;
+                if(fcmToken.MemberId != _memberId) {
+                    mDb.MemberFCMToken.Remove(fcmToken);
+                    mDb.MemberFCMToken.Add(new MemberFCMToken() {
+                        MemberId = _memberId,
+                        Token = _token,
+                        ValidUntil = validUntil
+                    });
+                } else {
+                    fcmToken.ValidUntil = validUntil;
+                }
             }
             else {
                 // register new token
