@@ -102,8 +102,12 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
 
             if (monitoringHourBefore != null && monitoringHourBefore.Timestamp.Hour == previousTimestamp.Hour && monitoringHourBefore.Timestamp.Minute == previousTimestamp.Minute) {
                 // monitoring entry before an hour available (calculate actual energy)
+                var currentDistributions = await mDb.ECommunityDistribution
+                    .Include(x => x.SmartMeterPortions)
+                    .ThenInclude(x => x.SmartMeter)
+                    .Where(x => !x.IsCalculating && x.Timestamp == previousTimestamp)
+                    .ToListAsync();
 
-                var currentDistributions = await GetCurrentDistributions();
                 foreach (var distribution in currentDistributions) {
                     foreach (var portion in distribution.SmartMeterPortions) {
 
@@ -317,21 +321,6 @@ namespace e_community_cloud_lib.BusinessLogic.Implementations {
                 forecast += _deviation;
             }
             return forecast;
-        }
-
-        /// <returns>first distributions which are not calculating</returns>
-        private async Task<List<ECommunityDistribution>> GetCurrentDistributions() {
-            var nonCalulating = await mDb.ECommunityDistribution
-                .Include(x => x.SmartMeterPortions)
-                .ThenInclude(x => x.SmartMeter)
-                .Where(x => !x.IsCalculating)
-                .ToListAsync();
-
-            var maxTimestamp = nonCalulating.Max(x => x.Timestamp);
-
-            return nonCalulating
-                .Where(x => x.Timestamp == maxTimestamp)
-                .ToList();
         }
 
         /// <returns>currently calculated monitoring</returns>
