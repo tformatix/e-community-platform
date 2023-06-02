@@ -1,0 +1,237 @@
+<resources>
+    <!-- SHARED PREFERENCES -->
+    <string name="shared_prefs_tutorial_mode" translatable="false">SHARED_PREFS_TUTORIAL_MODE</string>
+    <string name="shared_prefs_tutorial_home_finished" translatable="false">SHARED_PREFS_TUTORIAL_HOME</string>
+    <string name="shared_prefs_tutorial_e_com_finished" translatable="false">SHARED_PREFS_TUTORIAL_E_COM</string>
+    <string name="shared_prefs_tutorial_dash_finished" translatable="false">SHARED_PREFS_TUTORIAL_DASH</string>
+    <string name="shared_prefs_tutorial_user_finished" translatable="false">SHARED_PREFS_TUTORIAL_USER</string>
+    <string name="shared_prefs_tutorial_loaded" translatable="false">SHARED_PREFS_TUTORIAL_LOADED</string>
+    <string name="shared_prefs_tutorial_preview_notifications_loaded" translatable="false">SHARED_PREFS_TUTORIAL_PREVIEW_NOTIFICATIONS_LOADED</string>
+    <string name="shared_prefs_access_token" translatable="false">SHARED_PREFS_ACCESS_TOKEN</string>
+    <string name="shared_prefs_refresh_token" translatable="false">SHARED_PREFS_REFRESH_TOKEN</string>
+    <string name="shared_prefs_member_id" translatable="false">SHARED_PREFS_MEMBER_ID</string>
+
+    <!-- ERRORS -->
+    <string name="error_unexpected">Unexpected Error</string>
+    <string name="error_server_unreachable">Server unreachable</string>
+    <string name="error_no_internet">No internet connectivity</string>
+    <string name="error_500">Server Error</string>
+    <string name="error_404">Not found</string>
+    <string name="error_403">Not authorized</string>
+    <string name="error_400_create_account_failed">Account creation failed</string>
+    <string name="error_400_invalid_credentials">Invalid Credentials</string>
+    <string name="error_400_invalid_refresh_token">Your session expired. Please login again!</string>
+    <string name="error_400_couldnt_send_email">Sending Email failed</string>
+    <string name="error_400_email_not_confirmed">Email not confirmed</string>
+    <string name="error_400_email_confirm_failed">Email confirmation failed</string>
+    <string name="error_400_email_already_confirmed">Email already confirmed</string>
+    <string name="error_400_account_locked">Account is locked for 5 minutes because of too many attempts</string>
+    <string name="error_400_email_taken">Email already taken</string>
+    <string name="error_400_reset_password_failed">Password resetting failed</string>
+    <string name="error_400_change_password_failed">Password changing failed</string>
+    <string name="error_400_no_smart_meter_found">no Smart Meter was found</string>
+    <string name="error_400_member_id_not_resolvable">Difficulties with your login data have occurred. Try to log in again!</string>
+    <string name="error_400_smart_meter_not_to_user">Smart Meter does not belong to user!</string>
+    <string name="error_400_portion_ack_expired">Distribution can no longer be changed!</string>
+
+    <!-- NOTIFICATIONS-->
+    <string name="notification_rationale">Without notifications you will not be informed for important news! Enable notifications?</string>
+    <string name="notification_denied">Notifications deactivated - functionality limited!</string>
+
+    <string name="notification_new_distribution_title">New Hourly Energy Distribution</string>
+    <string name="notification_new_distribution_body">%1$s for the next hour. Accept or Change?</string>
+    <string name="notification_final_distribution_title">Hourly Energy Distribution</string>
+    <string name="notification_final_distribution_body">%1$s for the next hour.</string>
+    <string name="notification_offline_title">Smart Meter Offline</string>
+    <string name="notification_offline_body">%1$s is offline!</string>
+    <string name="notification_non_compliance_title">Forecast is unlikely to be met!</string>
+    <string name="notification_non_compliance_more_body">%1$s: %2$s more than forecasted.</string>
+    <string name="notification_non_compliance_less_body">%1$s: %2$s less than forecasted.</string>
+
+    <!-- MAIN TITLES -->
+    <string name="title_activity_main">eCommunity</string>
+    <string name="title_activity_start_up">Start Up</string>
+
+    <string name="image_description_logo">Logo</string>
+
+    <!-- WELCOME PAGE -->
+    <string name="startup_welcome_earth">Make our planet happy again and reduce your CO2 footprint!</string>
+    <string name="startup_welcome_learn_more">Learn more and explore eCommunity</string>
+    <string name="startup_welcome_save_money">Save money and spend it on the right things</string>
+    <string name="startup_welcome_social">Be part of an eCommunity and find other energy enthusiasts</string>
+    <string name="startup_register">Register</string>
+    <string name="startup_login">Login</string>
+
+    <!-- LOGIN SCREEN -->
+    <string name="login_action">Login</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Password</string>
+    <string name="login_show_password">Show password</string>
+    <string name="login_hide_password">Hide password</string>
+    <string name="login_resend_confirmation_email">Email not confirmed!\nYou have not received an email?\nSend again here.</string>
+    <string name="login_toast_resend_confirmation_email_success">Resending Email was successful</string>
+    <string name="login_sign_up">Sign up here</string>
+
+    <!-- REGISTER SCREEN -->
+    <string name="register_action">Register</string>
+    <string name="register_username">Username</string>
+    <string name="register_email">Email</string>
+    <string name="register_password">Password</string>
+    <string name="register_password_guidelines">Passwords must be at least 6 characters long and consist out of upper/lower case, numbers and special characters.</string>
+    <string name="register_repeat_password">Repeat Password</string>
+    <string name="register_repeat_password_not_match">Passwords do not match!</string>
+    <string name="register_show_password">Show password</string>
+    <string name="register_hide_password">Hide password</string>
+    <string name="register_login">Sign in with existing account</string>
+    <string name="register_toast_success">Registration successful! Please confirm your email before you continue!</string>
+
+    <!-- FORGOT PASSWORD SCREEN -->
+    <string name="forgot_password_action">Recover Password</string>
+    <string name="forgot_password_email">Email</string>
+    <string name="forgot_password_toast_success">You\'ll receive an email with a link to reset your password.</string>
+
+    <!-- DASHBOARD SCREEN -->
+    <string name="dashboard_tile_id_household_consumption" translatable="false">TILE_HOUSEHOLD_CONSUMPTION</string>
+    <string name="dashboard_tile_id_household_feed_in" translatable="false">TILE_HOUSEHOLD_FEED_IN</string>
+    <string name="dashboard_tile_id_community_consumption" translatable="false">TILE_COMM_CONSUMPTION</string>
+    <string name="dashboard_tile_id_community_feed_in" translatable="false">TILE_COMM_FEED_IN</string>
+    <string name="dashboard_tile_region_household">Household</string>
+    <string name="dashboard_tile_region_community">Community</string>
+    <string name="dashboard_tile_action_consumption">consumption</string>
+    <string name="dashboard_tile_action_feed_in">feed in</string>
+    <string name="dashboard_realtime">Realtime</string>
+    <string name="dashboard_history">History</string>
+
+    <!-- TILES -->
+    <string name="tile_id_household_consumption" translatable="false">TILE_HOUSEHOLD_CONSUMPTION</string>
+    <string name="tile_id_household_feed_in" translatable="false">TILE_HOUSEHOLD_FEED_IN</string>
+    <string name="tile_id_community_consumption" translatable="false">TILE_COMM_CONSUMPTION</string>
+    <string name="tile_id_community_feed_in" translatable="false">TILE_COMM_FEED_IN</string>
+
+    <!-- PROFILE SCREEN -->
+    <string name="profile_title_top_bar">Profile</string>
+    <string name="profile_logout">Logout</string>
+    <string name="profile_picture">Picture</string>
+    <string name="profile_smart_meters" translatable="false">Smart Meters:</string>
+    <string name="profile_add_smart_meter">Add Smart Meter</string>
+
+    <!-- PAIRING -->
+    <string name="pairing_discovery_title">Discover Devices</string>
+
+    <!-- NEWS SCREEN -->
+    <string name="search">Search …</string>
+
+    <!-- SEARCH SCREEN -->
+    <string name="people_filter">People</string>
+    <string name="ecommunities_filter">E-Communities</string>
+    <string name="view_more_results">View more …</string>
+    <string name="view_less_results">View less …</string>
+    <string name="nothing_found">Nothing was found :(</string>
+
+    <!-- SEARCH FILTER SCREEN -->
+    <string name="search_filter_sort_by">Sort By</string>
+    <string name="search_filter_apply_filter">apply</string>
+    <string name="search_filter_sortby_distance">Distance</string>
+    <string name="search_filter_sortby_entry_date">Entry Date</string>
+    <string name="search_filter_sortby_recommended">Recommended</string>
+
+    <!--SHARING SCREEN -->
+    <string name="sharing_wallet">Wallet</string>
+    <string name="sharing_wallet_received">Received</string>
+    <string name="sharing_wallet_sent">Sent</string>
+    <string name="sharing_wallet_balance">Balance</string>
+    <string name="sharing_wallet_eth">Ethereum</string>
+    <string name="sharing_wallet_currency_ethereum">Ethereum</string>
+    <string name="sharing_wallet_currency_euro">Euro</string>
+    <string name="sharing_contracts">Contracts</string>
+    <string name="sharing_contract">Contract</string>
+    <string name="sharing_contracts_active">Active</string>
+    <string name="sharing_contracts_requests">Requests</string>
+    <string name="sharing_contracts_requested">Requested</string>
+    <string name="sharing_contracts_pending">Pending</string>
+    <string name="sharing_contracts_closed">Closed</string>
+    <string name="sharing_contract_name">Contract\'s name</string>
+    <string name="sharing_contract_timespan_energy_data">Timespan of the Energy Data</string>
+    <string name="sharing_contract_validity_of_contract">Validity of Contract</string>
+    <string name="sharing_contract_price_per_1h">Price per 1h</string>
+    <string name="sharing_contract_currency_ethereum_short" translatable="false">ETH</string>
+    <string name="sharing_contract_summary">Total Summary</string>
+    <string name="sharing_contract_submit">Submit</string>
+    <string name="sharing_contract_creating">Contract is creating</string>
+    <string name="sharing_contract_waiting">May take a while…</string>
+    <string name="sharing_contract_creating_finished">Success!</string>
+    <string name="sharing_contract_go_to_sharing">Go to Sharing Dashboard…</string>
+    <string name="sharing_contract_available_balance">Available Balance: </string>
+    <string name="sharing_contract_ok" translatable="false">OK</string>
+    <string name="sharing_contract_action_new_contract">New Contract</string>
+    <string name="sharing_contract_view_contracts">View Contracts</string>
+    <string name="sharing_contract_message">Message</string>
+    <string name="sharing_contract_requests_consenter">Consent</string>
+    <string name="sharing_contract_requests_proposer">Propose</string>
+    <string name="sharing_contract_deposit">Deposit to Contract</string>
+    <string name="sharing_contract_state_payment_pending">waiting for deposit</string>
+    <string name="sharing_contract_state_withdraw_ready">withdraw ready</string>
+    <string name="sharing_contract_only_proposer_deposit">Proposer need to deposit…</string>
+    <string name="sharing_contract_only_consenter_withdraw">Consenter need to withdraw…</string>
+    <string name="sharing_contract_withdraw_from_contract">Withdraw from Contract</string>
+    <string name="sharing_contract_sync_values">Sync Energy Data</string>
+    <string name="sharing_contract_energy_data">Energy Data</string>
+    <string name="sharing_contract_data_usage">Usage Energy Data</string>
+    <string name="sharing_contract_data_usage_forecasts">Forecasts in Future</string>
+    <string name="sharing_contract_data_usage_statistical">Statistical Evaluation</string>
+    <string name="sharing_contract_data_usage_performance">Performance Measurements</string>
+    <string name="sharing_contract_data_usage_e_community">Candidate for an Energy Community</string>
+    <string name="sharing_contract_data_resolution">Time Resolution</string>
+    <string name="sharing_contract_data_resolution_15min">15 min</string>
+    <string name="sharing_contract_data_resolution_30min">30 min</string>
+    <string name="sharing_contract_data_resolution_1h">1 hour</string>
+    <string name="sharing_contract_data_resolution_12h">12 hours</string>
+    <string name="sharing_contract_data_resolution_1d">1 day</string>
+    <string name="sharing_contract_value_of_contract">Value</string>
+    <string name="sharing_contract_start_energy_data">Start-Date</string>
+    <string name="sharing_contract_end_energy_data">End-Date</string>
+    <string name="sharing_contract_revoke_consent">Revoke Consent</string>
+
+    <!--COMMUNITY SCREEN-->
+    <string name="e_community_top_bar_group_icon_desc">Group Icon</string>
+    <string name="e_community_top_bar_feed_in_icon_desc">Feed in</string>
+    <string name="e_community_top_bar_consumption_icon_desc">Consumption</string>
+    <string name="e_community_top_bar_refresh_icon_desc">Refresh</string>
+    <string name="e_community_tile_icon_desc">Undefinable Icon</string>
+    <string name="e_community_performance_title">YOUR Performance</string>
+    <string name="e_community_performance_good_forecasts">number of good forecasts</string>
+    <string name="e_community_performance_forecast_deviation">forecast deviation</string>
+    <string name="e_community_performance_day">Day</string>
+    <string name="e_community_performance_week">Week</string>
+    <string name="e_community_performance_month">Month</string>
+    <string name="e_community_performance_year">Year</string>
+    <string name="e_community_performance_total">Total</string>
+    <string name="e_community_distribution_title">Hourly Distribution</string>
+    <string name="e_community_distribution_forecast">forecast</string>
+    <string name="e_community_distribution_assigned">assigned</string>
+    <string name="e_community_distribution_more_energy">Probably %1$s energy still available.</string>
+    <string name="e_community_distribution_less_energy">Probably %1$s of energy is missing.</string>
+    <string name="e_community_distribution_forecasts_missing">Missing Forecasts from %1$d Smart Meters - Calculation may be incorrect!</string>
+    <string name="e_community_real_time_title">Real Time Monitoring</string>
+    <string name="e_community_real_time_consumption">Consumption</string>
+    <string name="e_community_new_distribution_title">New Hour - New Energy Distribution!</string>
+    <string name="e_community_new_distribution_accept_icon_desc">Accept</string>
+    <string name="e_community_new_distribution_more_energy">Probably %1$s energy still available - Increase Flexibility?</string>
+    <string name="e_community_new_distribution_less_energy">Probably %1$s of energy is missing - Decrease Flexibility?</string>
+    <string name="e_community_new_distribution_forecasts_missing">Missing Forecasts from %1$d Smart Meters - Calculation may be incorrect!</string>
+    <string name="e_community_new_distribution_change_flexibility">change flexibility (Wh)</string>
+    <string name="e_community_new_distribution_change_flexibility_error">Flexibility must be a number!</string>
+    <string name="e_community_new_distribution_change_flexibility_minus_icon_desc">minus</string>
+    <string name="e_community_new_distribution_change_flexibility_plus_icon_desc">plus</string>
+    <string name="e_community_new_distribution_estimated_consumption">estimated consumption</string>
+    <string name="e_community_new_distribution_assigned">assigned</string>
+    <string name="e_community_non_compliance_title">Forecast is unlikely to be met!</string>
+    <string name="e_community_non_compliance_mute_icon_desc">Mute</string>
+    <string name="e_community_non_compliance_mute">mute for current hour:</string>
+    <string name="e_community_non_compliance_unmute">unmute for current hour:</string>
+    <string name="e_community_non_compliance_forecast">forecast</string>
+    <string name="e_community_non_compliance_current">projected consumption</string>
+    <string name="e_community_offline_icon_desc">Offline</string>
+    <string name="e_community_offline_title">Smart Meter %1$s offline!</string>
+</resources>

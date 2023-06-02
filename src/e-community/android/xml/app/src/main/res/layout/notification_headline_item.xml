@@ -1,0 +1,38 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/notification_headline">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/notification_headline_item_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"
+            android:textSize="@dimen/notifications_text_headline_size"
+            android:text="@string/notification_item_timestamp_default"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/notification_headline_item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
+            android:text=""
+            android:textSize="@dimen/notifications_text_size"/>
+
+    </LinearLayout>
+
+</FrameLayout>

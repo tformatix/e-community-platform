@@ -1,0 +1,152 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_contractID",
+						"type": "string"
+					}
+				],
+				"name": "createConsentContract",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_contractID",
+						"type": "string"
+					}
+				],
+				"name": "getContractAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "getContracts",
+				"outputs": [
+					{
+						"internalType": "contract ConsentContract[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "testArray",
+				"outputs": [
+					{
+						"internalType": "contract ConsentContract[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"createConsentContract(string)": {
+					"params": {
+						"_contractID": "unique ID of a Contract"
+					}
+				},
+				"getContractAddress(string)": {
+					"params": {
+						"_contractID": "unique ID of a contract"
+					},
+					"returns": {
+						"_0": "address of the found contract"
+					}
+				},
+				"getContracts(address)": {
+					"params": {
+						"_address": "address of a member"
+					},
+					"returns": {
+						"_0": "array of related contracts"
+					}
+				}
+			},
+			"title": "Factory for Consent Contracts ",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"createConsentContract(string)": {
+					"notice": "creates a new consent contract with a unique contractID"
+				},
+				"getContractAddress(string)": {
+					"notice": "return the contract with the given contractID  if not found return the contract address"
+				},
+				"getContracts(address)": {
+					"notice": "get related contracts for this address either Proposer or Consenter"
+				}
+			},
+			"notice": "used because factory only need to be deployed once",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Users/michael/Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContractFactory.sol": "ConsentContractFactory"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Users/michael/Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContract.sol": {
+			"keccak256": "0xe5489b3a01e320fcb24010d4635ac8080409e1471af4395e35415ade4e8e4bd5",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://93d34fc440c55860aa434c54e97a33b9d8dde74b298126c4f67aac6991108acb",
+				"dweb:/ipfs/QmQukxGSXS2SNLmFWGfnKw4TQjBQzDPVi2jWugBf4biNjf"
+			]
+		},
+		"Users/michael/Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContractFactory.sol": {
+			"keccak256": "0x907c3f2aeee9402ec399db4226dc919d663791f6efeea70272104b7bf3419f47",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://f44729fba71d9320f720ef5ac190e026f0b8d42a7b344420e41d3c070c45db23",
+				"dweb:/ipfs/QmeTSmFmvKxDcsGr7wg1zXVW65j32QtmqksmBBdC1zU56u"
+			]
+		}
+	},
+	"version": 1
+}

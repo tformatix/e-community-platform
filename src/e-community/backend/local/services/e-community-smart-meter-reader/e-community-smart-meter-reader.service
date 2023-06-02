@@ -1,0 +1,13 @@
+[Unit]
+Description=e-community-smart-meter-reader reads and encrypts the energy data from the smart meter
+
+[Service]
+Type=simple
+ExecStart=/home/pi/slave/mbus-slave-ima-cpp-webdemo/mbus-slave
+WorkingDirectory=/home/pi/slave/mbus-slave-ima-cpp-webdemo
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=e-community-smart-meter-reader
+
+[Install]
+WantedBy=multi-user.target

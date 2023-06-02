@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_news">
+
+    <fragment
+        android:id="@+id/navigation_news"
+        android:name="at.fhooe.smartmeter.ui.news.NewsFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_news" />
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="at.fhooe.smartmeter.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_e_community"
+        android:name="at.fhooe.smartmeter.ui.e_community.ECommunityFragment"
+        android:label="@string/title_e_community"
+        tools:layout="@layout/fragment_e_community" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="at.fhooe.smartmeter.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_navigation_profile_to_localDiscoveryFragment"
+            app:destination="@id/navigation_local_discovery" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_local_discovery"
+        android:name="at.fhooe.smartmeter.ui.profile.local.LocalDiscoveryFragment"
+        android:label="@string/fragment_local_discovery"
+        tools:layout="@layout/fragment_local_discovery" >
+        <action
+            android:id="@+id/action_navigation_local_discovery_fragment_to_localConnectionFragment"
+            app:destination="@id/navigation_local_add_network"
+            app:popUpTo="@id/navigation_local_discovery" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_local_add_network"
+        android:name="at.fhooe.smartmeter.ui.profile.local.LocalAddNetworkFragment"
+        android:label="@string/fragment_local_add_network" >
+        <action
+            android:id="@+id/action_navigation_local_add_network_to_localConnectWifiFragment"
+            app:destination="@id/navigation_local_connect_wifi" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_local_connect_wifi"
+        android:name="at.fhooe.smartmeter.ui.profile.local.LocalConnectWifiFragment"
+        android:label="@string/fragment_local_connect_wifi"
+        tools:layout="@layout/fragment_local_connect_wifi" />
+    <fragment
+        android:id="@+id/navigation_local_summary"
+        android:name="at.fhooe.smartmeter.ui.profile.local.LocalSummaryFragment"
+        android:label="@string/fragment_local_summary"
+        tools:layout="@layout/fragment_local_summary" />
+
+    <fragment
+        android:id="@+id/navigation_local_device_settings"
+        android:name="at.fhooe.smartmeter.ui.profile.local.LocalDeviceSettingsFragment"
+        android:label="@string/fragment_local_device_settings"
+        tools:layout="@layout/fragment_local_device_settings" />
+</navigation>

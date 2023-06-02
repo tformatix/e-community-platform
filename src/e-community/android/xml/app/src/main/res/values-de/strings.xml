@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">eCommunity</string>
+    <string name="title_home">Home</string>
+    <string name="title_e_community">E-Community</string>
+    <string name="title_news">News</string>
+    <string name="title_profile">Profil</string>
+    <string name="title_login">E-Mail</string>
+    <string name="title_password">Passwort</string>
+    <string name="title_repeat_password">Passwort wiederholen</string>
+    <string name="button_login">Login</string>
+    <string name="not_registered">Registrieren</string>
+    <string name="title_username">Benutzername</string>
+    <string name="button_register">Registrieren</string>
+    <string name="password_is_empty">Passwort ist leer</string>
+    <string name="email_is_empty">Email ist leer</string>
+    <string name="email_not_valid">Email ist ungültig</string>
+    <string name="password_forgotten">Passwort vergessen?</string>
+    <string name="Password">Passwort</string>
+    <string name="send_email">Email abschicken</string>
+    <string name="email_sent">Email wurde gesendet</string>
+    <string name="email_not_registered">Email nicht registriert</string>
+    <string name="start_tutorial">ohne Anmeldung starten</string>
+    <string name="tutorial_notification_good_day">Ich werde sie dabei unterstützen!</string>
+    <string name="notification_headline">Guten Tag!</string>
+    <string name="notification_headline_text">Herzlich Willkommen in unserer SmartMeter App.</string>
+    <string name="tutorial_notification_headline_good_day">Heute ist ein guter Tag um Strom zu sparen!</string>
+    <string name="tutorial_notification_function">Zuerst, werde ich dir alle Möglichkeiten der SmartMeter App zeigen</string>
+    <string name="tutorial_notification_news">Momentan befindest du dich im \"Home\" Screen. \\n\\n Hier finden Sie die wichtigsten Informationen zu Ihrem Stromverbrauch zusammengefasst.</string>
+    <string name="welcome_earth">Mache unseren Planeten wieder glücklich und reduzieren deinen CO2 Fußabdruck!</string>
+    <string name="welcome_learn_more">Erforschen Sie eCommunity hier</string>
+    <string name="welcome_save_money">Spare Geld und gib es für die richtigen Dinge aus</string>
+    <string name="welcome_social">Werde Teil einer eCommunity und finde andere Energie Begeisterte</string>
+    <string name="search_local">suche raspberry</string>
+    <string name="connect_local">verbinden</string>
+    <string name="available_networks">verfügbare WLAN Netzwerke:</string>
+    <string name="local_device_configurated">Gerät ist konfiguriert</string>
+    <string name="local_device_not_configured">Gerät ist nicht konfiguriert</string>
+    <string name="local_device_settings">Geräte Einstellungen</string>
+    <string name="local_device_name">Geräte Name</string>
+    <string name="local_device_ip">IP-Adresse</string>
+    <string name="local_device_network">Netzwerk</string>
+    <string name="local_device_description">Beschreibung</string>
+    <string name="local_device_connection">Verbindung</string>
+    <string name="fragment_local_discovery">verbinde Smart Meter</string>
+    <string name="fragment_local_add_network">Netzwerk hinzufügen</string>
+    <string name="fragment_local_connect_wifi">Passwort eingeben</string>
+    <string name="fragment_local_summary">Smart Meter Details</string>
+    <string name="use_wired_connection">Verwende Netzwerk-Kabel Verbindung</string>
+    <string name="local_device_measurements">Messungswerte</string>
+    <string name="local_device_main">Haupt Smart Meter?</string>
+    <string name="check_internet">Verbindung zum Internet ...</string>
+    <string name="check_wired_connection">Verbindung Ethernet ...</string>
+    <string name="connected_to_internet">Internet verbunden</string>
+    <string name="local_connect_to_cloud">Verbinde zur Cloud!</string>
+    <string name="not_empty">Muss befüllt werden!</string>
+    <string name="local_device_settings_is_main">Haupt Smart Meter</string>
+    <string name="local_device_settings_measure_consumption">Misst Verbrauch</string>
+    <string name="local_device_settings_measure_feed_in">Misst Einspeisung</string>
+    <string name="local_device_settings_is_direct_feed_in">Direkte Einspeisung</string>
+    <string name="local_device_settings_is_overflow_feed_in">Überschuss Einspeisung</string>
+    <string name="fragment_local_device_settings">Geräte Einstellungen</string>
+    <string name="create_update_smart_meter">Erstelle/Aktualisiere Smart Meter</string>
+    <string name="init_cloud_connection">Starte Cloud Verbindung</string>
+    <string name="check_connection">Verbindung aufbauen</string>
+    <string name="cancel">abbrechen</string>
+    <string name="tile_region_household">Haushalt</string>
+    <string name="tile_action_consumption">Verbrauch</string>
+    <string name="tile_action_feed_in">Einspeisung</string>
+    <string name="tile_region_community">Gemeinschaft</string>
+    <string name="realtime">Echtzeit</string>
+    <string name="history">Historie</string>
+
+    <!-- Fragment Login / Register -->
+    <string name="username_email">Benutzername / E-Mail</string>
+    <string name="password">Passwort</string>
+    <string name="invalidEmail">Die angegebene Email ist ungültig</string>
+    <string name="emptyField">Alle Felder müssen ausgefüllt werden</string>
+    <string name="invalidAttempt">Ungültige Registrierung. Bitte erneut versuchen</string>
+    <string name="confirmedEmail">Email bestätigt</string>
+    <string name="pleaseConfirmeEmail">Bitte bestätigen Sie Ihre Emailadresse und geben Sie Ihre Passwort erneut ein bevor Sie fortfahren</string>
+    <string name="emailInfo">Sie sollten in kürze eine Email erhalten</string>
+    <string name="passwordInvalid"> Ungültiges Passwort. Ihr Passwort muss: </string>
+    <string name="passwordInfo">Mindestens einen Großbuchstabe enthalten \n
+        Mindestens einen Kleinbuchstaben enthalten  \n
+        Mindestens eine Zahl enthalten \n
+        Mindestens ein Sonderzeichen enthalten  </string>
+    <string name="error">Ein Fehler ist aufgetreten. Bitte versuchen Sie erneut </string>
+    <string name="unequalPasswords">Passwörter stimmen nicht überein.</string>
+    <string name="connection_failed">Verbindung fehlgeschlagen…</string>
+    <string name="retry">Erneut versuchen</string>
+    <string name="missing_smart_meter_member">Fehlende Smart Meters von deinem Haushalt:</string>
+    <string name="missing_smart_meter_e_comm">"Fehlende Smart Meters von der gesamtem Gemeinschaft: "</string>
+    <string name="timestamp_meter_data">Zeitpunkt der Werte:</string>
+    <string name="wired_connect_info">Bitte ein LAN Kabel beim RaspberryPi einstecken und mit dem Router verbinden, um den Verbindungsprozess zu starten...</string>
+    <string name="pairing_info">Information</string>
+    <string name="aes_key" translatable="false">AES Schlüssel</string>
+    <string name="is_main_smart_meter">Smart Meter welcher hauptsächlich für Verbrauch/Einspeisung verantwortlich ist</string>
+    <string name="measures_consumption">Misst Energie Verbrauch</string>
+    <string name="measures_feed_id">Misst Einspeisung (Strom Produktion)</string>
+    <string name="direct_feed_in">Smart Meter sendet direkt the produzierten Strom zurück ins Stromnetz</string>
+    <string name="overflow_feed_in">Smart Meter sendet nur the nicht benötigten Strom ins Stromnetz zurück</string>
+    <string name="check_wifi_settings">Check Wlan Einstellungen</string>
+</resources>

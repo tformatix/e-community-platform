@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.RealtimeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/fragment_realtime_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="@string/title_fragment_realtime"
+                app:titleTextColor="@color/white" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fragment_realtime_guide_vertical_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/fragment_realtime_tv_tara_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="viewEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_realtime_button_tara"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_realtime_button_tara"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fragment_realtime_button_tara" />
+
+        <Button
+            android:id="@+id/fragment_realtime_button_tara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@color/color_default"
+            android:text="@string/fragment_realtime_button_tara"
+            android:textColor="@color/color_realtime_text_light"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_realtime_guide_vertical_center"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <Button
+            android:id="@+id/fragment_realtime_button_reset_tara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:backgroundTint="@color/color_default"
+            android:text="@string/fragment_realtime_button_reset_tara"
+            android:textColor="@color/color_realtime_text_light"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_realtime_button_tara"
+            app:layout_constraintStart_toStartOf="@+id/fragment_realtime_guide_vertical_center"
+            app:layout_constraintTop_toTopOf="@+id/fragment_realtime_button_tara" />
+
+        <TextView
+            android:id="@+id/fragment_realtime_tv_timestamp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/fragment_realtime_tv_timestamp_default"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/color_realtime_text"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_realtime_guide_vertical_center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_realtime_button_tara" />
+
+        <ImageView
+            android:id="@+id/fragment_realtime_img_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/fragment_realtime_img_status_desc"
+            android:src="@drawable/ic_realtime_equal"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_realtime_tv_timestamp"
+            app:layout_constraintStart_toStartOf="@+id/fragment_realtime_tv_current_unit"
+            app:layout_constraintTop_toTopOf="@+id/fragment_realtime_tv_timestamp" />
+
+        <TextView
+            android:id="@+id/fragment_realtime_tv_current"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/fragment_realtime_tv_current_default"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/color_realtime_text"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_realtime_guide_vertical_center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_realtime_tv_timestamp" />
+
+        <TextView
+            android:id="@+id/fragment_realtime_tv_current_unit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/fragment_realtime_tv_current_unit_default"
+            android:textColor="@color/color_realtime_text"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_realtime_tv_current"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/fragment_realtime_guide_vertical_center"
+            app:layout_constraintTop_toTopOf="@+id/fragment_realtime_tv_current" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fragment_realtime_guide_horizontal_chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.3" />
+
+        <TextView
+            android:id="@+id/fragment_realtime_tv_highlight_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/color_realtime_highlight"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_realtime_guide_horizontal_chart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/fragment_realtime_guide_vertical_center" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/fragment_realtime_chart_rt"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fragment_realtime_guide_horizontal_chart" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

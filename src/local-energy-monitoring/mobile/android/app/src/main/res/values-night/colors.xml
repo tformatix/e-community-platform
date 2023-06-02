@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_default">#FF1976d2</color>
+    <color name="color_default_variant">#FF0d47a1</color>
+    <color name="color_realtime_highlight">#FFff6961</color>
+    <color name="color_realtime_upward">#FFff6961</color>
+    <color name="color_realtime_downward">#FF49b675</color>
+    <color name="color_realtime_text">#B2FFFFFF</color>
+</resources>

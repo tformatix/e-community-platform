@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = SmartMeterAPI
+build_property.ProjectDir = /Users/michael/Documents/dev/e-community-platform/src/local-energy-monitoring/backend/SmartMeterAPI/SmartMeterAPI/

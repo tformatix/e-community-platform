@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fTn-Ly-kIh">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--RealTime-->
+        <scene sceneID="qeZ-aw-hm0">
+            <objects>
+                <viewControllerPlaceholder storyboardName="RealTime" id="NGC-wU-ZA3" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="nEd-fc-SAs"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k66-so-7ca" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2935" y="451"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="XCB-KY-mAf">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" id="dI1-Ck-eLl" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="w5h-x9-qkp"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mk3-qx-bHf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2931" y="1102"/>
+        </scene>
+        <!--History-->
+        <scene sceneID="MbL-e3-GZQ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="History" id="1Mr-w6-kQr" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="ZwE-DH-6ZJ"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jps-2y-pPT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2925" y="-196"/>
+        </scene>
+        <!--Main Tab Bar Controller-->
+        <scene sceneID="Zhl-tn-odg">
+            <objects>
+                <tabBarController id="fTn-Ly-kIh" customClass="MainTabBarController" customModule="SmartMeteriOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ifs-SL-6ge">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="FqO-Cg-BJj" kind="relationship" relationship="viewControllers" id="ciA-3b-ttF"/>
+                        <segue destination="rJs-Wy-j45" kind="relationship" relationship="viewControllers" id="zCV-Yw-VF9"/>
+                        <segue destination="vCg-i5-R5b" kind="relationship" relationship="viewControllers" id="c3y-eq-LLa"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zAS-WY-Xes" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1309" y="-195"/>
+        </scene>
+        <!--History-->
+        <scene sceneID="bsc-be-FEu">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FqO-Cg-BJj" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="History" image="opticaldiscdrive" catalog="system" id="xgZ-yK-gFU">
+                        <color key="badgeColor" systemColor="labelColor"/>
+                    </tabBarItem>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4rv-f8-7XY">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="1Mr-w6-kQr" kind="relationship" relationship="rootViewController" id="A9f-Ys-q3N"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mab-mc-WDU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2187" y="-196"/>
+        </scene>
+        <!--Real Time-->
+        <scene sceneID="6b5-FU-f7i">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rJs-Wy-j45" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Real Time" image="clock" catalog="system" id="yAo-VS-Y4X"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6pw-Lf-DnP">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="NGC-wU-ZA3" kind="relationship" relationship="rootViewController" id="ozd-Sh-kVc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uXT-xC-wRT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2187" y="451"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="jmo-Sp-RwN">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vCg-i5-R5b" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Settings" image="gear" catalog="system" id="Icn-U6-sS7"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zxZ-hl-EuA">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dI1-Ck-eLl" kind="relationship" relationship="rootViewController" id="PKJ-T3-xfT"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oCR-rB-uuM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2187" y="1102"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="clock" catalog="system" width="128" height="121"/>
+        <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="opticaldiscdrive" catalog="system" width="128" height="88"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

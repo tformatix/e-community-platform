@@ -1,0 +1,25 @@
+<div class="centered">
+    <div class="loader" *ngIf="!isFinished"></div>
+    <div *ngIf="isFinished">
+        <div *ngIf="isSuccess">
+            <h1>Your email address was confirmed successfully!</h1>
+            <h3>Start your journey now and return to the app ...</h3>
+        </div>
+        <div *ngIf="!isSuccess">
+            <h1>Error while confirming your email!</h1>
+            <h3>Please retry or send confirmation mail again ...</h3>
+            <table>
+                <tr>
+                    <td><label>Email:</label></td>
+                    <td><input type="email" [(ngModel)]="email"></td>
+                </tr>
+                <tr>
+                    <td><label>Password:</label></td>
+                    <td><input type="password" [(ngModel)]="password" /></td>
+                </tr>
+            </table>
+            <br/>
+            <button (click)="resendConfirmationEmail()">Resend Confirmation Email</button>
+        </div>
+    </div>
+</div>

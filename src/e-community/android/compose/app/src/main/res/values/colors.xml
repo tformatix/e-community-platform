@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mainBlue">#02A9F4</color>
+
+    <color name="blue">#FF1976d2</color>
+    <color name="blue_variant">#FF0d47a1</color>
+    <color name="gray">#FF616161</color>
+    <color name="gray_light">#eeeeee</color>
+    <color name="gray_variant">#FF424242</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="value_normal">#FF000000</color>
+    <color name="value_good">#73C573</color>
+    <color name="value_ok">#ffa000</color>
+    <color name="value_bad">#C57373</color>
+
+</resources>

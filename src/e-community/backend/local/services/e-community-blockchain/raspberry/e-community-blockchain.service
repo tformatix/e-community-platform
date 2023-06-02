@@ -1,0 +1,14 @@
+[Unit]
+Description=e-community-blockchain | local blockchain node for energy sharing
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/sh /home/pi/blockchain/Node/start_node.sh
+WorkingDirectory=/home/pi/blockchain/Node
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=e-community-blockchain
+User=pi
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">SmartMeter</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_fragment_history">History</string>
+    <string name="title_fragment_realtime">Realtime</string>
+    <string name="title_fragment_settings">Settings</string>
+    <string name="fragment_history_text_from">from:</string>
+    <string name="fragment_history_text_to">to:  </string>
+    <string name="fragment_history_default_date">01.01.2010</string>
+    <string name="fragment_history_default_time">16:20</string>
+    <string name="fragment_history_button_refresh">Refresh</string>
+    <string name="shared_prefs_settings" translatable="false">SHARED_PREFS_SETTINGS</string>
+    <string name="shared_prefs_settings_name" translatable="false">SP_NAME</string>
+    <string name="shared_prefs_settings_ip" translatable="false">SP_IP</string>
+    <string name="shared_prefs_settings_aeskey" translatable="false">SP_AESKEY</string>
+    <string name="shared_prefs_settings_missing_ip">IP is missing! Check Settings…</string>
+    <string name="backend_url_history_setup" translatable="false">http://%1$s:8080/smartmeter/historysetup/%2$s</string>
+    <string name="backend_url_history" translatable="false">http://%1$s:8080/smartmeter/history</string>
+    <string name="backend_url_settings" translatable="false">http://%1$s:8080/smartmeter/settings</string>
+    <string name="fragment_settings_history_sampling">History sample rate</string>
+    <string name="fragment_settings_history_sample_default" translatable="false">15</string>
+    <string name="fragment_settings_name" translatable="false">Name</string>
+    <string name="fragment_settings_ip_raspberry" translatable="false">IP-Raspberry</string>
+    <string name="fragment_settings_aes_key">AES-Key</string>
+    <string name="fragment_settings_aes_key_default" translatable="false">15 F1 EA 1C 80 C8 1D D5 19 00 C0 67 E9 5B 73 7A</string>
+    <string name="fragment_settings_ip_raspberry_default" translatable="false">192.168.0.100</string>
+    <string name="fragment_settings_invalid_ip">invalid ip</string>
+    <string name="menu_settings_toolbar_save" translatable="false">Save</string>
+    <string name="fragment_settings_aes_empty">AES is empty</string>
+    <string name="fragment_settings_saved">Settings saved</string>
+    <string name="fragment_settings_aes_key_invalid">invalid aes_key</string>
+    <string name="volley_backend_error">Request failed</string>
+    <string name="volley_backend_resend">Resend?</string>
+    <string name="fragment_history_seekbar_time" translatable="false">15 min</string>
+    <string name="fragment_history_chart_description">Energy consumption between %1$s and %2$s per %3$s</string>
+
+    <string name="backend_url_check_connection" translatable="false">http://%1$s:8080/smartmeter/checkconnection</string>
+
+    <string name="backend_url_realtime" translatable="false">http://%1$s:8080/smartmeter/realtime</string>
+
+    <string name="fragment_realtime_tv_current_default" translatable="false">0</string>
+    <string name="fragment_realtime_tv_current_unit_default" translatable="false">W</string>
+    <string name="fragment_realtime_tv_timestamp_default" translatable="false">00:00:00</string>
+    <string name="fragment_realtime_img_status_desc" translatable="false">Status Image</string>
+    <string name="fragment_realtime_button_tara">Tara</string>
+    <string name="fragment_realtime_button_reset_tara">Reset</string>
+    <string name="fragment_realtime_chart_label">Power</string>
+    <string name="fragment_realtime_chart_description">Power per Second</string>
+    <string name="fragment_realtime_chart_loading">Loading...</string>
+    <string name="fragment_realtime_snackbar_signalr_error">Error - no connection\ncheck IP and AES Key in settings</string>
+    <string name="fragment_realtime_snackbar_reload">Reload</string>
+    <string name="fragment_history_chart_waiting">Waiting for refresh...</string>
+    <string name="fragment_history_invalid_times">Invalid Date/Time</string>
+</resources>

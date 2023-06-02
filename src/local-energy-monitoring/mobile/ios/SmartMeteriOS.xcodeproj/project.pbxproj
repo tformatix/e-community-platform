@@ -1,0 +1,603 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4C0089E4274920F3009AAA8F /* MeterDataHistDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0089E3274920F3009AAA8F /* MeterDataHistDto.swift */; };
+		4C11E2CB2745297400C64B59 /* HistorySetupDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C11E2CA2745297400C64B59 /* HistorySetupDto.swift */; };
+		4C784186274569310033E140 /* HistoryDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C784185274569310033E140 /* HistoryDto.swift */; };
+		4CD7C91B27453A4A0062BD29 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD7C91A27453A4A0062BD29 /* HistoryTableViewCell.swift */; };
+		500EB7C027413B590050E436 /* MeterDataDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500EB7BF27413B590050E436 /* MeterDataDto.swift */; };
+		50221CA42745356000A9FEEE /* CompareOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50221CA32745356000A9FEEE /* CompareOperator.swift */; };
+		50494F362748ED0900EA7C73 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50494F352748ED0900EA7C73 /* SpinnerViewController.swift */; };
+		50494F3C2749240C00EA7C73 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50494F3B2749240C00EA7C73 /* MainTabBarController.swift */; };
+		50494F3E2749241700EA7C73 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50494F3D2749241700EA7C73 /* Constants.swift */; };
+		50494F42274926FE00EA7C73 /* NetworkUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50494F41274926FE00EA7C73 /* NetworkUtil.swift */; };
+		50C030C0274508C800F30CAB /* MeterDataRTDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C030BF274508C800F30CAB /* MeterDataRTDto.swift */; };
+		50C030C2274510B900F30CAB /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C030C1274510B900F30CAB /* NetworkError.swift */; };
+		50ED33B7273AD2EA00E22C25 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ED33B6273AD2EA00E22C25 /* AppDelegate.swift */; };
+		50ED33B9273AD2EA00E22C25 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ED33B8273AD2EA00E22C25 /* SceneDelegate.swift */; };
+		50ED33BE273AD2EA00E22C25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50ED33BC273AD2EA00E22C25 /* Main.storyboard */; };
+		50ED33C0273AD2EC00E22C25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50ED33BF273AD2EC00E22C25 /* Assets.xcassets */; };
+		50ED33C3273AD2EC00E22C25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50ED33C1273AD2EC00E22C25 /* LaunchScreen.storyboard */; };
+		50ED33CF273AD74500E22C25 /* History.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50ED33CE273AD74500E22C25 /* History.storyboard */; };
+		50ED33D1273AD75500E22C25 /* RealTime.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50ED33D0273AD75500E22C25 /* RealTime.storyboard */; };
+		50ED33D3273AD75E00E22C25 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50ED33D2273AD75E00E22C25 /* Settings.storyboard */; };
+		50ED33D5273AD77600E22C25 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ED33D4273AD77600E22C25 /* HistoryViewController.swift */; };
+		50ED33D7273AD78700E22C25 /* RealTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ED33D6273AD78700E22C25 /* RealTimeViewController.swift */; };
+		50ED33D9273AD79500E22C25 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ED33D8273AD79500E22C25 /* SettingsViewController.swift */; };
+		50F48CFB27454AED000B4342 /* RealTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F48CFA27454AED000B4342 /* RealTimeTableViewCell.swift */; };
+		50F48CFD27454DFD000B4342 /* UIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F48CFC27454DFD000B4342 /* UIError.swift */; };
+		50F77EA4273AF22A00DCD6CB /* SignalRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F77EA3273AF22A00DCD6CB /* SignalRService.swift */; };
+		50F77EA6273AF50100DCD6CB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 50F77EA5273AF50100DCD6CB /* Podfile */; };
+		E97C3DD7668B292CF5830BBD /* Pods_SmartMeteriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9F77C349BA702BC6EC0766 /* Pods_SmartMeteriOS.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		4C0089E3274920F3009AAA8F /* MeterDataHistDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterDataHistDto.swift; sourceTree = "<group>"; };
+		4C11E2CA2745297400C64B59 /* HistorySetupDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorySetupDto.swift; sourceTree = "<group>"; };
+		4C784185274569310033E140 /* HistoryDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDto.swift; sourceTree = "<group>"; };
+		4CD7C91A27453A4A0062BD29 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
+		500EB7BF27413B590050E436 /* MeterDataDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterDataDto.swift; sourceTree = "<group>"; };
+		50221CA32745356000A9FEEE /* CompareOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareOperator.swift; sourceTree = "<group>"; };
+		50494F352748ED0900EA7C73 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
+		50494F3B2749240C00EA7C73 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		50494F3D2749241700EA7C73 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		50494F41274926FE00EA7C73 /* NetworkUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtil.swift; sourceTree = "<group>"; };
+		50C030BF274508C800F30CAB /* MeterDataRTDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterDataRTDto.swift; sourceTree = "<group>"; };
+		50C030C1274510B900F30CAB /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		50ED33B3273AD2EA00E22C25 /* SmartMeteriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartMeteriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		50ED33B6273AD2EA00E22C25 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		50ED33B8273AD2EA00E22C25 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		50ED33BD273AD2EA00E22C25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		50ED33BF273AD2EC00E22C25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = SmartMeteriOS/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		50ED33C2273AD2EC00E22C25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		50ED33C4273AD2EC00E22C25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50ED33CE273AD74500E22C25 /* History.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = History.storyboard; sourceTree = "<group>"; };
+		50ED33D0273AD75500E22C25 /* RealTime.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RealTime.storyboard; sourceTree = "<group>"; };
+		50ED33D2273AD75E00E22C25 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		50ED33D4273AD77600E22C25 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		50ED33D6273AD78700E22C25 /* RealTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeViewController.swift; sourceTree = "<group>"; };
+		50ED33D8273AD79500E22C25 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		50F48CFA27454AED000B4342 /* RealTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeTableViewCell.swift; sourceTree = "<group>"; };
+		50F48CFC27454DFD000B4342 /* UIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIError.swift; sourceTree = "<group>"; };
+		50F77EA3273AF22A00DCD6CB /* SignalRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalRService.swift; sourceTree = "<group>"; };
+		50F77EA5273AF50100DCD6CB /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		7E9F77C349BA702BC6EC0766 /* Pods_SmartMeteriOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartMeteriOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE66F336842FEDD22E8B87C8 /* Pods-SmartMeteriOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartMeteriOS.debug.xcconfig"; path = "Target Support Files/Pods-SmartMeteriOS/Pods-SmartMeteriOS.debug.xcconfig"; sourceTree = "<group>"; };
+		FEB14F914A9A6AD6D5E5C883 /* Pods-SmartMeteriOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartMeteriOS.release.xcconfig"; path = "Target Support Files/Pods-SmartMeteriOS/Pods-SmartMeteriOS.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		50ED33B0273AD2EA00E22C25 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E97C3DD7668B292CF5830BBD /* Pods_SmartMeteriOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		500EB7BE27413B0D0050E436 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				50494F40274926C300EA7C73 /* Dtos */,
+				50494F3F274926AB00EA7C73 /* Errors */,
+				50221CA32745356000A9FEEE /* CompareOperator.swift */,
+				50494F3D2749241700EA7C73 /* Constants.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		50494F342748ECF800EA7C73 /* Spinner */ = {
+			isa = PBXGroup;
+			children = (
+				50494F352748ED0900EA7C73 /* SpinnerViewController.swift */,
+			);
+			path = Spinner;
+			sourceTree = "<group>";
+		};
+		50494F3A274923F300EA7C73 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				50ED33BC273AD2EA00E22C25 /* Main.storyboard */,
+				50494F3B2749240C00EA7C73 /* MainTabBarController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		50494F3F274926AB00EA7C73 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				50F48CFC27454DFD000B4342 /* UIError.swift */,
+				50C030C1274510B900F30CAB /* NetworkError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		50494F40274926C300EA7C73 /* Dtos */ = {
+			isa = PBXGroup;
+			children = (
+				500EB7BF27413B590050E436 /* MeterDataDto.swift */,
+				50C030BF274508C800F30CAB /* MeterDataRTDto.swift */,
+				4C11E2CA2745297400C64B59 /* HistorySetupDto.swift */,
+				4C784185274569310033E140 /* HistoryDto.swift */,
+				4C0089E3274920F3009AAA8F /* MeterDataHistDto.swift */,
+			);
+			path = Dtos;
+			sourceTree = "<group>";
+		};
+		50ED33AA273AD2EA00E22C25 = {
+			isa = PBXGroup;
+			children = (
+				50F77EA5273AF50100DCD6CB /* Podfile */,
+				50ED33B5273AD2EA00E22C25 /* SmartMeteriOS */,
+				50ED33B4273AD2EA00E22C25 /* Products */,
+				65F4E3A4BB67D5DD67F86BFA /* Pods */,
+				E4133E2134BD4CAF93C58F8C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		50ED33B4273AD2EA00E22C25 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				50ED33B3273AD2EA00E22C25 /* SmartMeteriOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		50ED33B5273AD2EA00E22C25 /* SmartMeteriOS */ = {
+			isa = PBXGroup;
+			children = (
+				500EB7BE27413B0D0050E436 /* Models */,
+				50ED33CA273AD6F800E22C25 /* Controller */,
+				50F77EA2273AF02D00DCD6CB /* Services */,
+				50ED33B6273AD2EA00E22C25 /* AppDelegate.swift */,
+				50ED33B8273AD2EA00E22C25 /* SceneDelegate.swift */,
+				50ED33BF273AD2EC00E22C25 /* Assets.xcassets */,
+				50ED33C1273AD2EC00E22C25 /* LaunchScreen.storyboard */,
+				50ED33C4273AD2EC00E22C25 /* Info.plist */,
+			);
+			path = SmartMeteriOS;
+			sourceTree = "<group>";
+		};
+		50ED33CA273AD6F800E22C25 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				50494F3A274923F300EA7C73 /* Main */,
+				50494F342748ECF800EA7C73 /* Spinner */,
+				50ED33CB273AD6FF00E22C25 /* History */,
+				50ED33CC273AD70600E22C25 /* RealTime */,
+				50ED33CD273AD70B00E22C25 /* Settings */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		50ED33CB273AD6FF00E22C25 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				50ED33D4273AD77600E22C25 /* HistoryViewController.swift */,
+				50ED33CE273AD74500E22C25 /* History.storyboard */,
+				4CD7C91A27453A4A0062BD29 /* HistoryTableViewCell.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		50ED33CC273AD70600E22C25 /* RealTime */ = {
+			isa = PBXGroup;
+			children = (
+				50ED33D6273AD78700E22C25 /* RealTimeViewController.swift */,
+				50ED33D0273AD75500E22C25 /* RealTime.storyboard */,
+				50F48CFA27454AED000B4342 /* RealTimeTableViewCell.swift */,
+			);
+			path = RealTime;
+			sourceTree = "<group>";
+		};
+		50ED33CD273AD70B00E22C25 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				50ED33D8273AD79500E22C25 /* SettingsViewController.swift */,
+				50ED33D2273AD75E00E22C25 /* Settings.storyboard */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		50F77EA2273AF02D00DCD6CB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				50F77EA3273AF22A00DCD6CB /* SignalRService.swift */,
+				50494F41274926FE00EA7C73 /* NetworkUtil.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		65F4E3A4BB67D5DD67F86BFA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CE66F336842FEDD22E8B87C8 /* Pods-SmartMeteriOS.debug.xcconfig */,
+				FEB14F914A9A6AD6D5E5C883 /* Pods-SmartMeteriOS.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E4133E2134BD4CAF93C58F8C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7E9F77C349BA702BC6EC0766 /* Pods_SmartMeteriOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		50ED33B2273AD2EA00E22C25 /* SmartMeteriOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50ED33C7273AD2EC00E22C25 /* Build configuration list for PBXNativeTarget "SmartMeteriOS" */;
+			buildPhases = (
+				56A17959A1CDF537BAA0136C /* [CP] Check Pods Manifest.lock */,
+				50ED33AF273AD2EA00E22C25 /* Sources */,
+				50ED33B0273AD2EA00E22C25 /* Frameworks */,
+				50ED33B1273AD2EA00E22C25 /* Resources */,
+				FB1843DA57C5CF88FD485629 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SmartMeteriOS;
+			productName = SmartMeteriOS;
+			productReference = 50ED33B3273AD2EA00E22C25 /* SmartMeteriOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		50ED33AB273AD2EA00E22C25 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1310;
+				LastUpgradeCheck = 1310;
+				TargetAttributes = {
+					50ED33B2273AD2EA00E22C25 = {
+						CreatedOnToolsVersion = 13.1;
+					};
+				};
+			};
+			buildConfigurationList = 50ED33AE273AD2EA00E22C25 /* Build configuration list for PBXProject "SmartMeteriOS" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 50ED33AA273AD2EA00E22C25;
+			productRefGroup = 50ED33B4273AD2EA00E22C25 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				50ED33B2273AD2EA00E22C25 /* SmartMeteriOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		50ED33B1273AD2EA00E22C25 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50ED33C3273AD2EC00E22C25 /* LaunchScreen.storyboard in Resources */,
+				50ED33C0273AD2EC00E22C25 /* Assets.xcassets in Resources */,
+				50ED33D1273AD75500E22C25 /* RealTime.storyboard in Resources */,
+				50ED33D3273AD75E00E22C25 /* Settings.storyboard in Resources */,
+				50ED33BE273AD2EA00E22C25 /* Main.storyboard in Resources */,
+				50F77EA6273AF50100DCD6CB /* Podfile in Resources */,
+				50ED33CF273AD74500E22C25 /* History.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		56A17959A1CDF537BAA0136C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SmartMeteriOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB1843DA57C5CF88FD485629 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SmartMeteriOS/Pods-SmartMeteriOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SmartMeteriOS/Pods-SmartMeteriOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SmartMeteriOS/Pods-SmartMeteriOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		50ED33AF273AD2EA00E22C25 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50494F42274926FE00EA7C73 /* NetworkUtil.swift in Sources */,
+				4C11E2CB2745297400C64B59 /* HistorySetupDto.swift in Sources */,
+				50F48CFB27454AED000B4342 /* RealTimeTableViewCell.swift in Sources */,
+				50494F3C2749240C00EA7C73 /* MainTabBarController.swift in Sources */,
+				50F77EA4273AF22A00DCD6CB /* SignalRService.swift in Sources */,
+				50ED33B7273AD2EA00E22C25 /* AppDelegate.swift in Sources */,
+				50494F362748ED0900EA7C73 /* SpinnerViewController.swift in Sources */,
+				50ED33B9273AD2EA00E22C25 /* SceneDelegate.swift in Sources */,
+				50221CA42745356000A9FEEE /* CompareOperator.swift in Sources */,
+				50494F3E2749241700EA7C73 /* Constants.swift in Sources */,
+				50F48CFD27454DFD000B4342 /* UIError.swift in Sources */,
+				50C030C0274508C800F30CAB /* MeterDataRTDto.swift in Sources */,
+				4C0089E4274920F3009AAA8F /* MeterDataHistDto.swift in Sources */,
+				50ED33D5273AD77600E22C25 /* HistoryViewController.swift in Sources */,
+				50ED33D7273AD78700E22C25 /* RealTimeViewController.swift in Sources */,
+				50C030C2274510B900F30CAB /* NetworkError.swift in Sources */,
+				4CD7C91B27453A4A0062BD29 /* HistoryTableViewCell.swift in Sources */,
+				4C784186274569310033E140 /* HistoryDto.swift in Sources */,
+				500EB7C027413B590050E436 /* MeterDataDto.swift in Sources */,
+				50ED33D9273AD79500E22C25 /* SettingsViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		50ED33BC273AD2EA00E22C25 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				50ED33BD273AD2EA00E22C25 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		50ED33C1273AD2EC00E22C25 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				50ED33C2273AD2EC00E22C25 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		50ED33C5273AD2EC00E22C25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		50ED33C6273AD2EC00E22C25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		50ED33C8273AD2EC00E22C25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE66F336842FEDD22E8B87C8 /* Pods-SmartMeteriOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D7Z2X5ML6A;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SmartMeteriOS/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = at.fhooe.fischer.zauner.SmartMeteriOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		50ED33C9273AD2EC00E22C25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEB14F914A9A6AD6D5E5C883 /* Pods-SmartMeteriOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D7Z2X5ML6A;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SmartMeteriOS/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = at.fhooe.fischer.zauner.SmartMeteriOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		50ED33AE273AD2EA00E22C25 /* Build configuration list for PBXProject "SmartMeteriOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50ED33C5273AD2EC00E22C25 /* Debug */,
+				50ED33C6273AD2EC00E22C25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		50ED33C7273AD2EC00E22C25 /* Build configuration list for PBXNativeTarget "SmartMeteriOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50ED33C8273AD2EC00E22C25 /* Debug */,
+				50ED33C9273AD2EC00E22C25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 50ED33AB273AD2EA00E22C25 /* Project object */;
+}

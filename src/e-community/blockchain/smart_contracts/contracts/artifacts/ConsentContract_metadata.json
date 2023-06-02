@@ -1,0 +1,319 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_contractID",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "consenter",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "contractID",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "deposit",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getContractDetails",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getState",
+				"outputs": [
+					{
+						"internalType": "enum ConsentContract.STATE",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "proposer",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "rejectConsent",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "revokeConsent",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_proposer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_consenter",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_startEnergyData",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_endEnergyData",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_validityOfContract",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_pricePerHour",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_totalPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_dataUsage",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_timeResolution",
+						"type": "uint256"
+					}
+				],
+				"name": "setContractDetails",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_sender",
+						"type": "address"
+					}
+				],
+				"name": "signContract",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"constructor": {
+					"params": {
+						"_contractID": "each contract has a unique contractID"
+					}
+				},
+				"getContractDetails()": {
+					"returns": {
+						"_0": "object as string"
+					}
+				},
+				"getState()": {
+					"returns": {
+						"_0": "STATE"
+					}
+				},
+				"setContractDetails(address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)": {
+					"params": {
+						"_consenter": "give consent about the energy data to the proposer",
+						"_dataUsage": "usage of the energy data",
+						"_endEnergyData": "end date of the energy date (epoche)",
+						"_pricePerHour": "price for 1h of energy data (in Wei)",
+						"_proposer": "creator of the contract (wants energy data from the consenter)",
+						"_startEnergyData": "start date of the energy date (epoche)",
+						"_timeResolution": "time resolution of the energy data",
+						"_totalPrice": "total price for all energy data (in Wei)",
+						"_validityOfContract": "validity date for the contract (epoche)"
+					}
+				}
+			},
+			"title": "Consent Contract",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"constructor": {
+					"notice": "create a new consent contract"
+				},
+				"deposit()": {
+					"notice": "proposer need to deposit the agreed price to the contract wallet {require} both parties need to sign the contract before {require} the msg.value needs to be the agreed price"
+				},
+				"getContractDetails()": {
+					"notice": "get the contract represented in \"json\" string"
+				},
+				"getState()": {
+					"notice": "returns the current state of the contract used for displaying status in the UI"
+				},
+				"setContractDetails(address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)": {
+					"notice": "set details about the contract"
+				},
+				"signContract(address)": {
+					"notice": "both parties need to sign the contract inorder to start the energy sharing proposer also needs to sign the contract because the consenter can modify the regulations before the contract is active"
+				},
+				"withdraw()": {
+					"notice": "withdraw the ethers balance from the contract to address of the consenter after withdraw the contract is active and running {require} ethers were deposited to the contract"
+				}
+			},
+			"notice": "base contract for consent contracts",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Users/michael/Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContract.sol": "ConsentContract"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Users/michael/Documents/dev/e-community-platform/in-progress/consent-management/src/blockchain/smart_contracts/contracts/ConsentContract.sol": {
+			"keccak256": "0xe5489b3a01e320fcb24010d4635ac8080409e1471af4395e35415ade4e8e4bd5",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://93d34fc440c55860aa434c54e97a33b9d8dde74b298126c4f67aac6991108acb",
+				"dweb:/ipfs/QmQukxGSXS2SNLmFWGfnKw4TQjBQzDPVi2jWugBf4biNjf"
+			]
+		}
+	},
+	"version": 1
+}
