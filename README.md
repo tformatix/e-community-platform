@@ -12,6 +12,16 @@ With the app "eCommunity Platform" a platform for energy communities is offered,
 We try to simplify all the necessary steps: from setting up, to searching, to joining an energy community. Furthermore, monitoring and improvement of performance will be enabled through our platform.
 In addition, we want to encourage to use electricity when it is in surplus and support users to save electricity when the feed-in from e.g. solar energy of the energy community is low. In this way, users can not only save money, but also reduce their environmental footprint.
 
+## ⚠️ Prototype
+
+This repository serves as the home for the early prototype of our ambitious eCommunity Platform. Please bear in mind that this project is currently in its prototype phase and is not actively under active development. As such, it lacks essential elements like tests and other components necessary for a polished project.
+
+### What to Expect
+
+- Early Prototype: Explore our initial concept and vision for the eCommunity Platform.
+- Not Actively Developed: Please note that this prototype is not actively maintained or expanded upon at the moment.
+- Work in Progress: As a work in progress, this repository might lack certain features and best practices found in fully developed projects.
+
 ## M-Bus Slave
 
 A client of the local network operator Netz OÖ GmbH by Dipl.-Ing. Dr. techn. Markus Flohberger already takes care of reading, decoding and storing the data of the AMIS Smart Meter. It is also based on [libmbus](http://www.rscada.se/libmbus/) (M-bus Library from Raditex Control) and the AES decryption by Andreas Tetzner. This client was adapted for the purposes of this project. Currently the project is only compatible with AMIS meter of Netz OÖ GmbH.
