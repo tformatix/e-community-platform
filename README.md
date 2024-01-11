@@ -14,7 +14,7 @@ In addition, we want to encourage to use electricity when it is in surplus and s
 
 ## ⚠️ Prototype
 
-This repository serves as the home for the early prototype of our ambitious eCommunity Platform. Please bear in mind that this project is currently in its prototype phase and is not actively under active development. As such, it lacks essential elements like tests and other components necessary for a polished project.
+This repository serves as the home for the early prototype of our ambitious eCommunity Platform. Please bear in mind that this project is currently in its prototype phase and is not under active development. As such, it lacks essential elements like tests and other components necessary for a polished project.
 
 ### What to Expect
 
