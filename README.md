@@ -68,7 +68,7 @@ As part of the EPCON energy congress, sustainable and innovative projects with p
 _Michael Zauner_
 * share and sell user's own energy data between the members of the eCommunity platform
 * the contract between two involved parties is stored inside a Consent-Contract
-* creation, storage and management of the consent contract is done in a GoQuorum Blockchain (fork of Ethereum)
+* creation, storage and management of the consent contract is done in a GoQuorum Blockchain (fork of the Ethereum Blockchain)
 * all Raspberry Pi's have a local Blockchain service running
 
 ### Optimization of energy communities incorporating forecasting, participant behavior and monitoring of actual behavior in near real time
